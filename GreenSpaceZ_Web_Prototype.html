@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>GreenSpaceZ — Tamil Nadu's Eco-Property Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+/* ── RESET & BASE ─────────────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:'DM Sans',sans-serif;background:#f4fbf6;color:#0f1a12;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* ── TOKENS ───────────────────────────────────────────────────────────── */
+:root{
+  --g950:#040f08;--g900:#0b2e1c;--g800:#1a5c38;--g700:#2d7d4f;--g600:#3a9461;
+  --g500:#4aab72;--g400:#6bbf8e;--g300:#9dd4b5;--g200:#c8e9d5;--g100:#e8f5ee;--g50:#f4fbf6;
+  --gold:#c9963a;--gold-l:#f0c97a;
+  --ink:#0f1a12;--ink2:#2c3a2e;--muted:#687a6b;--border:#d4e8d9;--white:#fff;--off:#f6fbf7;
+  --r:14px;--shadow:0 4px 20px rgba(13,51,32,.08);--shadow-lg:0 12px 40px rgba(13,51,32,.14);
+}
+
+/* ── TYPOGRAPHY ───────────────────────────────────────────────────────── */
+.serif{font-family:'Playfair Display',serif}
+.mono{font-family:'DM Mono',monospace}
+h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.1}
+
+/* ── LAYOUT ───────────────────────────────────────────────────────────── */
+#app{max-width:430px;margin:0 auto;min-height:100vh;background:var(--off);position:relative;box-shadow:0 0 80px rgba(0,0,0,.15);overflow:hidden}
+.page{display:none;flex-direction:column;min-height:calc(100vh - 58px);padding-bottom:80px}
+.page.active{display:flex}
+.section{padding:20px 16px}
+
+/* ── BOTTOM NAV ───────────────────────────────────────────────────────── */
+#bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:58px;background:rgba(255,255,255,.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;z-index:1000;padding-bottom:env(safe-area-inset-bottom,0)}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:none;background:none;cursor:pointer;padding:5px 0;position:relative;font-family:'DM Sans',sans-serif}
+.nav-btn .ico{font-size:20px;line-height:1;transition:transform .2s}
+.nav-btn .lbl{font-size:9px;font-weight:600;color:var(--muted);letter-spacing:.02em;transition:color .2s}
+.nav-btn.active .lbl{color:var(--g800)}
+.nav-btn.active .ico{filter:none}
+.nav-btn:not(.active) .ico{filter:grayscale(.4) opacity(.5)}
+.nav-btn.active::after{content:'';position:absolute;bottom:0;width:26px;height:2.5px;background:var(--g700);border-radius:2px}
+
+/* ── TOP HEADER ───────────────────────────────────────────────────────── */
+.top-bar{position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);padding:14px 18px;display:flex;align-items:center;gap:10}
+.top-bar.dark{background:transparent}
+.top-bar.light{background:rgba(255,255,255,.95);border-bottom:1px solid var(--border)}
+.top-bar .page-title{flex:1;font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--g800)}
+.top-bar.dark .page-title{color:#fff}
+
+/* ── BUTTONS ──────────────────────────────────────────────────────────── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;font-family:'DM Sans',sans-serif;font-weight:600;border-radius:11px;cursor:pointer;transition:all .18s;border:none;font-size:14px;padding:11px 20px;white-space:nowrap}
+.btn-green{background:var(--g800);color:#fff}
+.btn-green:active{background:var(--g700)}
+.btn-outline{background:transparent;border:1.5px solid var(--g700);color:var(--g700)}
+.btn-gold{background:var(--gold);color:#fff}
+.btn-soft{background:var(--g100);color:var(--g800)}
+.btn-ghost{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.92)}
+.btn-sm{font-size:12px;padding:8px 14px;border-radius:9px}
+.btn-full{width:100%}
+.btn:active{opacity:.82;transform:scale(.98)}
+
+/* ── CARDS ────────────────────────────────────────────────────────────── */
+.card{background:#fff;border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow)}
+.card:active{transform:scale(.99)}
+
+/* ── TAGS & BADGES ────────────────────────────────────────────────────── */
+.tag{font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;letter-spacing:.03em}
+.tag-green{background:var(--g800);color:#fff}
+.tag-gold{background:var(--gold);color:#fff}
+.tag-blue{background:#1a3a6b;color:#fff}
+.tag-soft{background:var(--g100);color:var(--g700)}
+
+/* ── CHIPS ────────────────────────────────────────────────────────────── */
+.chips{display:flex;gap:7px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex-shrink:0;padding:6px 14px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:#fff;color:var(--muted);font-family:'DM Sans',sans-serif;transition:all .18s}
+.chip.active{border-color:var(--g800);background:var(--g800);color:#fff}
+
+/* ── SECTION LABEL ────────────────────────────────────────────────────── */
+.sl{display:flex;align-items:center;gap:7px;margin-bottom:10px}
+.sl-bar{width:18px;height:2px;background:var(--g600);flex-shrink:0;border-radius:2px}
+.sl-text{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.16em;color:var(--g600);text-transform:uppercase}
+.sl.light .sl-bar{background:rgba(107,191,142,.8)}
+.sl.light .sl-text{color:rgba(107,191,142,.8)}
+
+/* ── HERO ─────────────────────────────────────────────────────────────── */
+.hero{background:var(--g900);min-height:93vh;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden;padding:0 0 28px}
+.hero-radial{position:absolute;inset:0;background:radial-gradient(ellipse 80% 55% at 32% 40%,rgba(45,125,79,.44) 0%,transparent 65%)}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:38px 38px}
+.hero-content{position:relative;z-index:5;padding:0 18px}
+.hero-nav{position:absolute;top:0;left:0;right:0;z-index:10;padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);padding:5px 12px;border-radius:20px;font-size:11px;color:rgba(255,255,255,.65);margin-bottom:16px;font-weight:500}
+.hero-badge .dot{width:5px;height:5px;border-radius:50%;background:var(--g400);display:inline-block;animation:pulse 2s infinite}
+.hero h1{font-size:clamp(36px,9vw,54px);color:#fff;font-weight:800;line-height:1.06;margin-bottom:12px}
+.hero h1 span{color:var(--g400)}
+.hero p{font-size:14px;color:rgba(255,255,255,.55);line-height:1.75;margin-bottom:22px;font-weight:300}
+.hero-stats{display:flex;gap:0;margin-top:26px;padding-top:22px;border-top:1px solid rgba(255,255,255,.09)}
+.hero-stat{flex:1;padding:0 12px}
+.hero-stat:first-child{padding-left:0}
+.hero-stat:not(:last-child){border-right:1px solid rgba(255,255,255,.09)}
+.hero-stat .val{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#fff}
+.hero-stat .lbl{font-size:9px;color:rgba(255,255,255,.38);margin-top:2px}
+
+/* ── DARK SECTION ─────────────────────────────────────────────────────── */
+.dark-section{background:var(--g900);padding:50px 16px 0}
+.dark-section h2{color:#fff;font-size:clamp(21px,5.5vw,28px);margin-bottom:5px}
+.dark-section .sub{font-size:13px;color:rgba(255,255,255,.5);line-height:1.7;margin-bottom:18px}
+
+/* ── SCROLL ROW ───────────────────────────────────────────────────────── */
+.scroll-row{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;scroll-snap-type:x mandatory;scrollbar-width:none}
+.scroll-row::-webkit-scrollbar{display:none}
+.scroll-item{flex-shrink:0;scroll-snap-align:start}
+
+/* ── INPUTS ───────────────────────────────────────────────────────────── */
+.input,select,textarea{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;color:var(--ink);background:#fff;margin-bottom:10px;transition:border-color .2s}
+.input:focus,select:focus,textarea:focus{border-color:var(--g600)}
+textarea{height:72px;resize:vertical}
+select{color:var(--muted)}
+.field-label{font-size:12px;font-weight:600;color:var(--ink2);margin-bottom:4px;display:block}
+
+/* ── BOTTOM SHEET ─────────────────────────────────────────────────────── */
+#sheet-overlay{position:fixed;inset:0;background:rgba(0,0,0,.52);z-index:3000;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(3px)}
+#sheet-overlay.open{display:flex}
+#sheet{background:#fff;border-radius:22px 22px 0 0;width:100%;max-width:430px;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 -8px 40px rgba(13,51,32,.2);transform:translateY(100%);transition:transform .3s cubic-bezier(.32,1.1,.55,1)}
+#sheet-overlay.open #sheet{transform:translateY(0)}
+#sheet-header{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 12px;border-bottom:1px solid var(--border);flex-shrink:0}
+#sheet-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--g800)}
+#sheet-close{width:28px;height:28px;border-radius:50%;border:none;background:var(--g100);cursor:pointer;font-size:14px;color:var(--muted);display:flex;align-items:center;justify-content:center}
+#sheet-body{overflow-y:auto;padding:16px 18px;flex:1}
+
+/* ── TOAST ────────────────────────────────────────────────────────────── */
+#toast{position:fixed;bottom:72px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--g800);color:#fff;padding:10px 20px;border-radius:24px;font-size:13px;font-weight:600;z-index:9999;white-space:nowrap;box-shadow:0 6px 28px rgba(13,51,32,.3);pointer-events:none;display:flex;align-items:center;gap:7px;opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1)}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#toast .dot{width:5px;height:5px;border-radius:50%;background:var(--g400);flex-shrink:0}
+
+/* ── ANIMATIONS ───────────────────────────────────────────────────────── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.7);opacity:.5}}
+.au{animation:fadeUp .45s ease both}
+.d1{animation-delay:.08s}.d2{animation-delay:.16s}.d3{animation-delay:.24s}.d4{animation-delay:.32s}
+
+/* ── LISTING GRID ─────────────────────────────────────────────────────── */
+.listing-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;padding:14px 14px 0}
+.listing-card{background:#fff;border-radius:13px;overflow:hidden;border:1px solid var(--border);cursor:pointer;transition:box-shadow .2s}
+.listing-card:active{transform:scale(.98)}
+.listing-thumb{height:110px;display:flex;align-items:center;justify-content:center;font-size:32px;position:relative}
+.listing-tags{position:absolute;top:5px;left:5px;display:flex;flex-direction:column;gap:3px}
+.listing-info{padding:10px}
+.listing-price{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--g800)}
+.listing-name{font-size:11px;font-weight:600;color:var(--ink);margin:2px 0;line-height:1.3}
+.listing-loc{font-size:10px;color:var(--muted)}
+.listing-spec{font-size:10px;color:var(--muted);margin-top:3px}
+.listing-actions{display:flex;gap:6px;padding:0 10px 10px}
+
+/* ── PLAN CARDS ───────────────────────────────────────────────────────── */
+.plan-card{border-radius:13px;padding:14px;margin-bottom:10px;position:relative;cursor:pointer;transition:all .2s;border:1.5px solid var(--border);background:#fff}
+.plan-card:active{transform:scale(.99)}
+.plan-card.hot{background:var(--g900);border-color:var(--gold)}
+.plan-badge{position:absolute;top:-1px;right:12px;background:var(--gold);color:#fff;font-size:8px;font-weight:700;padding:3px 9px;border-radius:0 0 7px 7px;letter-spacing:.08em}
+.plan-name{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--ink)}
+.plan-card.hot .plan-name{color:#fff}
+.plan-price{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;margin-top:2px}
+.plan-per{font-size:11px;font-weight:400;color:var(--muted)}
+.plan-card.hot .plan-per{color:rgba(255,255,255,.4)}
+.plan-feat{display:flex;gap:7px;font-size:11px;color:var(--muted);line-height:1.45;margin-bottom:5px}
+.plan-card.hot .plan-feat{color:rgba(255,255,255,.58)}
+.plan-feat-check{color:var(--g400);flex-shrink:0;font-weight:700}
+.plan-enquire{font-size:10px;font-weight:600;padding:4px 9px;border-radius:20px;background:var(--g100);color:var(--g700)}
+.plan-card.hot .plan-enquire{background:rgba(107,191,142,.12);color:var(--g400)}
+
+/* ── SERVICE CARDS ────────────────────────────────────────────────────── */
+.service-card{background:#fff;border:1px solid var(--border);border-radius:11px;padding:13px;margin-bottom:9px;display:flex;gap:11px}
+.service-ico{font-size:22px;flex-shrink:0;line-height:1}
+.service-name{font-size:12px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.service-desc{font-size:11px;color:var(--muted);line-height:1.5}
+
+/* ── OWNER APP DEMO ───────────────────────────────────────────────────── */
+.app-shell{border-radius:10px;overflow:hidden;border:1px solid var(--border)}
+.app-titlebar{background:var(--g900);padding:9px 12px;display:flex;align-items:center;gap:6px}
+.app-dot{width:7px;height:7px;border-radius:50%}
+.app-title{font-size:10px;color:rgba(255,255,255,.4);margin-left:5px;flex:1}
+.app-tabs{display:flex;overflow-x:auto;border-bottom:1px solid var(--border);padding:0 4px;scrollbar-width:none;background:#fff}
+.app-tabs::-webkit-scrollbar{display:none}
+.app-tab{padding:9px 10px;border:none;background:none;color:var(--muted);font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s}
+.app-tab.active{color:var(--g800);border-bottom-color:var(--g700)}
+.app-panel{background:#fff;padding:12px;display:none}
+.app-panel.active{display:block}
+.app-footer{background:var(--g900);padding:9px 12px}
+
+/* ── STAT CARDS ───────────────────────────────────────────────────────── */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.stat-card{background:var(--g900);border-radius:10px;padding:11px}
+.stat-val{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:#fff}
+.stat-lbl{font-size:9px;color:rgba(255,255,255,.38);margin-top:1px}
+.stat-d{font-size:9px;color:var(--g400);margin-top:3px;font-weight:600}
+
+/* ── TABLE ROWS ───────────────────────────────────────────────────────── */
+.trow{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px}
+.trow:last-child{border-bottom:none}
+.trow .tkey{color:var(--muted)}
+.trow .tval{font-weight:500;color:var(--ink)}
+.trow .tval.hi{font-weight:700;color:var(--g800)}
+
+/* ── RESULT BOX ───────────────────────────────────────────────────────── */
+.result-box{background:var(--g50);border:1.5px solid var(--border);border-radius:10px;padding:12px;margin-top:10px}
+
+/* ── STATUS PILLS ─────────────────────────────────────────────────────── */
+.pill-rented{background:rgba(45,125,79,.15);color:var(--g700)}
+.pill-vacant{background:rgba(201,150,58,.12);color:#a07000}
+.pill-managed{background:rgba(26,58,140,.12);color:#3a6bcc}
+.pill{font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px}
+
+/* ── LEGAL CARDS ──────────────────────────────────────────────────────── */
+.lawyer-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:13px;margin-bottom:10px;display:flex;gap:11px;cursor:pointer;transition:all .2s}
+.lawyer-card:active{transform:scale(.98)}
+.lawyer-avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;font-family:'Playfair Display',serif;flex-shrink:0}
+.lawyer-name{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:1px}
+.lawyer-spec{font-size:11px;font-weight:600;margin-bottom:2px}
+.lawyer-loc{font-size:10px;color:var(--muted);margin-bottom:5px}
+.lawyer-tags{display:flex;gap:4px;flex-wrap:wrap}
+.lawyer-right{text-align:right;flex-shrink:0}
+.lawyer-fee{font-size:12px;font-weight:700;color:var(--g800)}
+.lawyer-rating{font-size:10px;color:var(--muted);margin-top:1px}
+
+/* ── ROADMAP ──────────────────────────────────────────────────────────── */
+.roadmap{position:relative;padding-left:22px}
+.roadmap-line{position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:var(--g200);border-radius:2px}
+.milestone{position:relative;margin-bottom:14px}
+.milestone-dot{position:absolute;left:-18px;top:4px;width:9px;height:9px;border-radius:50%;z-index:2}
+.milestone-dot.done{background:var(--g700);border:2px solid var(--g700)}
+.milestone-dot.pending{background:var(--border);border:2px solid var(--g200)}
+.milestone-card{background:#fff;border:1px solid var(--border);border-radius:11px;padding:12px}
+.milestone-month{font-size:9px;font-weight:700;color:var(--gold);font-family:'DM Mono',monospace;margin-bottom:3px}
+.milestone-label{font-size:12px;font-weight:700;color:var(--ink);margin-bottom:3px}
+.milestone-desc{font-size:11px;color:var(--muted);line-height:1.5}
+
+/* ── BAR CHART ────────────────────────────────────────────────────────── */
+.bar-chart{display:flex;align-items:flex-end;gap:7px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.bar-pair{width:100%;display:flex;gap:2px;align-items:flex-end;flex:1}
+.bar-a{flex:1;background:var(--g700);border-radius:3px 3px 0 0}
+.bar-b{flex:1;background:var(--g400);border-radius:3px 3px 0 0}
+.bar-label{font-size:9px;color:var(--muted);font-weight:500}
+.bar-val{font-size:9px;color:var(--muted)}
+.bar-legend{display:flex;gap:12px;justify-content:center;margin-top:9px}
+.bar-leg-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted)}
+.bar-leg-dot{width:7px;height:7px;border-radius:2px}
+
+/* ── FUND BAR ─────────────────────────────────────────────────────────── */
+.fund-bar{margin-bottom:10px}
+.fund-bar-row{display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px}
+.fund-bar-track{background:var(--border);border-radius:3px;height:5px}
+.fund-bar-fill{height:100%;border-radius:3px}
+
+/* ── PROPERTY MGMT ROW ────────────────────────────────────────────────── */
+.prop-row{background:#fff;border:1px solid var(--border);border-radius:9px;padding:11px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:flex-start}
+.prop-name{font-size:12px;font-weight:600;color:var(--ink)}
+.prop-sub{font-size:10px;color:var(--muted);margin-top:1px}
+.prop-rent{font-size:11px;font-weight:600;color:var(--g800);margin-top:3px}
+
+/* ── MAINT ROW ────────────────────────────────────────────────────────── */
+.maint-row{background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.maint-name{font-size:12px;font-weight:600;color:var(--ink)}
+.maint-sub{font-size:10px;color:var(--muted);margin-top:1px}
+.pill-inprogress{background:#e8eef8;color:#3a6bcc}
+.pill-scheduled{background:#fff8e1;color:#a07000}
+.pill-done{background:var(--g100);color:var(--g700)}
+
+/* ── COMPETITOR CARD ──────────────────────────────────────────────────── */
+.comp-card{background:#fff;border:1px solid var(--border);border-radius:11px;padding:13px;margin-bottom:9px}
+.comp-name{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:7px}
+.comp-row{font-size:11px;color:var(--muted);margin-bottom:4px;line-height:1.4}
+.comp-adv{font-size:11px;background:var(--g100);color:var(--g800);padding:6px 10px;border-radius:8px;margin-top:5px;font-weight:500;line-height:1.4}
+
+/* ── GOV PORTAL CARDS ─────────────────────────────────────────────────── */
+.gov-cards{display:flex;gap:8px;overflow-x:auto;padding-bottom:12px;scrollbar-width:none}
+.gov-cards::-webkit-scrollbar{display:none}
+.gov-card{flex-shrink:0;border-radius:12px;padding:12px 13px;min-width:132px;cursor:pointer;transition:all .2s;border:1.5px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}
+.gov-card.active{background:rgba(107,191,142,.15);border-color:var(--g400)}
+.gov-card .gico{font-size:20px;margin-bottom:5px}
+.gov-card .gname{font-size:12px;font-weight:700;color:rgba(255,255,255,.7);margin-bottom:3px}
+.gov-card.active .gname{color:var(--g400)}
+.gov-live{font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px}
+.live{background:rgba(107,191,142,.2);color:var(--g400)}
+.beta{background:rgba(200,165,50,.2);color:#c9a020}
+
+/* ── GOV TABS ─────────────────────────────────────────────────────────── */
+.gov-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;margin-bottom:14px}
+.gov-tabs::-webkit-scrollbar{display:none}
+.gov-tab{flex-shrink:0;padding:7px 12px;border-radius:20px;border:none;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .18s}
+.gov-tab.active{background:var(--g800);color:#fff}
+.gov-tab:not(.active){background:var(--g100);color:var(--g700)}
+.gov-panel{display:none;background:#fff;border:1.5px solid var(--border);border-radius:13px;padding:16px}
+.gov-panel.active{display:block}
+
+/* ── MARKET STAT CARDS ────────────────────────────────────────────────── */
+.mstat-card{flex-shrink:0;background:var(--g900);border-radius:13px;padding:14px 16px;min-width:148px;scroll-snap-align:start}
+.mstat-ico{font-size:20px;margin-bottom:6px}
+.mstat-val{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--g400)}
+.mstat-lbl{font-size:10px;color:rgba(255,255,255,.42);margin-top:3px;line-height:1.4}
+
+/* ── QUICK ACTION GRID ────────────────────────────────────────────────── */
+.qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:22px}
+.qa-card{background:#fff;border:1.5px solid var(--border);border-radius:13px;padding:14px 12px;cursor:pointer;transition:all .18s}
+.qa-card:active{transform:scale(.97);border-color:var(--g400)}
+.qa-ico{font-size:24px;margin-bottom:7px}
+.qa-name{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.qa-desc{font-size:11px;color:var(--muted);line-height:1.4}
+
+/* ── INVEST CTA ───────────────────────────────────────────────────────── */
+.invest-cta{background:var(--g800);border-radius:16px;padding:22px 18px;text-align:center;margin-bottom:22px}
+.invest-cta h3{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:6px}
+.invest-cta p{font-size:12px;color:rgba(255,255,255,.5);margin-bottom:14px;line-height:1.6}
+
+/* ── CONTACT CARD ─────────────────────────────────────────────────────── */
+.contact-card{background:var(--g900);border-radius:14px;padding:18px;margin-bottom:14px}
+.contact-row{display:flex;gap:9px;align-items:center;margin-bottom:9px;font-size:12px;color:rgba(255,255,255,.58)}
+.contact-ico{font-size:15px;flex-shrink:0}
+
+/* ── SEARCH BOX ───────────────────────────────────────────────────────── */
+.search-box{display:flex;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:11px;overflow:hidden;margin-bottom:12px}
+.search-box input{flex:1;padding:12px 14px;border:none;outline:none;font-size:13px;font-family:'DM Sans',sans-serif;color:#fff;background:transparent}
+.search-box input::placeholder{color:rgba(255,255,255,.4)}
+.search-box button{padding:0 16px;background:var(--g600);color:#fff;border:none;font-weight:600;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif}
+
+/* ── INLINE INFO BOX ──────────────────────────────────────────────────── */
+.info-box{background:var(--g50);border-radius:8px;padding:8px 11px;margin-bottom:10px;font-size:11px;color:var(--muted);line-height:1.5}
+
+/* ── RESPONSIVE DESKTOP ───────────────────────────────────────────────── */
+@media(min-width:500px){
+  #app{border-radius:28px;margin:20px auto;min-height:calc(100vh - 40px);box-shadow:0 0 100px rgba(0,0,0,.2)}
+  body{background:var(--g800);display:flex;align-items:flex-start;justify-content:center;min-height:100vh;padding:20px 0}
+  #bottom-nav{border-radius:0 0 28px 28px}
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ── HOME PAGE ──────────────────────────────────────────────────── -->
+  <div id="page-home" class="page active">
+    <div class="hero">
+      <div class="hero-radial"></div>
+      <div class="hero-grid"></div>
+      <div class="hero-nav">
+        <div style="display:flex;align-items:center;gap:8px">
+          <svg width="28" height="28" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="#2d7d4f"/><path d="M16 7C11 7 8 11 8 15c0 2.5 1.2 4.7 3 6.1V24h2v-2h6v2h2v-2.9c1.8-1.4 3-3.6 3-6.1 0-4-3-8-8-8z" fill="#6bbf8e"/><circle cx="16" cy="13" r="1.5" fill="#fff"/></svg>
+          <span class="serif" style="font-weight:700;font-size:16px;color:#fff">GreenSpaceZ</span>
+          <span style="font-size:9px;background:rgba(107,191,142,.2);color:#6bbf8e;padding:2px 7px;border-radius:20px;font-weight:700">Beta</span>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="openSheet('login')">Login</button>
+      </div>
+      <div class="hero-content">
+        <div class="hero-badge au"><span class="dot"></span>Tamil Nadu's First Eco-Property Platform</div>
+        <h1 class="au d1">Buy. Sell.<br>Rent. <span>Manage.</span></h1>
+        <p class="au d2">TNRERA-verified listings, zero brokerage, 48+ lawyers — and end-to-end remote property management for NRI &amp; absentee owners across Tamil Nadu.</p>
+        <div class="au d3" style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-green" onclick="goPage('market')" style="padding:12px 22px;font-size:14px">Browse Listings →</button>
+          <button class="btn btn-ghost" onclick="openSheet('nri')" style="padding:12px 18px;font-size:14px">NRI Services</button>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat"><div class="val">₹0</div><div class="lbl">Brokerage</div></div>
+          <div class="hero-stat"><div class="val">TNRERA</div><div class="lbl">Verified</div></div>
+          <div class="hero-stat"><div class="val">48+</div><div class="lbl">Lawyers</div></div>
+          <div class="hero-stat"><div class="val">6</div><div class="lbl">Gov Portals</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="sl"><div class="sl-bar"></div><div class="sl-text">Quick Actions</div></div>
+      <div class="qa-grid">
+        <div class="qa-card" onclick="goPage('market')"><div class="qa-ico">🏡</div><div class="qa-name">Buy Property</div><div class="qa-desc">Eco-verified homes &amp; plots</div></div>
+        <div class="qa-card" onclick="openSheet('list')"><div class="qa-ico">💰</div><div class="qa-name">Sell / Rent Out</div><div class="qa-desc">Zero commission listing</div></div>
+        <div class="qa-card" onclick="goPage('mgmt')"><div class="qa-ico">⚙️</div><div class="qa-name">Property Mgmt</div><div class="qa-desc">Remote management plans</div></div>
+        <div class="qa-card" onclick="goPage('gov')"><div class="qa-ico">🏛️</div><div class="qa-name">Gov Portals</div><div class="qa-desc">TNRERA, Patta, Stamp Duty</div></div>
+      </div>
+
+      <div class="sl"><div class="sl-bar"></div><div class="sl-text">Market Opportunity</div></div>
+      <div class="scroll-row" style="margin-bottom:22px">
+        <div class="scroll-item mstat-card"><div class="mstat-ico">📈</div><div class="mstat-val">₹2.8L Cr</div><div class="mstat-lbl">TN Real Estate Market</div></div>
+        <div class="scroll-item mstat-card"><div class="mstat-ico">🏘️</div><div class="mstat-val">₹4,200 Cr</div><div class="mstat-lbl">TN Annual Rental Market</div></div>
+        <div class="scroll-item mstat-card"><div class="mstat-ico">✈️</div><div class="mstat-val">32 Lakh+</div><div class="mstat-lbl">NRI Property Owners in TN</div></div>
+        <div class="scroll-item mstat-card"><div class="mstat-ico">🌿</div><div class="mstat-val">21.2%</div><div class="mstat-lbl">Eco-Property CAGR (TN)</div></div>
+      </div>
+
+      <div class="sl"><div class="sl-bar"></div><div class="sl-text">Featured Listings</div></div>
+      <div class="scroll-row" style="margin-bottom:22px" id="featured-listings"></div>
+
+      <div class="invest-cta">
+        <h3>₹3.5 Cr Seed Round Open</h3>
+        <p>22-month runway · Break-even Month 20 · Series A target: ₹55–70 Cr</p>
+        <button class="btn btn-gold" onclick="openSheet('investor')">Investor Enquiry →</button>
+      </div>
+
+      <div class="sl"><div class="sl-bar"></div><div class="sl-text">The Problem We Solve</div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:18px">
+        <div class="card" style="padding:13px"><div style="font-size:11px;font-weight:700;color:var(--g700);margin-bottom:5px">Verification Gap</div><div style="font-size:11px;color:var(--muted);line-height:1.5">No single source for TNRERA, land records &amp; tax dues — fraud &amp; delays</div></div>
+        <div class="card" style="padding:13px"><div style="font-size:11px;font-weight:700;color:var(--g700);margin-bottom:5px">Brokerage Exploitation</div><div style="font-size:11px;color:var(--muted);line-height:1.5">Brokers charge 1–2% on crore-value deals — ₹40k–₹2L wasted per deal</div></div>
+        <div class="card" style="padding:13px"><div style="font-size:11px;font-weight:700;color:var(--g700);margin-bottom:5px">NRI Absentee Gap</div><div style="font-size:11px;color:var(--muted);line-height:1.5">No accountable, tech-enabled management for 32 lakh TN NRI owners</div></div>
+        <div class="card" style="padding:13px"><div style="font-size:11px;font-weight:700;color:var(--g700);margin-bottom:5px">Fragmented Portals</div><div style="font-size:11px;color:var(--muted);line-height:1.5">TNRERA, IGRS, Patta, DigiLocker — 30 separate sites to juggle</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MARKET PAGE ─────────────────────────────────────────────────── -->
+  <div id="page-market" class="page">
+    <div class="dark-section">
+      <div class="sl light"><div class="sl-bar"></div><div class="sl-text">Eco Property Marketplace</div></div>
+      <h2 class="serif">TNRERA-Verified Listings</h2>
+      <p class="sub">Every listing eco-certified before going live. Zero brokerage — always.</p>
+      <div class="search-box">
+        <input type="text" id="search-input" placeholder="Search location, project…" oninput="filterListings()"/>
+        <button>Go</button>
+      </div>
+      <div class="chips" id="chips" style="margin-bottom:14px">
+        <div class="chip active" onclick="setChip(this,'all')">All</div>
+        <div class="chip" onclick="setChip(this,'buy')">Buy</div>
+        <div class="chip" onclick="setChip(this,'managed')">Managed</div>
+        <div class="chip" onclick="setChip(this,'farm')">Farm Land</div>
+        <div class="chip" onclick="setChip(this,'nri')">NRI Pick</div>
+      </div>
+    </div>
+    <div id="listing-grid" class="listing-grid"></div>
+    <div style="height:16px"></div>
+  </div>
+
+  <!-- ── MGMT PAGE ───────────────────────────────────────────────────── -->
+  <div id="page-mgmt" class="page">
+    <div class="dark-section">
+      <div class="sl light"><div class="sl-bar"></div><div class="sl-text">Remote Property Management</div></div>
+      <h2 class="serif" style="color:#fff">Professional Management,<br>Now Fully Digital</h2>
+      <p class="sub">End-to-end remote management for NRI &amp; absentee owners. EPMS field agents on the ground.</p>
+      <div style="display:flex;gap:0;border-top:1px solid rgba(255,255,255,.1)">
+        <button class="nav-btn active" style="flex:1;padding:11px 4px;border:none;background:none;color:var(--g400);font-size:10px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;border-bottom:2px solid var(--g400)" onclick="switchMgmtTab(this,0)">Plans</button>
+        <button class="nav-btn" style="flex:1;padding:11px 4px;border:none;background:none;color:rgba(255,255,255,.38);font-size:10px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;border-bottom:2px solid transparent" onclick="switchMgmtTab(this,1)">Services</button>
+        <button class="nav-btn" style="flex:1;padding:11px 4px;border:none;background:none;color:rgba(255,255,255,.38);font-size:10px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;border-bottom:2px solid transparent" onclick="switchMgmtTab(this,2)">Owner App</button>
+        <button class="nav-btn" style="flex:1;padding:11px 4px;border:none;background:none;color:rgba(255,255,255,.38);font-size:10px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;border-bottom:2px solid transparent" onclick="switchMgmtTab(this,3)">Vs. Others</button>
+      </div>
+    </div>
+    <div class="section" style="padding-top:16px">
+      <div id="mgmt-tab-0">
+        <div id="plans-container"></div>
+        <div class="card" style="padding:14px;margin-bottom:10px">
+          <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:9px">A-la-Carte Services</div>
+          <div class="trow"><span class="tkey">Tenant Finding</span><span class="tval">One month's rent</span></div>
+          <div class="trow"><span class="tkey">Rental Agreement</span><span class="tval">₹2,999</span></div>
+          <div class="trow" style="border:none"><span class="tkey">Extra Inspection</span><span class="tval">₹999 per visit</span></div>
+        </div>
+      </div>
+      <div id="mgmt-tab-1" style="display:none" id="services-tab"></div>
+      <div id="mgmt-tab-2" style="display:none"></div>
+      <div id="mgmt-tab-3" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- ── GOV PAGE ────────────────────────────────────────────────────── -->
+  <div id="page-gov" class="page">
+    <div class="dark-section">
+      <div class="sl light"><div class="sl-bar"></div><div class="sl-text">Government-Integrated Platform</div></div>
+      <h2 class="serif" style="color:#fff">One Click to Every TN<br>Property Authority</h2>
+      <p class="sub">Patta · EC · Stamp Duty · TNRERA — all in one platform.</p>
+      <div class="gov-cards">
+        <div class="gov-card active" onclick="setGovCard(this,0)"><div class="gico">🖋️</div><div class="gname">Stamp Duty</div><span class="gov-live live">● Live</span></div>
+        <div class="gov-card" onclick="setGovCard(this,1)"><div class="gico">📜</div><div class="gname">Patta / Chitta</div><span class="gov-live live">● Live</span></div>
+        <div class="gov-card" onclick="setGovCard(this,2)"><div class="gico">🏛️</div><div class="gname">TNRERA Verify</div><span class="gov-live live">● Live</span></div>
+        <div class="gov-card" onclick="setGovCard(this,3)"><div class="gico">📁</div><div class="gname">DigiLocker</div><span class="gov-live live">● Live</span></div>
+        <div class="gov-card" onclick="setGovCard(this,4)"><div class="gico">🏙️</div><div class="gname">GCC / CCMC</div><span class="gov-live beta">● Beta</span></div>
+      </div>
+    </div>
+    <div class="section" style="padding-top:16px">
+      <div class="gov-tabs">
+        <button class="gov-tab active" onclick="setGovTab(this,0)">Stamp Duty</button>
+        <button class="gov-tab" onclick="setGovTab(this,1)">Patta Search</button>
+        <button class="gov-tab" onclick="setGovTab(this,2)">TNRERA Verify</button>
+        <button class="gov-tab" onclick="setGovTab(this,3)">DigiLocker</button>
+        <button class="gov-tab" onclick="setGovTab(this,4)">Property Tax</button>
+      </div>
+
+      <!-- Stamp Duty -->
+      <div class="gov-panel active" id="gov-panel-0">
+        <label class="field-label">Property Value (₹)</label>
+        <input class="input" type="number" id="sd-val" value="8500000" oninput="calcStamp()"/>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div>
+            <label class="field-label">Owner Gender</label>
+            <select id="sd-gender" onchange="calcStamp()">
+              <option value="female">Female (concession)</option>
+              <option value="male">Male</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label">Property Type</label>
+            <select id="sd-type" onchange="calcStamp()">
+              <option value="res">Residential</option>
+              <option value="agri">Agricultural</option>
+            </select>
+          </div>
+        </div>
+        <div class="result-box" id="stamp-result">
+          <div class="trow"><span class="tkey">Property Value</span><span class="tval" id="sd-pv">₹85,00,000</span></div>
+          <div class="trow"><span class="tkey">Stamp Duty</span><span class="tval" id="sd-stamp">₹4,76,000</span></div>
+          <div class="trow"><span class="tkey">Registration Fee (1%)</span><span class="tval" id="sd-reg">₹85,000</span></div>
+          <div class="trow" style="border:none"><span class="tkey">Total Payable</span><span class="tval hi" id="sd-total">₹5,61,000</span></div>
+        </div>
+      </div>
+
+      <!-- Patta -->
+      <div class="gov-panel" id="gov-panel-1">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div><label class="field-label">District</label><select><option>Chennai</option><option>Coimbatore</option><option>Madurai</option></select></div>
+          <div><label class="field-label">Survey Number</label><input class="input" value="124/3A"/></div>
+          <div><label class="field-label">Village</label><input class="input" value="Pudupakkam"/></div>
+          <div><label class="field-label">Taluk</label><select><option>Sholavaram</option><option>Ambattur</option></select></div>
+        </div>
+        <button class="btn btn-green btn-full" onclick="fetchPatta()">Fetch Patta / Chitta →</button>
+        <div class="result-box" id="patta-result" style="display:none;margin-top:10px">
+          <div class="trow"><span class="tkey">Patta Number</span><span class="tval">TN/CHN/2019/04421</span></div>
+          <div class="trow"><span class="tkey">Owner</span><span class="tval">Karthik Swaminathan</span></div>
+          <div class="trow"><span class="tkey">Survey No.</span><span class="tval">124/3A, Pudupakkam Village</span></div>
+          <div class="trow"><span class="tkey">Extent</span><span class="tval">1,200 sqft (Nanja)</span></div>
+          <div class="trow" style="border:none"><span class="tkey">Status</span><span class="tval hi">✓ Clear Title — No Encumbrances</span></div>
+        </div>
+      </div>
+
+      <!-- TNRERA -->
+      <div class="gov-panel" id="gov-panel-2">
+        <label class="field-label">TNRERA Project Number</label>
+        <input class="input" value="TN/29/Building/0421/2024"/>
+        <label class="field-label">Developer Name</label>
+        <input class="input" value="Casagrand Builder"/>
+        <button class="btn btn-green btn-full" onclick="verifyTnrera()" style="margin-bottom:0">Verify on TNRERA →</button>
+        <div class="result-box" id="tnrera-result" style="display:none;margin-top:10px">
+          <div class="trow"><span class="tkey">RERA No.</span><span class="tval">TN/29/Building/0421/2024</span></div>
+          <div class="trow"><span class="tkey">Project</span><span class="tval">Casagrand First City — Phase 3</span></div>
+          <div class="trow"><span class="tkey">Developer</span><span class="tval">Casagrand Builder Pvt Ltd</span></div>
+          <div class="trow"><span class="tkey">Completion</span><span class="tval">December 2026</span></div>
+          <div class="trow" style="border:none"><span class="tkey">Status</span><span class="tval hi">✓ Registered &amp; Compliant</span></div>
+        </div>
+      </div>
+
+      <!-- DigiLocker -->
+      <div class="gov-panel" id="gov-panel-3" style="text-align:center;padding:20px 16px">
+        <div style="font-size:44px;margin-bottom:12px">📁</div>
+        <div class="serif" style="font-size:18px;font-weight:700;color:var(--g800);margin-bottom:8px">DigiLocker Integration</div>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.7">Link your Aadhaar to fetch &amp; share property documents — Patta, EC, tax receipts, sale deeds — with buyers and banks instantly.</p>
+        <button class="btn btn-green btn-full" onclick="showToast('Aadhaar OTP sent to registered mobile ✓')" style="margin-bottom:14px">Link Aadhaar OTP →</button>
+        <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap">
+          <span class="tag tag-soft">Patta / Chitta</span>
+          <span class="tag tag-soft">EC Certificate</span>
+          <span class="tag tag-soft">Sale Deed</span>
+          <span class="tag tag-soft">Property Tax</span>
+          <span class="tag tag-soft">TNRERA Cert</span>
+        </div>
+      </div>
+
+      <!-- GCC Tax -->
+      <div class="gov-panel" id="gov-panel-4">
+        <label class="field-label">Corporation</label>
+        <select><option>GCC — Greater Chennai Corporation</option><option>CCMC — Coimbatore City</option></select>
+        <label class="field-label">Property ID (PID)</label>
+        <input class="input" value="04-021-009-002-0014"/>
+        <button class="btn btn-green btn-full" onclick="fetchTax()" style="margin-bottom:0">Check Tax Dues →</button>
+        <div class="result-box" id="tax-result" style="display:none;margin-top:10px">
+          <div class="trow"><span class="tkey">PID</span><span class="tval">04-021-009-002-0014</span></div>
+          <div class="trow"><span class="tkey">Annual Tax</span><span class="tval">₹4,840</span></div>
+          <div class="trow"><span class="tkey">Last Paid</span><span class="tval">Oct 2024 (H1 2024-25)</span></div>
+          <div class="trow"><span class="tkey">Next Due</span><span class="tval">April 2025 — ₹2,420</span></div>
+          <div class="trow" style="border:none"><span class="tkey">Arrears</span><span class="tval hi">✓ No Arrears</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MORE PAGE ───────────────────────────────────────────────────── -->
+  <div id="page-more" class="page">
+    <div class="dark-section">
+      <div class="sl light"><div class="sl-bar"></div><div class="sl-text">More Features</div></div>
+      <div style="display:flex;gap:0;border-top:1px solid rgba(255,255,255,.1)">
+        <button class="nav-btn active" style="flex:1;padding:11px 4px;border:none;background:none;color:var(--g400);font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;border-bottom:2px solid var(--g400)" onclick="switchMoreTab(this,0)">Legal</button>
+        <button class="nav-btn" style="flex:1;padding:11px 4px;border:none;background:none;color:rgba(255,255,255,.38);font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;border-bottom:2px solid transparent" onclick="switchMoreTab(this,1)">Financials</button>
+        <button class="nav-btn" style="flex:1;padding:11px 4px;border:none;background:none;color:rgba(255,255,255,.38);font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;border-bottom:2px solid transparent" onclick="switchMoreTab(this,2)">Roadmap</button>
+        <button class="nav-btn" style="flex:1;padding:11px 4px;border:none;background:none;color:rgba(255,255,255,.38);font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;border-bottom:2px solid transparent" onclick="switchMoreTab(this,3)">Contact</button>
+      </div>
+    </div>
+    <div class="section" style="padding-top:16px">
+      <div id="more-tab-0"></div>
+      <div id="more-tab-1" style="display:none"></div>
+      <div id="more-tab-2" style="display:none"></div>
+      <div id="more-tab-3" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- ── BOTTOM NAV ──────────────────────────────────────────────────── -->
+  <nav id="bottom-nav">
+    <button class="nav-btn active" id="nav-home" onclick="goPage('home')">
+      <span class="ico">🌿</span><span class="lbl">Home</span>
+    </button>
+    <button class="nav-btn" id="nav-market" onclick="goPage('market')">
+      <span class="ico">🏠</span><span class="lbl">Listings</span>
+    </button>
+    <button class="nav-btn" id="nav-mgmt" onclick="goPage('mgmt')">
+      <span class="ico">⚙️</span><span class="lbl">Mgmt</span>
+    </button>
+    <button class="nav-btn" id="nav-gov" onclick="goPage('gov')">
+      <span class="ico">🏛️</span><span class="lbl">Portals</span>
+    </button>
+    <button class="nav-btn" id="nav-more" onclick="goPage('more')">
+      <span class="ico">☰</span><span class="lbl">More</span>
+    </button>
+  </nav>
+</div>
+
+<!-- ── BOTTOM SHEET ──────────────────────────────────────────────────── -->
+<div id="sheet-overlay" onclick="closeSheetOutside(event)">
+  <div id="sheet">
+    <div id="sheet-header">
+      <span id="sheet-title"></span>
+      <button id="sheet-close" onclick="closeSheet()">✕</button>
+    </div>
+    <div id="sheet-body"></div>
+  </div>
+</div>
+
+<!-- ── TOAST ─────────────────────────────────────────────────────────── -->
+<div id="toast"><span class="dot"></span><span id="toast-msg"></span></div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────
+const LISTINGS = [
+  {id:1,e:"🏢",t:"3BHK Eco Apartment",p:"₹82 L",loc:"Pudupakkam, OMR",city:"Chennai",tag:"buy",eco:"IGBC Gold",area:"1,420 sqft",bed:3,bath:2,bg:"#d0ead8"},
+  {id:2,e:"🏖️",t:"ECR Beachfront Villa",p:"₹2.4 Cr",loc:"East Coast Road",city:"Chennai",tag:"nri",eco:"IGBC Platinum",area:"3,200 sqft",bed:4,bath:3,bg:"#c8e4d2"},
+  {id:3,e:"🌾",t:"Eco Farm Plot — 5 Cents",p:"₹28 L",loc:"Mettupalayam Rd",city:"Coimbatore",tag:"farm",eco:"Green Belt",area:"5 Cents",bed:0,bath:0,bg:"#d8eede"},
+  {id:4,e:"🌿",t:"2BHK Managed Apartment",p:"₹22,000/mo",loc:"Saravanampatti",city:"Coimbatore",tag:"managed",eco:"Solar Ready",area:"1,050 sqft",bed:2,bath:2,bg:"#cce8d6"},
+  {id:5,e:"📐",t:"Plot — IT Corridor",p:"₹48 L",loc:"Sholinganallur",city:"Chennai",tag:"buy",eco:"CMDA Approved",area:"1,200 sqft",bed:0,bath:0,bg:"#d4ebd8"},
+  {id:6,e:"🌳",t:"Organic Farm — 2 Acres",p:"₹96 L",loc:"Pollachi Belt",city:"Coimbatore",tag:"farm",eco:"Organic Cert.",area:"2 Acres",bed:1,bath:1,bg:"#c4e4cc"},
+  {id:7,e:"🏡",t:"Villa — Premium Managed",p:"₹58,000/mo",loc:"Kelambakkam",city:"Chennai",tag:"managed",eco:"IGBC Silver",area:"2,800 sqft",bed:4,bath:3,bg:"#cce6d4"},
+  {id:8,e:"⭐",t:"3BHK NRI Managed",p:"₹1.65 Cr",loc:"Anna Nagar",city:"Chennai",tag:"nri",eco:"IGBC Gold",area:"1,850 sqft",bed:3,bath:2,bg:"#c8e2d0"},
+  {id:9,e:"🌴",t:"Eco Retreat Plot — ECR",p:"₹1.1 Cr",loc:"ECR, Chennai",city:"Chennai",tag:"nri",eco:"DTCP Approved",area:"8 Cents",bed:0,bath:0,bg:"#d0eada"},
+];
+
+const PLANS = [
+  {name:"Silver",e:"🌱",price:"₹9,000",per:"+GST/yr",col:"#3a9461",hot:false,feats:["Annual geotagged inspection + photo report","TNEB & property tax bill alerts","Emergency EPMS field escalation","Monthly WhatsApp + email update"]},
+  {name:"Gold",e:"🌿",price:"₹12,000",per:"+GST/yr",col:"#2d7d4f",hot:true,feats:["Bi-annual inspections (interior + exterior)","TNEB + property tax bill payments","Rent collection & digital receipts","Maintenance coordination via vetted vendors","Inventory check-in & check-out"]},
+  {name:"Diamond",e:"💎",price:"₹21,000",per:"+GST/2 yrs",col:"#5b8fd4",hot:false,feats:["Quarterly inspections (4/year)","Aadhaar tenant screening + police verification","Digital rental agreement via DigiLocker","TNRERA compliance audit","20% off all legal services"]},
+  {name:"Platinum",e:"🏆",price:"₹42,000",per:"+GST/5 yrs",col:"#c9963a",hot:false,feats:["Dedicated named property manager","Full tenant lifecycle management","Plot monitoring & boundary photos","NRI POA + FEMA compliance support","Annual property valuation report"]},
+];
+
+const SERVICES = [
+  ["🔍","Inspect & Evaluate","Geotagged photos, interior + exterior report, rental assessment"],
+  ["📣","Property Marketing","Auto-list on GreenSpaceZ + NoBroker, 99acres, Housing.com, MagicBricks"],
+  ["👤","Tenant Screening","Aadhaar KYC, police verification, income check — DigiLocker-linked"],
+  ["📄","Rental Agreements","Digital drafting, e-signing, DigiLocker storage, TNRERA-compliant"],
+  ["🔧","Maintenance","Vetted vendor network — owner approves costs before dispatch"],
+  ["💳","Bill Payments","TNEB, GCC property tax, water bill via integrated portals"],
+  ["🌾","Plot Monitoring","Periodic site visits, boundary photos, encroachment alerts"],
+  ["📦","Packers & Movers","Supervised tenant move-in/out with vetted movers"],
+  ["⚖️","Legal Support","48 verified TN lawyers — 20% off for plan clients"],
+];
+
+const LAWYERS = [
+  {init:"PR",name:"Adv. Priya Raghunathan",spec:"TNRERA & Property Title",loc:"Adyar, Chennai",fee:"₹2,999",r:"4.9",col:"#1a5c38",svcs:["Title Search","TNRERA Disputes","Patta Transfer"]},
+  {init:"SK",name:"Adv. Senthil Kumar",spec:"Land Records & Registration",loc:"RS Puram, Coimbatore",fee:"₹1,999",r:"4.8",col:"#2d7d4f",svcs:["EC Certificate","Patta Mutation","SRO Liaison"]},
+  {init:"MS",name:"Adv. Meera Sundaram",spec:"NRI & Property Taxation",loc:"Nungambakkam, Chennai",fee:"₹3,999",r:"5.0",col:"#c9963a",svcs:["FEMA Compliance","TDS on Rent","Power of Attorney"]},
+  {init:"RP",name:"Adv. Rajesh Ponnusamy",spec:"Tenant & Landlord Disputes",loc:"Peelamedu, Coimbatore",fee:"₹2,499",r:"4.7",col:"#3a6b8a",svcs:["Eviction","Rental Disputes","Police Liaison"]},
+  {init:"KN",name:"Adv. Kavitha Nair",spec:"Eco-Property & IGBC",loc:"Sholinganallur",fee:"₹2,999",r:"4.8",col:"#6b3a8a",svcs:["IGBC Compliance","CMDA Approvals","Green Building"]},
+  {init:"MA",name:"Adv. Murugan Alagarsamy",spec:"Agricultural Land & Plots",loc:"Madurai",fee:"₹1,499",r:"4.6",col:"#8a4a1a",svcs:["Farm Land Title","Patta Conversion","Revenue Records"]},
+];
+
+const REV = [{y:"2025",t:1.2,m:.27},{y:"2026",t:4.1,m:1.1},{y:"2027",t:14.1,m:4.2},{y:"2028",t:32,m:9},{y:"2029",t:66,m:18}];
+
+const DASH = [
+  {name:"Pudupakkam Apartment",loc:"Chennai OMR",plan:"Gold",status:"rented",rent:"₹28,000",ins:"12 Jan"},
+  {name:"ECR Villa — Plot 14",loc:"East Coast Road",plan:"Platinum",status:"rented",rent:"₹58,000",ins:"5 Jan"},
+  {name:"Coimbatore Farm Plot",loc:"Mettupalayam",plan:"Silver",status:"vacant",rent:"—",ins:"18 Dec"},
+  {name:"Saravanampatti 2BHK",loc:"Coimbatore",plan:"Gold",status:"managed",rent:"₹22,000",ins:"20 Jan"},
+];
+
+const MILESTONES = [
+  {m:"Apr 2025",l:"Chennai Public Beta",d:"300 users · 30 listings · 20 managed properties",done:true},
+  {m:"May 2025",l:"Coimbatore Beta",d:"100 users · 15 CBE listings · EPMS agents live",done:true},
+  {m:"Jun 2025",l:"First 40 Paying Subscribers",d:"MRR: ₹72,000 · 30 Pro + 10 Business",done:true},
+  {m:"Jul 2025",l:"Diamond / Platinum Live",d:"Full tenant screening + rental agreements",done:false},
+  {m:"Sep 2025",l:"NRI WhatsApp Campaign",d:"UK, Gulf, US Tamil community outreach",done:false},
+  {m:"Dec 2025",l:"200 Managed Properties",d:"₹26.7L management revenue · ISO 9001 audit",done:false},
+  {m:"Mar 2026",l:"Series A Prep",d:"Month 18 · CAC ₹3,200 · LTV 18:1 documented",done:false},
+  {m:"Jun 2026",l:"Series A Close",d:"₹55–70 Cr valuation · Madurai/Trichy expansion",done:false},
+];
+
+// ── STATE ─────────────────────────────────────────────────────────────────
+let currentChip = 'all';
+let currentSearchQ = '';
+
+// ── NAVIGATION ────────────────────────────────────────────────────────────
+function goPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.getElementById('nav-' + page).classList.add('active');
+  document.getElementById('page-' + page).scrollTop = 0;
+  // lazy-render more page
+  if (page === 'more') renderMorePage();
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────────────
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ── SHEET ─────────────────────────────────────────────────────────────────
+function openSheet(type, data) {
+  const titles = {
+    login:"Welcome Back", list:"List Your Property", nri:"NRI Property Management",
+    legal:"Book Legal Consultation", investor:"Investor Relations",
+  };
+  let title = titles[type] || '';
+  if (type === 'plan' && data) title = data.e + ' ' + data.name + ' Plan';
+  if (type === 'prop' && data) title = data.t;
+  if (type === 'lawyer' && data) title = data.name;
+  document.getElementById('sheet-title').textContent = title;
+  document.getElementById('sheet-body').innerHTML = buildSheetBody(type, data);
+  document.getElementById('sheet-overlay').classList.add('open');
+}
+function closeSheet() {
+  document.getElementById('sheet-overlay').classList.remove('open');
+}
+function closeSheetOutside(e) {
+  if (e.target === document.getElementById('sheet-overlay')) closeSheet();
+}
+
+function buildSheetBody(type, data) {
+  const done = `<button class="btn btn-green btn-full" style="margin-top:4px" onclick="showToast('Submitted ✓ — Our team will contact you within 24 hrs');closeSheet()">Submit →</button>`;
+  if (type === 'login') return `
+    <label class="field-label">Email</label><input class="input" type="email" placeholder="you@example.com"/>
+    <label class="field-label">Password</label><input class="input" type="password" placeholder="••••••••"/>
+    <button class="btn btn-green btn-full" onclick="showToast('Logged in ✓');closeSheet()">Sign In →</button>
+    <p style="text-align:center;margin-top:12px;font-size:13px;color:var(--muted)">Don't have an account? <span style="color:var(--g700);font-weight:600;cursor:pointer" onclick="showToast('Redirecting to register…');closeSheet()">Register</span></p>`;
+  if (type === 'list') return `
+    <label class="field-label">Your Name</label><input class="input" placeholder="Full name"/>
+    <label class="field-label">Phone / WhatsApp</label><input class="input" type="tel" placeholder="+91 98765 43210"/>
+    <label class="field-label">Property Location</label><input class="input" placeholder="Pudupakkam, OMR, Chennai"/>
+    <label class="field-label">Property Type</label><select><option>Apartment</option><option>Villa</option><option>Plot</option><option>Farm Land</option><option>Commercial</option></select>
+    <label class="field-label">Asking Price</label><input class="input" placeholder="₹82 Lakh or ₹28,000/mo"/>
+    ${done}`;
+  if (type === 'nri') return `
+    <label class="field-label">Your Name</label><input class="input" placeholder="Full name"/>
+    <label class="field-label">Country of Residence</label><select><option>UAE / Gulf</option><option>United Kingdom</option><option>United States</option><option>Singapore</option><option>Canada</option><option>Australia</option></select>
+    <label class="field-label">Property Location (TN)</label><input class="input" placeholder="e.g. Pudupakkam, Chennai"/>
+    <label class="field-label">Management Plan</label><select><option>Silver — ₹9,000/yr</option><option>Gold — ₹12,000/yr</option><option>Diamond — ₹21,000/2yr</option><option>Platinum — ₹42,000/5yr</option></select>
+    <label class="field-label">WhatsApp Number</label><input class="input" type="tel" placeholder="+44 7xxx xxxxxx"/>
+    ${done}`;
+  if (type === 'plan' && data) return `
+    <div class="${data.hot?'plan-card hot':'plan-card'}" style="margin-bottom:14px;cursor:default">
+      <div class="plan-name">${data.e} ${data.name}</div>
+      <div class="plan-price" style="color:${data.col}">${data.price} <span class="plan-per">${data.per}</span></div>
+    </div>
+    <label class="field-label">Your Name</label><input class="input" placeholder="Full name"/>
+    <label class="field-label">Phone / WhatsApp</label><input class="input" type="tel" placeholder="+91 98765 43210"/>
+    <label class="field-label">Property Address</label><textarea placeholder="Full property address in Tamil Nadu…"></textarea>
+    <label class="field-label">Current Situation</label><select><option>Property is vacant — need tenant</option><option>Have tenant — need management</option><option>NRI / abroad — full management</option><option>Plot monitoring only</option></select>
+    ${done}`;
+  if (type === 'prop' && data) return `
+    <div style="height:120px;background:${data.bg};border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:46px;margin-bottom:14px">${data.e}</div>
+    <div class="serif" style="font-size:20px;font-weight:700;color:var(--g800);margin-bottom:2px">${data.p}</div>
+    <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:3px">${data.t}</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:11px">📍 ${data.loc}, ${data.city}</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
+      <span class="tag tag-green">TNRERA ✓</span>
+      <span class="tag" style="background:var(--g700);color:#fff">${data.eco}</span>
+      ${data.tag==='nri'?'<span class="tag tag-gold">NRI Pick</span>':''}
+      ${data.tag==='managed'?'<span class="tag tag-blue">Managed</span>':''}
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:16px;font-size:12px">
+      <div><span style="color:var(--muted)">Area</span><br><strong>${data.area}</strong></div>
+      ${data.bed>0?`<div><span style="color:var(--muted)">Bedrooms</span><br><strong>${data.bed} BHK</strong></div>`:''}
+      ${data.bath>0?`<div><span style="color:var(--muted)">Bathrooms</span><br><strong>${data.bath}</strong></div>`:''}
+      <div><span style="color:var(--muted)">Eco Rating</span><br><strong>${data.eco}</strong></div>
+    </div>
+    <div style="display:flex;gap:9px">
+      <button class="btn btn-soft" style="flex:1" onclick="showToast('Saved to wishlist ❤️')">Save ❤️</button>
+      <button class="btn btn-green" style="flex:1" onclick="showToast('Connecting you with the seller ✓');closeSheet()">Contact Seller →</button>
+    </div>`;
+  if (type === 'lawyer' && data) return `
+    <div style="display:flex;gap:12px;align-items:center;margin-bottom:14px">
+      <div style="width:44px;height:44px;border-radius:50%;background:${data.col}18;color:${data.col};display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;font-family:'Playfair Display',serif;flex-shrink:0">${data.init}</div>
+      <div>
+        <div style="font-size:14px;font-weight:700;color:var(--ink)">${data.name}</div>
+        <div style="font-size:12px;color:${data.col};font-weight:600">${data.spec}</div>
+        <div style="font-size:11px;color:var(--muted)">📍 ${data.loc} · ⭐ ${data.r}</div>
+      </div>
+    </div>
+    <label class="field-label">Service Required</label>
+    <select>${data.svcs.map(s=>`<option>${s}</option>`).join('')}<option>General Consultation</option></select>
+    <label class="field-label">Preferred Date</label><input class="input" type="date"/>
+    <label class="field-label">Brief Description</label><textarea placeholder="Describe your legal requirement…"></textarea>
+    <div class="info-box">Fee from <strong style="color:var(--g800)">${data.fee}</strong> · 18% GST · Management plan clients get 20% off</div>
+    <button class="btn btn-green btn-full" onclick="showToast('Booking confirmed ✓ — ${data.name.split('.')[1]?.trim()||data.name} will contact you within 24 hrs');closeSheet()">Book Consultation →</button>`;
+  if (type === 'legal') return `
+    <label class="field-label">Service Type</label>
+    <select><option>Title Search & Verification</option><option>Encumbrance Certificate</option><option>Patta Transfer</option><option>Tenant / Landlord Dispute</option><option>NRI POA / FEMA Compliance</option><option>TNRERA Complaint</option></select>
+    <label class="field-label">City</label>
+    <select><option>Chennai</option><option>Coimbatore</option><option>Madurai</option></select>
+    <label class="field-label">Phone / WhatsApp</label><input class="input" type="tel" placeholder="+91 98765 43210"/>
+    <label class="field-label">Description</label><textarea placeholder="Briefly describe your requirement…"></textarea>
+    ${done}`;
+  if (type === 'investor') return `
+    <div style="background:var(--g900);border-radius:11px;padding:13px;margin-bottom:14px">
+      ${[["₹3.5 Cr","Seed Funding Ask"],["Month 20","Break-even"],["₹55–70 Cr","Series A Target"],["22 months","Runway"]].map(([v,l])=>`<div class="trow" style="color:rgba(255,255,255,.48)"><span>${l}</span><span style="font-weight:700;color:#fff">${v}</span></div>`).join('')}
+    </div>
+    <label class="field-label">Your Name / Fund</label><input class="input" placeholder="Investor or fund name"/>
+    <label class="field-label">Email</label><input class="input" type="email" placeholder="partner@fund.com"/>
+    <label class="field-label">Investment Interest</label>
+    <select><option>Seed Round (₹3.5 Cr)</option><option>Strategic Partnership</option><option>Series A (Month 24)</option><option>Advisory / Board</option></select>
+    <label class="field-label">Message</label><textarea placeholder="Tell us about your interest in GreenSpaceZ…"></textarea>
+    <button class="btn btn-gold btn-full" style="margin-top:4px" onclick="showToast('Investor enquiry sent to Karthik Swaminathan ✓');closeSheet()">Send Enquiry →</button>`;
+  return '';
+}
+
+// ── RENDER LISTINGS ───────────────────────────────────────────────────────
+function renderListings(container, listings) {
+  if (listings.length === 0) {
+    container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--muted)"><div style="font-size:32px;margin-bottom:8px">🌿</div>No listings match your search.</div>`;
+    return;
+  }
+  container.innerHTML = listings.map(l => `
+    <div class="listing-card" onclick="openSheet('prop', LISTINGS[${l.id-1}])">
+      <div class="listing-thumb" style="background:${l.bg}">
+        ${l.e}
+        <div class="listing-tags">
+          <span class="tag tag-green">TNRERA✓</span>
+          ${l.tag==='nri'?'<span class="tag tag-gold">NRI</span>':''}
+          ${l.tag==='managed'?'<span class="tag tag-blue">Mgd</span>':''}
+        </div>
+      </div>
+      <div class="listing-info">
+        <div class="listing-price">${l.p}</div>
+        <div class="listing-name">${l.t}</div>
+        <div class="listing-loc">📍 ${l.loc}</div>
+        ${l.bed>0?`<div class="listing-spec">🛏 ${l.bed}BHK · 📐 ${l.area}</div>`:`<div class="listing-spec">📐 ${l.area}</div>`}
+      </div>
+      <div class="listing-actions">
+        <button class="btn btn-soft btn-sm" style="flex:1;font-size:11px" onclick="event.stopPropagation();showToast('Saved ❤️')">Save</button>
+        <button class="btn btn-green btn-sm" style="flex:1;font-size:11px" onclick="event.stopPropagation();openSheet('prop', LISTINGS[${l.id-1}])">View</button>
+      </div>
+    </div>`).join('');
+}
+
+function filterListings() {
+  currentSearchQ = document.getElementById('search-input').value.toLowerCase();
+  applyFilter();
+}
+
+function setChip(el, tag) {
+  document.querySelectorAll('#chips .chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  currentChip = tag;
+  applyFilter();
+}
+
+function applyFilter() {
+  const fl = LISTINGS.filter(l =>
+    (!currentSearchQ || l.t.toLowerCase().includes(currentSearchQ) || l.loc.toLowerCase().includes(currentSearchQ)) &&
+    (currentChip === 'all' || l.tag === currentChip)
+  );
+  renderListings(document.getElementById('listing-grid'), fl);
+}
+
+// ── RENDER FEATURED (HOME) ────────────────────────────────────────────────
+function renderFeatured() {
+  const c = document.getElementById('featured-listings');
+  c.innerHTML = LISTINGS.slice(0,6).map(l => `
+    <div class="scroll-item" style="width:196px;background:#fff;border-radius:13px;overflow:hidden;border:1px solid var(--border);cursor:pointer" onclick="openSheet('prop', LISTINGS[${l.id-1}])">
+      <div style="height:108px;background:${l.bg};display:flex;align-items:center;justify-content:center;font-size:32px;position:relative">
+        ${l.e}
+        ${l.tag==='nri'?'<div style="position:absolute;top:6px;left:6px"><span class="tag tag-gold">NRI Pick</span></div>':''}
+        ${l.tag==='managed'?'<div style="position:absolute;top:6px;left:6px"><span class="tag tag-blue">Managed</span></div>':''}
+      </div>
+      <div style="padding:11px">
+        <div style="font-family:\'Playfair Display\',serif;font-size:15px;font-weight:700;color:var(--g800)">${l.p}</div>
+        <div style="font-size:11px;font-weight:600;color:var(--ink);margin-bottom:2px;line-height:1.3">${l.t}</div>
+        <div style="font-size:10px;color:var(--muted)">📍 ${l.loc}</div>
+      </div>
+    </div>`).join('');
+}
+
+// ── RENDER PLANS ──────────────────────────────────────────────────────────
+function renderPlans() {
+  const c = document.getElementById('plans-container');
+  c.innerHTML = PLANS.map(p => `
+    <div class="plan-card ${p.hot?'hot':''}" onclick="openSheet('plan', PLANS[${PLANS.indexOf(p)}])">
+      ${p.hot?'<div class="plan-badge">MOST POPULAR</div>':''}
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:9px">
+        <div>
+          <div class="plan-name">${p.e} ${p.name}</div>
+          <div class="plan-price" style="color:${p.col}">${p.price} <span class="plan-per">${p.per}</span></div>
+        </div>
+        <span class="plan-enquire">Enquire →</span>
+      </div>
+      ${p.feats.map(f=>`<div class="plan-feat"><span class="plan-feat-check">✓</span>${f}</div>`).join('')}
+    </div>`).join('');
+}
+
+// ── RENDER SERVICES ───────────────────────────────────────────────────────
+function renderServices() {
+  const c = document.getElementById('mgmt-tab-1');
+  c.innerHTML = SERVICES.map(([ico,name,desc]) => `
+    <div class="service-card">
+      <span class="service-ico">${ico}</span>
+      <div><div class="service-name">${name}</div><div class="service-desc">${desc}</div></div>
+    </div>`).join('');
+}
+
+// ── RENDER OWNER APP ──────────────────────────────────────────────────────
+function renderOwnerApp() {
+  const statusClass = s => ({rented:'pill-rented',vacant:'pill-vacant',managed:'pill-managed'}[s]);
+  const statusLabel = s => ({rented:'Rented',vacant:'Vacant',managed:'In Mgmt'}[s]);
+  const c = document.getElementById('mgmt-tab-2');
+  c.innerHTML = `
+    <p style="font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.6">Live preview of the GreenSpaceZ owner dashboard — real-time rent, inspections, maintenance.</p>
+    <div class="app-shell">
+      <div class="app-titlebar">
+        <div class="app-dot" style="background:#ff5f57"></div>
+        <div class="app-dot" style="background:#febc2e"></div>
+        <div class="app-dot" style="background:#28c840"></div>
+        <span class="app-title">GreenSpaceZ Owner App — Karthik S.</span>
+      </div>
+      <div class="app-tabs">
+        <button class="app-tab active" onclick="switchAppTab(this,0)">Overview</button>
+        <button class="app-tab" onclick="switchAppTab(this,1)">Properties</button>
+        <button class="app-tab" onclick="switchAppTab(this,2)">Rent Ledger</button>
+        <button class="app-tab" onclick="switchAppTab(this,3)">Maintenance</button>
+        <button class="app-tab" onclick="switchAppTab(this,4)">Legal</button>
+      </div>
+      <div class="app-panel active" id="ap-0">
+        <div class="stat-grid">
+          <div class="stat-card"><div class="stat-val">4</div><div class="stat-lbl">Properties</div><div class="stat-d">↑ 2 this quarter</div></div>
+          <div class="stat-card"><div class="stat-val">₹1.08L</div><div class="stat-lbl">Monthly Rent</div><div class="stat-d">↑ ₹22k</div></div>
+          <div class="stat-card"><div class="stat-val">3</div><div class="stat-lbl">Maintenance</div><div class="stat-d">↓ 2 resolved</div></div>
+          <div class="stat-card"><div class="stat-val">₹0</div><div class="stat-lbl">Tax Arrears</div><div class="stat-d">All current</div></div>
+        </div>
+        ${DASH.map(p=>`
+          <div class="prop-row">
+            <div><div class="prop-name">${p.name}</div><div class="prop-sub">${p.loc} · ${p.plan} Plan</div><div class="prop-rent">${p.rent}</div></div>
+            <span class="pill ${statusClass(p.status)}">${statusLabel(p.status)}</span>
+          </div>`).join('')}
+      </div>
+      <div class="app-panel" id="ap-1">
+        ${DASH.map(p=>`
+          <div class="prop-row">
+            <div><div class="prop-name">${p.name}</div><div class="prop-sub">${p.loc} · ${p.plan} Plan · Last insp: ${p.ins}</div></div>
+            <span class="pill ${statusClass(p.status)}">${statusLabel(p.status)}</span>
+          </div>`).join('')}
+      </div>
+      <div class="app-panel" id="ap-2">
+        <div style="display:flex;align-items:flex-end;gap:7px;height:80px;background:var(--g50);border-radius:9px;padding:10px;margin-bottom:12px">
+          ${[["Aug",64],["Sep",78],["Oct",78],["Nov",86],["Dec",108],["Jan",108]].map(([m,v])=>`
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px">
+              <div style="width:100%;background:${m==='Jan'?'var(--g600)':'var(--g200)'};border-radius:2px 2px 0 0;height:${(v/108)*55}px"></div>
+              <span style="font-size:8px;color:var(--muted)">${m}</span>
+            </div>`).join('')}
+        </div>
+        ${["ECR Villa — ₹58,000 · Jan · Paid ✓","Pudupakkam — ₹28,000 · Jan · Paid ✓","Saravanampatti — ₹22,000 · Jan · Pending ⏳"].map(r=>`
+          <div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);font-size:11px">
+            <span style="color:var(--muted)">${r.split('·')[0]}</span>
+            <span style="font-weight:600;color:${r.includes('Paid')?'var(--g700)':'#c09020'}">${r.split('·').slice(1).join('·')}</span>
+          </div>`).join('')}
+      </div>
+      <div class="app-panel" id="ap-3">
+        ${[{n:"Bathroom tap leaking",p:"Pudupakkam",st:"In Progress",pc:"pill-inprogress"},{n:"Electrical switchboard",p:"Saravanampatti 2BHK",st:"Scheduled",pc:"pill-scheduled"},{n:"Garden landscaping",p:"ECR Villa",st:"Completed",pc:"pill-done"}].map(m=>`
+          <div class="maint-row">
+            <div><div class="maint-name">${m.n}</div><div class="maint-sub">${m.p}</div></div>
+            <span class="pill ${m.pc}">${m.st}</span>
+          </div>`).join('')}
+        <button class="btn btn-soft btn-sm btn-full" style="margin-top:6px" onclick="showToast('Maintenance request submitted to EPMS ✓')">+ Raise New Request</button>
+      </div>
+      <div class="app-panel" id="ap-4">
+        ${[["TNRERA Status","All compliant ✓",true],["Patta / Chitta","Clear title — 12 Jan 2025",true],["Property Tax","No arrears — Apr 2025",true],["EC Certificate","Valid — no encumbrances",true],["Rental Agreements","3 active · 1 renewal Feb",false]].map(([l,v,ok])=>`
+          <div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);font-size:12px">
+            <span style="color:var(--muted)">${l}</span>
+            <span style="font-weight:600;color:${ok?'var(--g700)':'#c09020'}">${v}</span>
+          </div>`).join('')}
+        <button class="btn btn-green btn-sm btn-full" style="margin-top:10px" onclick="openSheet('legal')">Book Legal Consultation →</button>
+      </div>
+      <div class="app-footer">
+        <button class="btn btn-ghost btn-sm btn-full" onclick="showToast('Full app available at greenspacez.in/dashboard')">View Full Dashboard →</button>
+      </div>
+    </div>`;
+}
+
+// ── RENDER COMPETITORS ────────────────────────────────────────────────────
+function renderCompetitors() {
+  const c = document.getElementById('mgmt-tab-3');
+  c.innerHTML = [
+    ["Existing Local Managers","Ground presence, NRI experience","Manual ops, no platform, no gov integration","Full digital platform + owner app + government integrations"],
+    ["NoBroker","Large user base, zero brokerage","No eco focus, no TN-specific integrations","Eco-niche + TNRERA/IGRS/DigiLocker integration moat"],
+    ["Local Caretakers","Physical presence, low cost","Unvetted, no digital trail, no accountability","Accountable, tech-enabled with SLA and owner app"],
+  ].map(([c,s,w,a]) => `
+    <div class="comp-card">
+      <div class="comp-name">${c}</div>
+      <div class="comp-row"><span style="color:#2d9d3a;font-weight:600">✓ </span>${s}</div>
+      <div class="comp-row"><span style="color:#c0392b;font-weight:600">✗ </span>${w}</div>
+      <div class="comp-adv"><strong>GreenSpaceZ: </strong>${a}</div>
+    </div>`).join('');
+}
+
+// ── MGMT TAB SWITCH ───────────────────────────────────────────────────────
+const mgmtTabBtns = [];
+function switchMgmtTab(btn, idx) {
+  document.querySelectorAll('#page-mgmt .dark-section button').forEach((b,i) => {
+    b.style.color = i===idx ? 'var(--g400)' : 'rgba(255,255,255,.38)';
+    b.style.borderBottomColor = i===idx ? 'var(--g400)' : 'transparent';
+  });
+  [0,1,2,3].forEach(i => {
+    document.getElementById(`mgmt-tab-${i}`).style.display = i===idx ? 'block' : 'none';
+  });
+  if (idx===1 && !document.getElementById('mgmt-tab-1').innerHTML) renderServices();
+  if (idx===2 && !document.getElementById('mgmt-tab-2').innerHTML) renderOwnerApp();
+  if (idx===3 && !document.getElementById('mgmt-tab-3').innerHTML) renderCompetitors();
+}
+
+// ── APP TAB SWITCH ────────────────────────────────────────────────────────
+function switchAppTab(btn, idx) {
+  document.querySelectorAll('.app-tab').forEach((b,i) => {
+    b.classList.toggle('active', i===idx);
+  });
+  document.querySelectorAll('.app-panel').forEach((p,i) => {
+    p.classList.toggle('active', i===idx);
+  });
+}
+
+// ── GOV TABS ──────────────────────────────────────────────────────────────
+function setGovCard(el, idx) {
+  document.querySelectorAll('.gov-card').forEach((c,i) => c.classList.toggle('active', i===idx));
+  setGovPanelActive(idx);
+}
+function setGovTab(btn, idx) {
+  document.querySelectorAll('.gov-tab').forEach((b,i) => b.classList.toggle('active', i===idx));
+  setGovPanelActive(idx);
+  document.querySelectorAll('.gov-card').forEach((c,i) => c.classList.toggle('active', i===idx));
+}
+function setGovPanelActive(idx) {
+  document.querySelectorAll('.gov-panel').forEach((p,i) => p.classList.toggle('active', i===idx));
+}
+function fetchPatta() {
+  const r = document.getElementById('patta-result');
+  r.style.display = 'block';
+  showToast('Patta fetched via TSLR portal ✓');
+}
+function verifyTnrera() {
+  document.getElementById('tnrera-result').style.display = 'block';
+  showToast('TNRERA verification complete ✓');
+}
+function fetchTax() {
+  document.getElementById('tax-result').style.display = 'block';
+  showToast('Property tax records fetched from GCC ✓');
+}
+
+// ── STAMP DUTY CALC ───────────────────────────────────────────────────────
+function calcStamp() {
+  const val = parseFloat(document.getElementById('sd-val').value) || 0;
+  const gender = document.getElementById('sd-gender').value;
+  const type = document.getElementById('sd-type').value;
+  const baseRate = type === 'agri' ? 0.04 : 0.07;
+  const rate = baseRate * (gender === 'female' ? 0.8 : 1);
+  const stamp = val * rate;
+  const reg = val * 0.01;
+  const fmt = n => '₹' + Math.round(n).toLocaleString('en-IN');
+  document.getElementById('sd-pv').textContent = fmt(val);
+  document.getElementById('sd-stamp').textContent = fmt(stamp) + ` (${(rate*100).toFixed(0)}%${gender==='female'?' — female concession':''})`;
+  document.getElementById('sd-reg').textContent = fmt(reg);
+  document.getElementById('sd-total').textContent = fmt(stamp + reg);
+}
+
+// ── MORE PAGE ─────────────────────────────────────────────────────────────
+let moreRendered = false;
+function renderMorePage() {
+  if (moreRendered) return;
+  moreRendered = true;
+  renderLegal();
+  renderFinancials();
+  renderRoadmap();
+  renderContact();
+}
+
+function switchMoreTab(btn, idx) {
+  document.querySelectorAll('#page-more .dark-section button').forEach((b,i) => {
+    b.style.color = i===idx ? 'var(--g400)' : 'rgba(255,255,255,.38)';
+    b.style.borderBottomColor = i===idx ? 'var(--g400)' : 'transparent';
+  });
+  [0,1,2,3].forEach(i => {
+    document.getElementById(`more-tab-${i}`).style.display = i===idx ? 'block' : 'none';
+  });
+}
+
+function renderLegal() {
+  const c = document.getElementById('more-tab-0');
+  c.innerHTML = `
+    <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.6">48 verified Tamil Nadu real estate lawyers. Transparent pricing, in-app booking, case tracking.</p>
+    ${LAWYERS.map(l=>`
+      <div class="lawyer-card" onclick="openSheet('lawyer', LAWYERS[${LAWYERS.indexOf(l)}])">
+        <div class="lawyer-avatar" style="background:${l.col}18;color:${l.col}">${l.init}</div>
+        <div style="flex:1;min-width:0">
+          <div class="lawyer-name">${l.name}</div>
+          <div class="lawyer-spec" style="color:${l.col}">${l.spec}</div>
+          <div class="lawyer-loc">📍 ${l.loc}</div>
+          <div class="lawyer-tags">${l.svcs.map(s=>`<span class="tag tag-soft">${s}</span>`).join('')}</div>
+        </div>
+        <div class="lawyer-right">
+          <div class="lawyer-fee">${l.fee}</div>
+          <div class="lawyer-rating">⭐ ${l.r}</div>
+        </div>
+      </div>`).join('')}
+    <button class="btn btn-green btn-full" style="margin-top:4px" onclick="openSheet('legal')">Book Legal Consultation →</button>`;
+}
+
+function renderFinancials() {
+  const maxT = Math.max(...REV.map(d=>d.t));
+  const c = document.getElementById('more-tab-1');
+  c.innerHTML = `
+    <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.6">₹3.5 Cr Seed Round open. Break-even Month 20. Series A target: ₹55–70 Cr.</p>
+    <div class="card" style="padding:14px;margin-bottom:14px">
+      <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:12px">5-Year Revenue Forecast</div>
+      <div class="bar-chart" style="height:120px">
+        ${REV.map(d=>`
+          <div class="bar-col">
+            <span class="bar-val">₹${d.t}Cr</span>
+            <div class="bar-pair">
+              <div class="bar-a" style="height:${(d.t/maxT)*86}px"></div>
+              <div class="bar-b" style="height:${(d.m/maxT)*86}px"></div>
+            </div>
+            <span class="bar-label">${d.y}</span>
+          </div>`).join('')}
+      </div>
+      <div class="bar-legend">
+        <div class="bar-leg-item"><div class="bar-leg-dot" style="background:var(--g700)"></div>Total Rev</div>
+        <div class="bar-leg-item"><div class="bar-leg-dot" style="background:var(--g400)"></div>Mgmt Rev</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px">
+      ${[{e:"📈",v:"18:1",l:"LTV:CAC Ratio"},{e:"🗓️",v:"Month 20",l:"Break-even"},{e:"💼",v:"₹3,200",l:"Customer CAC"},{e:"🚀",v:"₹55–70 Cr",l:"Series A Target"},{e:"🏠",v:"200 props",l:"Managed Yr 1"},{e:"⚖️",v:"₹57,576",l:"LTV per Pro User"}].map(m=>`
+        <div class="card" style="padding:12px">
+          <div style="font-size:18px;margin-bottom:5px">${m.e}</div>
+          <div class="serif" style="font-size:16px;font-weight:700;color:var(--g800)">${m.v}</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:2px">${m.l}</div>
+        </div>`).join('')}
+    </div>
+    <div class="card" style="padding:14px;margin-bottom:14px">
+      <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:10px">Funding Allocation — ₹3.5 Cr Seed</div>
+      ${[["Product & Engineering",30,"var(--g700)"],["Sales & Marketing",23,"var(--g600)"],["Operations & Field Setup",26,"var(--g400)"],["Reserve / Working Capital",21,"var(--g200)"]].map(([lbl,pct,col])=>`
+        <div class="fund-bar">
+          <div class="fund-bar-row"><span style="color:var(--muted)">${lbl}</span><span style="font-weight:700;color:var(--ink)">${pct}%</span></div>
+          <div class="fund-bar-track"><div class="fund-bar-fill" style="width:${pct}%;background:${col}"></div></div>
+        </div>`).join('')}
+    </div>
+    <button class="btn btn-gold btn-full" onclick="openSheet('investor')">Investor Enquiry →</button>`;
+}
+
+function renderRoadmap() {
+  const c = document.getElementById('more-tab-2');
+  c.innerHTML = `
+    <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.6">12-month milestones from Chennai Beta launch to Series A close.</p>
+    <div class="roadmap">
+      <div class="roadmap-line"></div>
+      ${MILESTONES.map(m=>`
+        <div class="milestone">
+          <div class="milestone-dot ${m.done?'done':'pending'}"></div>
+          <div class="milestone-card">
+            <div class="milestone-month">${m.m}</div>
+            <div class="milestone-label">${m.l}</div>
+            <div class="milestone-desc">${m.d}</div>
+          </div>
+        </div>`).join('')}
+    </div>`;
+}
+
+function renderContact() {
+  const c = document.getElementById('more-tab-3');
+  c.innerHTML = `
+    <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.6">GreenSpaceZ welcomes investors, property owners, and eco-developer partnerships.</p>
+    <div class="contact-card">
+      <div class="serif" style="font-size:15px;font-weight:700;color:#fff;margin-bottom:12px">Founder & CEO</div>
+      ${[["👤","Karthik Swaminathan"],["✉️","karthik@greenspacez.in"],["🌐","www.greenspacez.in"],["📍","Pudupakkam, OMR, Chennai 603103"],["⚙️","Technology: HighOnSwift"],["🚀","Execution Partner: EPMS"]].map(([ico,val])=>`
+        <div class="contact-row"><span class="contact-ico">${ico}</span>${val}</div>`).join('')}
+    </div>
+    <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:16px">
+      <button class="btn btn-gold btn-full" onclick="openSheet('investor')">Investor Enquiry</button>
+      <button class="btn btn-green btn-full" onclick="openSheet('nri')">NRI Property Management</button>
+      <button class="btn btn-outline btn-full" onclick="openSheet('list')">List My Property</button>
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      ${["TNRERA Compliant","ISO 9001 Target","DPDP Act 2023","GST Registered"].map(t=>`<span style="font-size:9px;font-weight:600;padding:3px 9px;border-radius:20px;background:#fff;border:1px solid var(--border);color:var(--muted)">${t}</span>`).join('')}
+    </div>`;
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+renderFeatured();
+renderListings(document.getElementById('listing-grid'), LISTINGS);
+renderPlans();
+calcStamp();
+</script>
+</body>
+</html>
