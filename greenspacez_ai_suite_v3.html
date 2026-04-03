@@ -1,0 +1,1742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GreenSpaceZ · AI Product Suite 2025</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --forest:#1a3d2b;--forest-deep:#0f2419;--leaf:#2d6a4f;--leaf-light:#40916c;
+  --gold:#c9a84c;--gold-light:#e9c46a;--gold-dim:rgba(201,168,76,0.15);
+  --cream:#f5f0e8;--cream-dim:rgba(245,240,232,0.65);--cream-faint:rgba(245,240,232,0.12);
+  --ink:#0f1f16;--muted:#6b7f72;--white:#fff;
+  --card:rgba(255,255,255,0.055);--card-hover:rgba(255,255,255,0.09);
+  --border:rgba(201,168,76,0.18);--border-dim:rgba(255,255,255,0.08);
+  --gs-color:#40916c;--doc-color:#7c6fd4;--nri-color:#c9a84c;
+  --iot-color:#4a9fc4;--esg-color:#4aab7a;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--forest-deep);color:var(--cream);min-height:100vh;overflow-x:hidden;}
+
+/* ── NOISE TEXTURE ── */
+body::before{content:'';position:fixed;inset:0;opacity:0.025;pointer-events:none;z-index:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:16px 48px;
+  background:rgba(15,36,25,0.88);backdrop-filter:blur(20px);border-bottom:0.5px solid var(--border);}
+.nav-logo{font-family:'DM Serif Display',serif;font-size:19px;color:var(--gold);letter-spacing:0.02em;}
+.nav-logo span{color:var(--cream);}
+.nav-pills{display:flex;gap:6px;}
+.nav-pill{font-size:11px;font-weight:500;padding:5px 12px;border-radius:20px;border:0.5px solid var(--border-dim);
+  color:var(--muted);cursor:pointer;transition:all 0.2s;background:transparent;text-decoration:none;}
+.nav-pill:hover,.nav-pill.active{border-color:var(--gold);color:var(--gold);background:var(--gold-dim);}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:120px 48px 80px;position:relative;overflow:hidden;}
+.hero-glow{position:absolute;width:600px;height:600px;border-radius:50%;top:-100px;right:-100px;
+  background:radial-gradient(circle,rgba(201,168,76,0.07) 0%,transparent 70%);pointer-events:none;}
+.hero-glow2{position:absolute;width:400px;height:400px;border-radius:50%;bottom:-50px;left:0;
+  background:radial-gradient(circle,rgba(64,145,108,0.1) 0%,transparent 70%);pointer-events:none;}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);
+  margin-bottom:20px;display:flex;align-items:center;gap:10px;
+  animation:fadeUp 0.6s ease both;}
+.eyebrow::before{content:'';width:28px;height:1px;background:var(--gold);display:block;}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(44px,6.5vw,82px);line-height:1.04;
+  color:var(--cream);max-width:860px;margin-bottom:22px;
+  animation:fadeUp 0.6s 0.1s ease both;}
+.hero h1 em{font-style:italic;color:var(--gold-light);}
+.hero-sub{font-size:17px;font-weight:300;line-height:1.75;color:var(--cream-dim);max-width:560px;margin-bottom:48px;
+  animation:fadeUp 0.6s 0.2s ease both;}
+.hero-stats{display:flex;gap:40px;flex-wrap:wrap;animation:fadeUp 0.6s 0.3s ease both;}
+.stat{border-left:1.5px solid var(--gold);padding-left:16px;}
+.stat-num{font-family:'DM Serif Display',serif;font-size:32px;color:var(--gold);line-height:1;}
+.stat-label{font-size:11px;color:var(--muted);letter-spacing:0.05em;text-transform:uppercase;margin-top:3px;}
+.hero-scroll{position:absolute;bottom:40px;left:48px;font-size:11px;color:var(--muted);letter-spacing:0.08em;
+  text-transform:uppercase;display:flex;align-items:center;gap:8px;animation:fadeUp 0.6s 0.5s ease both;}
+.hero-scroll::after{content:'';width:40px;height:1px;background:var(--muted);}
+
+/* ── DOMAIN NAV ── */
+.domain-nav{display:flex;gap:0;overflow-x:auto;border-bottom:0.5px solid var(--border);background:rgba(15,36,25,0.6);
+  backdrop-filter:blur(12px);position:sticky;top:57px;z-index:100;padding:0 48px;}
+.domain-tab{font-size:12px;font-weight:500;letter-spacing:0.04em;padding:16px 20px;cursor:pointer;
+  color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap;transition:all 0.2s;
+  display:flex;align-items:center;gap:7px;}
+.domain-tab:hover{color:var(--cream);}
+.domain-tab.active{color:var(--cream);border-bottom-color:var(--gold);}
+.domain-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+
+/* ── SECTIONS ── */
+.domain-section{padding:80px 48px;border-bottom:0.5px solid var(--border-dim);}
+.section-head{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:start;margin-bottom:48px;}
+.section-eyebrow{font-size:10.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px;}
+.section-title{font-family:'DM Serif Display',serif;font-size:clamp(28px,3.5vw,46px);line-height:1.12;color:var(--cream);}
+.section-title em{font-style:italic;}
+.section-desc{font-size:14px;font-weight:300;line-height:1.7;color:var(--cream-dim);max-width:480px;margin-top:10px;}
+.section-badge{font-size:11px;font-weight:600;padding:6px 14px;border-radius:20px;white-space:nowrap;
+  letter-spacing:0.05em;align-self:flex-start;margin-top:8px;}
+
+/* ── PRODUCT GRID ── */
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
+
+/* ── PRODUCT CARD ── */
+.product-card{background:var(--card);border:0.5px solid var(--border);border-radius:12px;
+  cursor:pointer;transition:all 0.25s;overflow:hidden;position:relative;}
+.product-card:hover{background:var(--card-hover);border-color:rgba(201,168,76,0.35);transform:translateY(-2px);}
+.product-card.open{border-color:rgba(201,168,76,0.5);}
+.card-header{padding:20px 20px 16px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
+.card-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;margin-bottom:10px;}
+.card-name{font-size:14px;font-weight:500;color:var(--cream);margin-bottom:5px;line-height:1.3;}
+.card-desc{font-size:12.5px;font-weight:300;line-height:1.6;color:var(--cream-dim);}
+.card-toggle{width:24px;height:24px;border-radius:50%;border:0.5px solid var(--border);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted);
+  font-size:14px;transition:all 0.2s;margin-top:2px;}
+.product-card.open .card-toggle{background:var(--gold-dim);border-color:var(--gold);color:var(--gold);transform:rotate(45deg);}
+.card-tags{padding:0 20px 14px;display:flex;flex-wrap:wrap;gap:5px;}
+.tag{font-size:10px;font-weight:500;padding:3px 9px;border-radius:12px;letter-spacing:0.04em;}
+.tag-new{background:rgba(252,235,235,0.12);color:#f5a0a0;border:0.5px solid rgba(245,160,160,0.25);}
+.tag-core{background:rgba(124,111,212,0.12);color:#b5adf0;border:0.5px solid rgba(124,111,212,0.25);}
+.tag-nri{background:rgba(201,168,76,0.12);color:var(--gold-light);border:0.5px solid rgba(201,168,76,0.25);}
+.tag-iot{background:rgba(74,159,196,0.12);color:#8ed0ec;border:0.5px solid rgba(74,159,196,0.25);}
+.tag-esg{background:rgba(74,171,122,0.12);color:#8ed8ae;border:0.5px solid rgba(74,171,122,0.25);}
+.tag-gs{background:rgba(64,145,108,0.12);color:#7ecba1;border:0.5px solid rgba(64,145,108,0.25);}
+.tag-win{background:rgba(201,168,76,0.2);color:var(--gold);border:0.5px solid rgba(201,168,76,0.4);}
+
+/* ── EXPAND PANEL ── */
+.card-expand{max-height:0;overflow:hidden;transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1);}
+.card-expand.open{max-height:800px;}
+.expand-inner{padding:0 20px 20px;border-top:0.5px solid var(--border-dim);}
+.expand-section{margin-top:16px;}
+.expand-label{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.expand-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.expand-box{background:rgba(255,255,255,0.04);border-radius:7px;padding:12px 13px;}
+.expand-box-title{font-size:11.5px;font-weight:500;color:var(--cream);margin-bottom:4px;}
+.expand-box-body{font-size:11px;font-weight:300;line-height:1.6;color:var(--cream-dim);}
+.expand-metrics{display:flex;gap:10px;margin-top:12px;}
+.expand-metric{flex:1;background:var(--gold-dim);border:0.5px solid rgba(201,168,76,0.2);border-radius:7px;padding:10px 12px;text-align:center;}
+.expand-metric-val{font-family:'DM Serif Display',serif;font-size:20px;color:var(--gold);}
+.expand-metric-label{font-size:10px;color:var(--muted);margin-top:2px;}
+.tech-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;}
+.tech-chip{font-size:10.5px;background:rgba(255,255,255,0.05);border:0.5px solid var(--border-dim);
+  border-radius:4px;padding:3px 9px;color:var(--cream-dim);}
+.expand-timeline{display:flex;gap:0;margin-top:10px;}
+.tl-step{flex:1;text-align:center;font-size:10px;color:var(--muted);padding:7px 4px;
+  border-top:2px solid var(--border-dim);position:relative;}
+.tl-step.done{color:var(--gold-light);border-top-color:var(--gold);}
+.tl-step-dot{width:8px;height:8px;border-radius:50%;background:var(--border-dim);margin:0 auto 5px;}
+.tl-step.done .tl-step-dot{background:var(--gold);}
+
+/* ── PRIORITY STRIP ── */
+.priority-strip{display:flex;gap:12px;margin-top:60px;padding-top:48px;border-top:0.5px solid var(--border-dim);flex-wrap:wrap;}
+.priority-card{flex:1;min-width:220px;background:var(--card);border:0.5px solid var(--border);border-radius:10px;padding:18px 20px;}
+.priority-phase{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;}
+.priority-title{font-size:13px;font-weight:500;color:var(--cream);margin-bottom:6px;}
+.priority-items{font-size:12px;font-weight:300;color:var(--cream-dim);line-height:1.7;}
+
+/* ── NRI REMOTE VIEW ── */
+.nri-wrap{font-family:'DM Sans',sans-serif;}
+/* phone mockup */
+.nri-layout{display:grid;grid-template-columns:320px 1fr;gap:32px;align-items:start;}
+.nri-phone-wrap{position:sticky;top:130px;}
+.nri-phone{width:300px;background:#0b1a12;border-radius:36px;border:2px solid rgba(201,168,76,0.35);
+  box-shadow:0 0 60px rgba(0,0,0,0.6),inset 0 0 0 1px rgba(255,255,255,0.04);
+  overflow:hidden;position:relative;}
+.nri-phone-notch{height:28px;background:#070f0a;display:flex;align-items:center;justify-content:center;border-bottom:0.5px solid rgba(255,255,255,0.05);}
+.nri-phone-notch-pill{width:80px;height:6px;background:rgba(255,255,255,0.08);border-radius:3px;}
+.nri-phone-screen{height:600px;overflow:hidden;position:relative;}
+/* screens */
+.nri-screen{position:absolute;inset:0;background:#0b1a12;overflow-y:auto;transition:opacity 0.35s,transform 0.35s;}
+.nri-screen.hidden{opacity:0;pointer-events:none;transform:translateX(30px);}
+/* App header */
+.nri-app-hd{background:rgba(15,36,25,0.95);padding:14px 16px 10px;border-bottom:0.5px solid rgba(201,168,76,0.12);position:sticky;top:0;z-index:10;}
+.nri-app-hd-row{display:flex;align-items:center;justify-content:space-between;}
+.nri-app-logo{font-family:'DM Serif Display',serif;font-size:13px;color:var(--gold);}
+.nri-app-flag{font-size:14px;}
+.nri-app-time{font-size:10px;color:var(--muted);margin-top:2px;}
+/* Summary strip */
+.nri-summary{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;padding:12px 14px;}
+.nri-sum-tile{background:rgba(255,255,255,0.04);border:0.5px solid rgba(201,168,76,0.12);border-radius:9px;padding:10px 12px;}
+.nri-sum-label{font-size:9px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+.nri-sum-val{font-family:'DM Serif Display',serif;font-size:18px;color:var(--cream);line-height:1;}
+.nri-sum-sub{font-size:9px;color:var(--muted);margin-top:2px;}
+.nri-sum-tile.alert-tile{border-color:rgba(248,113,113,0.25);background:rgba(248,113,113,0.06);}
+.nri-sum-val.ok{color:#4ade80;}
+.nri-sum-val.warn{color:#fbbf24;}
+/* Property cards */
+.nri-prop-list{padding:0 14px 14px;}
+.nri-prop-hd{font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin:10px 0 8px;}
+.nri-prop-card{background:rgba(255,255,255,0.04);border:0.5px solid rgba(201,168,76,0.15);border-radius:10px;padding:12px 13px;margin-bottom:8px;cursor:pointer;transition:border-color 0.15s;}
+.nri-prop-card:hover,.nri-prop-card.nri-active-prop{border-color:rgba(201,168,76,0.4);background:rgba(201,168,76,0.06);}
+.nri-prop-card-hd{display:flex;justify-content:space-between;align-items:flex-start;}
+.nri-prop-name{font-size:12px;font-weight:500;color:var(--cream);}
+.nri-prop-addr{font-size:10px;color:var(--muted);margin-top:2px;line-height:1.4;}
+.nri-prop-score-badge{font-size:9px;font-weight:600;padding:2px 7px;border-radius:8px;}
+.nri-prop-stats{display:flex;gap:10px;margin-top:8px;padding-top:8px;border-top:0.5px solid rgba(255,255,255,0.05);}
+.nri-pstat{font-size:9.5px;}
+.nri-pstat-label{color:var(--muted);}
+.nri-pstat-val{color:var(--cream);font-weight:500;}
+.nri-status-dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:3px;}
+/* Alert items in phone */
+.nri-alert-list{padding:0 14px;}
+.nri-palert{display:flex;align-items:flex-start;gap:8px;padding:9px 0;border-bottom:0.5px solid rgba(255,255,255,0.05);}
+.nri-palert:last-child{border-bottom:none;}
+.nri-palert-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:3px;}
+.nri-palert-body{flex:1;}
+.nri-palert-title{font-size:11px;font-weight:500;color:var(--cream);}
+.nri-palert-sub{font-size:10px;color:var(--muted);margin-top:1px;line-height:1.4;}
+.nri-palert-time{font-size:9px;color:var(--muted);flex-shrink:0;white-space:nowrap;}
+/* Bottom nav */
+.nri-bottom-nav{position:sticky;bottom:0;background:rgba(11,26,18,0.97);border-top:0.5px solid rgba(201,168,76,0.12);display:flex;}
+.nri-bnav{flex:1;display:flex;flex-direction:column;align-items:center;padding:9px 4px;font-size:9px;color:var(--muted);cursor:pointer;gap:3px;transition:color 0.15s;}
+.nri-bnav.nri-bnav-active{color:var(--gold);}
+.nri-bnav-icon{font-size:16px;}
+/* Right panel - detail */
+.nri-detail{display:flex;flex-direction:column;gap:16px;}
+.nri-detail-card{background:rgba(255,255,255,0.04);border:0.5px solid var(--border);border-radius:12px;padding:20px 22px;}
+.nri-detail-title{font-size:13px;font-weight:500;color:var(--cream);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.nri-detail-title-icon{font-size:16px;}
+/* Rent chart bars */
+.nri-rent-bars{display:flex;gap:6px;align-items:flex-end;height:80px;margin-bottom:8px;}
+.nri-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;}
+.nri-bar{border-radius:3px 3px 0 0;width:100%;transition:height 0.3s;}
+.nri-bar-label{font-size:8.5px;color:var(--muted);text-align:center;}
+/* Doc status */
+.nri-doc-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:0.5px solid rgba(255,255,255,0.05);}
+.nri-doc-row:last-child{border-bottom:none;}
+.nri-doc-icon{font-size:14px;width:28px;text-align:center;flex-shrink:0;}
+.nri-doc-name{font-size:12px;color:var(--cream);flex:1;}
+.nri-doc-status{font-size:10.5px;font-weight:500;}
+.nri-doc-exp{font-size:10px;color:var(--muted);margin-left:auto;}
+/* Maintenance timeline */
+.nri-maint-item{display:flex;gap:12px;padding:10px 0;border-bottom:0.5px solid rgba(255,255,255,0.05);}
+.nri-maint-item:last-child{border-bottom:none;}
+.nri-maint-num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0;margin-top:1px;}
+.nri-maint-body{flex:1;}
+.nri-maint-title{font-size:12px;font-weight:500;color:var(--cream);}
+.nri-maint-sub{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.4;}
+.nri-maint-date{font-size:10px;color:var(--muted);flex-shrink:0;white-space:nowrap;margin-top:3px;}
+/* Quick actions */
+.nri-actions-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.nri-action-btn{background:rgba(255,255,255,0.04);border:0.5px solid var(--border-dim);border-radius:10px;padding:14px 10px;text-align:center;cursor:pointer;transition:all 0.2s;}
+.nri-action-btn:hover{border-color:var(--border);background:rgba(201,168,76,0.06);}
+.nri-action-icon{font-size:22px;margin-bottom:6px;}
+.nri-action-label{font-size:11px;color:var(--cream-dim);line-height:1.3;}
+/* NRI alert banner */
+.nri-alert-banner{display:flex;align-items:center;gap:10px;background:rgba(248,113,113,0.08);border:0.5px solid rgba(248,113,113,0.25);border-radius:10px;padding:12px 16px;margin-bottom:4px;}
+.nri-alert-banner.ok{background:rgba(74,222,128,0.06);border-color:rgba(74,222,128,0.2);}
+.nri-alert-banner.info{background:rgba(96,165,250,0.06);border-color:rgba(96,165,250,0.2);}
+.nri-alert-banner-icon{font-size:18px;flex-shrink:0;}
+.nri-alert-banner-body{flex:1;}
+.nri-alert-banner-title{font-size:12px;font-weight:500;color:var(--cream);}
+.nri-alert-banner-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+.nri-alert-banner-btn{font-size:11px;color:var(--gold);border:0.5px solid var(--border);border-radius:5px;padding:4px 10px;cursor:pointer;white-space:nowrap;flex-shrink:0;}
+/* Timezone badge */
+.nri-tz{display:inline-flex;align-items:center;gap:5px;font-size:10px;color:var(--muted);background:rgba(255,255,255,0.04);border:0.5px solid var(--border-dim);border-radius:6px;padding:3px 9px;margin-bottom:16px;}
+.nri-tz-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);}
+/* Tab switcher */
+.nri-tabs{display:flex;gap:4px;margin-bottom:14px;}
+.nri-tab{font-size:11px;padding:5px 13px;border-radius:6px;border:0.5px solid var(--border-dim);color:var(--muted);cursor:pointer;transition:all 0.15s;}
+.nri-tab.active{background:var(--gold-dim);border-color:var(--border);color:var(--gold);}
+/* Map placeholder */
+.nri-map-placeholder{background:rgba(15,36,25,0.8);border-radius:8px;height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:0.5px solid var(--border-dim);margin-bottom:12px;position:relative;overflow:hidden;}
+.nri-map-grid{position:absolute;inset:0;opacity:0.08;}
+/* ── FOOTER ── */
+footer{padding:40px 48px;border-top:0.5px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+.footer-logo{font-family:'DM Serif Display',serif;font-size:18px;color:var(--gold);}
+.footer-tagline{font-size:12px;color:var(--muted);margin-top:3px;}
+.footer-contact{font-size:12px;color:var(--muted);text-align:right;}
+.footer-contact a{color:var(--gold-light);text-decoration:none;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── SMART HOME IOT DASHBOARD ── */
+:root{
+  --iot-bg:#0b1a12;--iot-surf:#111f16;--iot-surf2:#162a1d;
+  --iot-on:#4ade80;--iot-on-dim:rgba(74,222,128,0.15);
+  --iot-off:#374151;--iot-blue:#60a5fa;--iot-amber:#fbbf24;--iot-red:#f87171;
+}
+.smarthome-wrap{background:var(--iot-bg);border-radius:14px;border:0.5px solid rgba(96,165,250,0.2);overflow:hidden;margin-top:0;}
+.iot-app{display:grid;grid-template-columns:220px 1fr;min-height:700px;}
+.iot-sidebar{background:var(--iot-surf);border-right:0.5px solid var(--border);padding:0;display:flex;flex-direction:column;}
+.iot-logo-wrap{padding:20px 18px 14px;border-bottom:0.5px solid var(--border-dim);}
+.iot-logo{font-family:'DM Serif Display',serif;font-size:14px;color:var(--gold);}
+.iot-sub{font-size:9px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-top:2px;}
+.iot-prop{margin:12px;background:var(--gold-dim);border:0.5px solid var(--border);border-radius:8px;padding:11px 13px;}
+.iot-prop-name{font-size:12px;font-weight:500;color:var(--cream);}
+.iot-prop-addr{font-size:10px;color:var(--muted);line-height:1.4;margin-top:2px;}
+.iot-score{display:flex;align-items:center;gap:6px;margin-top:8px;padding-top:8px;border-top:0.5px solid var(--border-dim);}
+.iot-score-badge{font-size:9.5px;font-weight:600;padding:2px 8px;border-radius:10px;background:rgba(64,145,108,0.2);color:#7ecba1;border:0.5px solid rgba(64,145,108,0.3);}
+.iot-sec{padding:12px 12px 4px;font-size:9px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);}
+.iot-nav{display:flex;align-items:center;gap:8px;padding:8px 12px;margin:1px 6px;border-radius:6px;cursor:pointer;font-size:12px;color:rgba(245,240,232,0.55);transition:all 0.15s;}
+.iot-nav:hover{background:var(--cream-faint);color:var(--cream);}
+.iot-nav.iot-active{background:var(--gold-dim);color:var(--gold);border:0.5px solid var(--border);}
+.iot-navdot{width:5px;height:5px;border-radius:50%;background:var(--iot-red);flex-shrink:0;}
+.iot-navdot.ok{background:var(--iot-on);}
+.iot-weather{margin:auto 12px 12px;background:var(--iot-surf2);border-radius:8px;padding:11px 13px;}
+.iot-weather-temp{font-family:'DM Serif Display',serif;font-size:24px;color:var(--cream);}
+.iot-weather-sub{font-size:10px;color:var(--muted);margin-top:1px;}
+.iot-weather-row{display:flex;gap:10px;margin-top:6px;}
+.iot-wstat{font-size:10px;color:var(--muted);}
+.iot-wstat span{color:rgba(245,240,232,0.65);}
+/* Main area */
+.iot-main{display:flex;flex-direction:column;overflow:hidden;}
+.iot-topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 22px;border-bottom:0.5px solid var(--border-dim);background:rgba(11,26,18,0.8);}
+.iot-topbar-title{font-family:'DM Serif Display',serif;font-size:17px;color:var(--cream);}
+.iot-topbar-sub{font-size:11px;color:var(--muted);margin-top:1px;}
+.iot-modes{display:flex;gap:6px;}
+.iot-mode{font-size:10px;font-weight:500;padding:4px 11px;border-radius:14px;border:0.5px solid var(--border-dim);color:var(--muted);cursor:pointer;transition:all 0.15s;}
+.iot-mode.iot-mode-active{background:var(--gold-dim);border-color:var(--gold);color:var(--gold);}
+.iot-content{padding:18px 22px;overflow-y:auto;flex:1;}
+/* Energy bar */
+.iot-energy-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px;}
+.iot-etile{background:var(--iot-surf);border:0.5px solid var(--border-dim);border-radius:10px;padding:14px 16px;position:relative;overflow:hidden;}
+.iot-etile::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;}
+.iot-etile.solar::after{background:linear-gradient(90deg,var(--gold),var(--gold-light));}
+.iot-etile.grid::after{background:linear-gradient(90deg,var(--iot-blue),#93c5fd);}
+.iot-etile.usage::after{background:linear-gradient(90deg,var(--iot-on),#86efac);}
+.iot-etile.saved::after{background:linear-gradient(90deg,var(--leaf-light),var(--leaf));}
+.iot-elabel{font-size:9px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.iot-eval{font-family:'DM Serif Display',serif;font-size:22px;color:var(--cream);line-height:1;}
+.iot-eunit{font-size:10px;color:var(--muted);margin-top:2px;}
+.iot-eicon{position:absolute;top:12px;right:12px;font-size:16px;opacity:0.35;}
+/* Floor + Scenes */
+.iot-floor-section{display:grid;grid-template-columns:1fr 260px;gap:14px;margin-bottom:18px;}
+.iot-card{background:var(--iot-surf);border:0.5px solid var(--border-dim);border-radius:10px;padding:16px;}
+.iot-card-title{font-size:12px;font-weight:500;color:var(--cream);margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;}
+.iot-floor-tabs{display:flex;gap:3px;}
+.iot-ftab{font-size:10px;padding:3px 9px;border-radius:5px;border:0.5px solid var(--border-dim);color:var(--muted);cursor:pointer;}
+.iot-ftab.active{background:var(--gold-dim);border-color:var(--border);color:var(--gold);}
+.iot-svg{width:100%;height:220px;}
+/* Scenes */
+.iot-scene{display:flex;align-items:center;gap:10px;background:var(--iot-surf2);border:0.5px solid var(--border-dim);border-radius:8px;padding:10px 12px;cursor:pointer;transition:all 0.15s;margin-bottom:7px;}
+.iot-scene:hover{border-color:var(--border);}
+.iot-scene.iot-scene-active{background:var(--gold-dim);border-color:var(--border);}
+.iot-scene-icon{font-size:16px;width:30px;height:30px;background:var(--iot-surf);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.iot-scene-name{font-size:12px;font-weight:500;color:var(--cream);}
+.iot-scene-desc{font-size:10px;color:var(--muted);}
+.iot-scene-chk{margin-left:auto;color:var(--gold);font-size:12px;}
+/* Room controls */
+.iot-rooms{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px;}
+.iot-room{background:var(--iot-surf);border:0.5px solid var(--border-dim);border-radius:10px;padding:14px 16px;}
+.iot-room-hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+.iot-room-icon{font-size:18px;}
+.iot-room-name{font-size:12px;font-weight:500;color:var(--cream);margin-top:2px;}
+.iot-room-temp{font-family:'DM Serif Display',serif;font-size:19px;color:var(--gold);text-align:right;}
+.iot-room-status{font-size:9.5px;color:var(--muted);margin-top:1px;text-align:right;}
+.iot-room-status.on{color:var(--iot-on);}
+.iot-room-status.warn{color:var(--iot-amber);}
+.iot-devrow{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.iot-devname{font-size:11px;color:rgba(245,240,232,0.6);flex:1;}
+.iot-devstatus{font-size:10px;color:var(--muted);}
+/* Toggle */
+.iot-toggle{position:relative;width:32px;height:18px;flex-shrink:0;}
+.iot-toggle input{opacity:0;width:0;height:0;position:absolute;}
+.iot-track{position:absolute;inset:0;border-radius:18px;background:var(--iot-off);cursor:pointer;transition:background 0.2s;}
+.iot-track::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:rgba(255,255,255,0.45);transition:transform 0.2s,background 0.2s;}
+.iot-toggle input:checked+.iot-track{background:var(--leaf-light);}
+.iot-toggle input:checked+.iot-track::after{transform:translateX(14px);background:#fff;}
+/* Slider */
+.iot-slider-row{margin:4px 0 6px;}
+.iot-slider-lbl{display:flex;justify-content:space-between;font-size:9.5px;color:var(--muted);margin-bottom:3px;}
+input.iot-range{width:100%;height:2px;border-radius:1px;cursor:pointer;background:var(--iot-off);outline:none;border:none;-webkit-appearance:none;appearance:none;}
+input.iot-range::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:var(--gold);border:1.5px solid var(--iot-bg);cursor:pointer;}
+/* Alerts */
+.iot-alerts{margin-bottom:18px;}
+.iot-alert-title{font-size:12px;font-weight:500;color:var(--cream);margin-bottom:10px;}
+.iot-alert{display:flex;align-items:center;gap:10px;background:var(--iot-surf);border:0.5px solid var(--border-dim);border-radius:8px;padding:10px 13px;margin-bottom:7px;}
+.iot-adot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.iot-adot.warn{background:var(--iot-amber);}
+.iot-adot.info{background:var(--iot-blue);}
+.iot-adot.ok{background:var(--iot-on);}
+.iot-atext{font-size:11.5px;color:rgba(245,240,232,0.65);flex:1;line-height:1.4;}
+.iot-atime{font-size:10px;color:var(--muted);flex-shrink:0;}
+.iot-aaction{font-size:10px;color:var(--gold);cursor:pointer;padding:3px 8px;border:0.5px solid var(--border);border-radius:4px;flex-shrink:0;}
+/* Cameras */
+.iot-cams{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.iot-cam{background:var(--iot-surf2);border:0.5px solid var(--border-dim);border-radius:8px;aspect-ratio:16/9;position:relative;overflow:hidden;cursor:pointer;}
+.iot-cam-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--iot-surf2) 0%,#0a1f12 100%);}
+.iot-cam-icon{font-size:20px;opacity:0.25;margin-bottom:4px;}
+.iot-cam-lbl{font-size:9px;color:var(--muted);}
+.iot-cam-live{position:absolute;top:7px;left:7px;font-size:8px;font-weight:700;letter-spacing:0.06em;background:var(--iot-red);color:white;padding:2px 6px;border-radius:3px;}
+.iot-cam-name{position:absolute;bottom:7px;left:8px;font-size:9.5px;color:rgba(245,240,232,0.5);}
+@keyframes animPulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+.iot-pulse{animation:animPulse 2s ease-in-out infinite;}
+@media(max-width:900px){
+  .iot-app{grid-template-columns:1fr;}
+  .iot-sidebar{display:none;}
+  .iot-energy-bar{grid-template-columns:repeat(2,1fr);}
+  .iot-floor-section{grid-template-columns:1fr;}
+  .iot-rooms{grid-template-columns:repeat(2,1fr);}
+  .iot-cams{grid-template-columns:repeat(2,1fr);}
+}
+
+@media(max-width:768px){
+  nav{padding:14px 20px;}
+  .nav-pills{display:none;}
+  .hero{padding:100px 20px 60px;}
+  .domain-nav{padding:0 20px;}
+  .domain-section{padding:60px 20px;}
+  .section-head{grid-template-columns:1fr;}
+  .products-grid{grid-template-columns:1fr;}
+  .expand-grid{grid-template-columns:1fr;}
+  .expand-metrics{flex-direction:column;}
+  footer{padding:28px 20px;flex-direction:column;align-items:flex-start;}
+  .footer-contact{text-align:left;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">GreenSpace<span>Z</span></div>
+  <div class="nav-pills">
+    <a class="nav-pill" href="#greenscore">GreenScore™</a>
+    <a class="nav-pill" href="#documents">Documents</a>
+    <a class="nav-pill" href="#nri">NRI Mgmt</a>
+    <a class="nav-pill" href="#iot">IoT & Plots</a>
+    <a class="nav-pill" href="#marketplace">Marketplace</a>
+    <a class="nav-pill" href="#smarthome">Smart Home</a>
+    <a class="nav-pill" href="#nriview">NRI View</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="eyebrow">AI Product Suite · 2025–2030</div>
+  <h1>23 AI Products Built on<br><em>Tamil Nadu's</em> Property Stack</h1>
+  <p class="hero-sub">Every product maps directly to GreenSpaceZ's six platform pillars — GreenScore™, Document & Legal, NRI Management, IoT & Plot Monitoring, Eco Marketplace, and Smart Home Control.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">23</div><div class="stat-label">AI Products</div></div>
+    <div class="stat"><div class="stat-num">6</div><div class="stat-label">Platform Pillars</div></div>
+    <div class="stat"><div class="stat-num">₹280 Cr</div><div class="stat-label">PropTech SAM</div></div>
+    <div class="stat"><div class="stat-num">32L+</div><div class="stat-label">NRI Owners in TN</div></div>
+  </div>
+  <div class="hero-scroll">Explore Products</div>
+</section>
+
+<!-- DOMAIN NAV -->
+<div class="domain-nav" id="domainNav">
+  <div class="domain-tab active" data-target="greenscore"><span class="domain-dot" style="background:#40916c;"></span>GreenScore™ & Audit</div>
+  <div class="domain-tab" data-target="documents"><span class="domain-dot" style="background:#7c6fd4;"></span>Document & Legal</div>
+  <div class="domain-tab" data-target="nri"><span class="domain-dot" style="background:#c9a84c;"></span>NRI Remote Mgmt</div>
+  <div class="domain-tab" data-target="iot"><span class="domain-dot" style="background:#4a9fc4;"></span>IoT & Plot Monitoring</div>
+  <div class="domain-tab" data-target="marketplace"><span class="domain-dot" style="background:#4aab7a;"></span>Marketplace & ESG</div>
+  <div class="domain-tab" data-target="smarthome"><span class="domain-dot" style="background:#60a5fa;"></span>Smart Home IoT</div>
+  <div class="domain-tab" data-target="nriview"><span class="domain-dot" style="background:#f472b6;"></span>NRI Remote View</div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- DOMAIN 1: GREENSCORE               -->
+<!-- ═══════════════════════════════════ -->
+<section class="domain-section" id="greenscore">
+  <div class="section-head">
+    <div>
+      <div class="section-eyebrow" style="color:#40916c;">GreenScore™ & Audit AI</div>
+      <div class="section-title">The <em>core USP</em> — automated,<br>defensible property scoring</div>
+      <div class="section-desc">GreenScore™ is GreenSpaceZ's primary moat. These AI products automate and strengthen the physical + digital audit that produces the 0–100 score every property needs to onboard.</div>
+    </div>
+    <span class="section-badge" style="background:rgba(64,145,108,0.15);color:#7ecba1;border:0.5px solid rgba(64,145,108,0.3);">Core USP · 4 Products</span>
+  </div>
+  <div class="products-grid" id="grid-greenscore"></div>
+</section>
+
+<!-- ═══════════════════════════════════ -->
+<!-- DOMAIN 2: DOCUMENTS                -->
+<!-- ═══════════════════════════════════ -->
+<section class="domain-section" id="documents">
+  <div class="section-head">
+    <div>
+      <div class="section-eyebrow" style="color:#9b91e8;">Document & Legal AI</div>
+      <div class="section-title">From paper chaos to<br><em>structured clarity</em></div>
+      <div class="section-desc">10–18 documents per TN property transaction. Scanned PDFs, Tamil/English bilingual, zero standardisation. These AI products cut verification from 8 hours to 60 seconds.</div>
+    </div>
+    <span class="section-badge" style="background:rgba(124,111,212,0.15);color:#b5adf0;border:0.5px solid rgba(124,111,212,0.3);">Easiest to Build · 4 Products</span>
+  </div>
+  <div class="products-grid" id="grid-documents"></div>
+</section>
+
+<!-- ═══════════════════════════════════ -->
+<!-- DOMAIN 3: NRI                      -->
+<!-- ═══════════════════════════════════ -->
+<section class="domain-section" id="nri">
+  <div class="section-head">
+    <div>
+      <div class="section-eyebrow" style="color:var(--gold-light);">NRI Remote Management AI</div>
+      <div class="section-title">32 Lakh+ NRI-owned properties,<br><em>zero accountable manager</em></div>
+      <div class="section-desc">The biggest unaddressed market in TN property. These AI products give NRI owners real-time visibility, legal protection, and financial control of properties they cannot visit.</div>
+    </div>
+    <span class="section-badge" style="background:rgba(201,168,76,0.12);color:var(--gold-light);border:0.5px solid rgba(201,168,76,0.3);">Highest TAM · 5 Products</span>
+  </div>
+  <div class="products-grid" id="grid-nri"></div>
+</section>
+
+<!-- ═══════════════════════════════════ -->
+<!-- DOMAIN 4: IOT & PLOTS              -->
+<!-- ═══════════════════════════════════ -->
+<section class="domain-section" id="iot">
+  <div class="section-head">
+    <div>
+      <div class="section-eyebrow" style="color:#8ed0ec;">IoT & Plot Monitoring AI</div>
+      <div class="section-title">Physical assets demand<br><em>physical intelligence</em></div>
+      <div class="section-desc">From vacant ECR belt plots to luxury apartment equipment — these AI products use sensors, satellite imagery, and computer vision to monitor what no manager can watch 24/7.</div>
+    </div>
+    <span class="section-badge" style="background:rgba(74,159,196,0.12);color:#8ed0ec;border:0.5px solid rgba(74,159,196,0.25);">Hardware Required · 4 Products</span>
+  </div>
+  <div class="products-grid" id="grid-iot"></div>
+</section>
+
+<!-- ═══════════════════════════════════ -->
+<!-- DOMAIN 5: MARKETPLACE              -->
+<!-- ═══════════════════════════════════ -->
+<section class="domain-section" id="marketplace">
+  <div class="section-head">
+    <div>
+      <div class="section-eyebrow" style="color:#8ed8ae;">Marketplace & ESG AI</div>
+      <div class="section-title">The distribution layer that<br><em>compounds everything</em></div>
+      <div class="section-desc">These products sit at the top of the funnel — attracting buyers, generating listings, and building the ESG narrative that differentiates GreenSpaceZ from every other TN portal.</div>
+    </div>
+    <span class="section-badge" style="background:rgba(74,171,122,0.12);color:#8ed8ae;border:0.5px solid rgba(74,171,122,0.25);">Top of Funnel · 5 Products</span>
+  </div>
+  <div class="products-grid" id="grid-marketplace"></div>
+
+  <!-- PRIORITY STRIP -->
+  <div class="priority-strip">
+    <div class="priority-card">
+      <div class="priority-phase" style="color:#40916c;">Phase 1 · Seed (Mo 1–6)</div>
+      <div class="priority-title">Quick wins — no hardware</div>
+      <div class="priority-items">· Smart Document Processing<br>· Listing Content Generator<br>· EPMS Audit Assistant (mobile)<br>· Bill & Tax Monitor AI</div>
+    </div>
+    <div class="priority-card">
+      <div class="priority-phase" style="color:var(--gold);">Phase 2 · Growth (Mo 7–14)</div>
+      <div class="priority-title">Platform depth — NRI flywheel</div>
+      <div class="priority-items">· NRI Owner Dashboard<br>· GreenScore™ Engine<br>· TNRERA Live Validator<br>· Tenant Screening AI<br>· UPI Rent Ledger AI</div>
+    </div>
+    <div class="priority-card">
+      <div class="priority-phase" style="color:#8ed0ec;">Phase 3 · Series A (Mo 15–24)</div>
+      <div class="priority-title">Moat builders — hardware & ESG</div>
+      <div class="priority-items">· Predictive Maintenance AI<br>· Plot Encroachment Detector<br>· ESG Score Engine<br>· TDS/FEMA Compliance AI<br>· GreenElite™ Recommender</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ -->
+<!-- DOMAIN 6: SMART HOME IOT           -->
+<!-- ═══════════════════════════════════ -->
+<section class="domain-section" id="smarthome">
+  <div class="section-head">
+    <div>
+      <div class="section-eyebrow" style="color:#8ed0ec;">Smart Home IoT Control</div>
+      <div class="section-title">Control your apartment or villa<br><em>from anywhere in the world</em></div>
+      <div class="section-desc">A live IoT dashboard that gives owners, tenants, and NRI managers full control over every device — ACs, lights, locks, solar, DG set, cameras, and more — from a single screen. Built for GreenSpaceZ-managed premium properties.</div>
+    </div>
+    <span class="section-badge" style="background:rgba(74,159,196,0.12);color:#8ed0ec;border:0.5px solid rgba(74,159,196,0.25);">Live Demo · Alba Foundation One</span>
+  </div>
+
+  <div class="smarthome-wrap">
+    <div class="iot-app">
+
+      <!-- SIDEBAR -->
+      <aside class="iot-sidebar">
+        <div class="iot-logo-wrap">
+          <div class="iot-logo">GreenSpaceZ</div>
+          <div class="iot-sub">Smart Home Control</div>
+        </div>
+        <div class="iot-prop">
+          <div class="iot-prop-name">Alba Foundation One</div>
+          <div class="iot-prop-addr">Periasamy Road West, R.S. Puram, Coimbatore</div>
+          <div class="iot-score">
+            <span class="iot-score-badge">GreenElite™ 91</span>
+            <span style="font-size:10px;color:var(--muted);">2 BHK · 3rd Fl</span>
+          </div>
+        </div>
+        <div class="iot-sec">Control</div>
+        <div class="iot-nav iot-active">⌂ Dashboard</div>
+        <div class="iot-nav">🌡 Climate</div>
+        <div class="iot-nav">💡 Lighting</div>
+        <div class="iot-nav">🔒 Security</div>
+        <div class="iot-nav">⚡ Energy</div>
+        <div class="iot-nav">💧 Water</div>
+        <div class="iot-sec">Monitor</div>
+        <div class="iot-nav">📷 Cameras <span class="iot-navdot ok" style="margin-left:auto;"></span></div>
+        <div class="iot-nav">🔔 Alerts <span class="iot-navdot" style="margin-left:auto;"></span></div>
+        <div class="iot-nav">📊 Reports</div>
+        <div class="iot-sec">NRI Access</div>
+        <div class="iot-nav">👤 Tenant View</div>
+        <div class="iot-nav">🔑 Guest Access</div>
+        <div class="iot-weather">
+          <div class="iot-weather-temp">29°C</div>
+          <div class="iot-weather-sub">Coimbatore · Partly Cloudy</div>
+          <div class="iot-weather-row">
+            <div class="iot-wstat">Humidity <span>68%</span></div>
+            <div class="iot-wstat">UV <span>High</span></div>
+            <div class="iot-wstat">AQI <span>42</span></div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- MAIN -->
+      <main class="iot-main">
+        <div class="iot-topbar">
+          <div>
+            <div class="iot-topbar-title">Good morning, Karthik</div>
+            <div class="iot-topbar-sub">Friday, 3 Apr 2026 · All systems operational</div>
+          </div>
+          <div class="iot-modes">
+            <div class="iot-mode" onclick="iotMode(this)">Home</div>
+            <div class="iot-mode iot-mode-active" onclick="iotMode(this)">Away</div>
+            <div class="iot-mode" onclick="iotMode(this)">Sleep</div>
+            <div class="iot-mode" onclick="iotMode(this)">Eco Max</div>
+          </div>
+        </div>
+
+        <div class="iot-content">
+
+          <!-- ENERGY BAR -->
+          <div class="iot-energy-bar">
+            <div class="iot-etile solar"><div class="iot-elabel">Solar Generation</div><div class="iot-eval">3.2 <span style="font-size:13px;color:var(--muted);">kW</span></div><div class="iot-eunit">Kondaas Solar · 68% cap</div><div class="iot-eicon">☀️</div></div>
+            <div class="iot-etile grid"><div class="iot-elabel">Grid Draw</div><div class="iot-eval">0.8 <span style="font-size:13px;color:var(--muted);">kW</span></div><div class="iot-eunit">TNEB · ₹4.20/unit</div><div class="iot-eicon">⚡</div></div>
+            <div class="iot-etile usage"><div class="iot-elabel">Total Usage</div><div class="iot-eval">4.0 <span style="font-size:13px;color:var(--muted);">kW</span></div><div class="iot-eunit">4 ACs + appliances</div><div class="iot-eicon">🏠</div></div>
+            <div class="iot-etile saved"><div class="iot-elabel">Saved This Month</div><div class="iot-eval">₹2,840</div><div class="iot-eunit">vs grid-only · 186 kg CO₂</div><div class="iot-eicon">🌿</div></div>
+          </div>
+
+          <!-- FLOOR PLAN + SCENES -->
+          <div class="iot-floor-section">
+            <div class="iot-card">
+              <div class="iot-card-title">
+                Floor Plan · Live Status
+                <div class="iot-floor-tabs"><div class="iot-ftab active">2D View</div><div class="iot-ftab">Sensors</div></div>
+              </div>
+              <svg class="iot-svg" viewBox="0 0 420 220" xmlns="http://www.w3.org/2000/svg">
+                <rect x="8" y="8" width="404" height="204" rx="4" fill="#0f2419" stroke="rgba(201,168,76,0.2)" stroke-width="1.5"/>
+                <!-- Master Bedroom -->
+                <rect class="iot-room-rect" id="isvg-master" x="16" y="16" width="148" height="100" rx="3" fill="rgba(201,168,76,0.1)" stroke="var(--gold)" stroke-width="1" cursor="pointer" onclick="iotSelectRoom('master')"/>
+                <text x="90" y="40" text-anchor="middle" font-size="8" fill="rgba(201,168,76,0.8)" font-family="DM Sans,sans-serif">MASTER BEDROOM</text>
+                <text x="90" y="52" text-anchor="middle" font-size="7" fill="rgba(201,168,76,0.5)" font-family="DM Sans,sans-serif">24°C · AC On</text>
+                <rect x="30" y="62" width="22" height="11" rx="2" fill="rgba(74,222,128,0.2)" stroke="rgba(74,222,128,0.4)" stroke-width="0.5"/>
+                <text x="41" y="70" text-anchor="middle" font-size="6" fill="rgba(74,222,128,0.9)" font-family="DM Sans,sans-serif">AC</text>
+                <circle cx="90" cy="85" r="5" fill="rgba(74,222,128,0.8)" class="iot-pulse"/>
+                <text x="90" y="97" text-anchor="middle" font-size="6" fill="rgba(74,222,128,0.5)" font-family="DM Sans,sans-serif">motion</text>
+                <!-- Living Room -->
+                <rect x="172" y="16" width="232" height="120" rx="3" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.07)" stroke-width="1" cursor="pointer" onclick="iotSelectRoom('living')"/>
+                <text x="288" y="40" text-anchor="middle" font-size="8" fill="rgba(245,240,232,0.4)" font-family="DM Sans,sans-serif">LIVING ROOM</text>
+                <text x="288" y="52" text-anchor="middle" font-size="7" fill="rgba(245,240,232,0.25)" font-family="DM Sans,sans-serif">22°C · Lights Off</text>
+                <rect x="188" y="60" width="22" height="11" rx="2" fill="rgba(74,222,128,0.2)" stroke="rgba(74,222,128,0.4)" stroke-width="0.5"/>
+                <text x="199" y="68" text-anchor="middle" font-size="6" fill="rgba(74,222,128,0.9)" font-family="DM Sans,sans-serif">AC</text>
+                <rect x="370" y="60" width="22" height="11" rx="2" fill="rgba(55,65,81,0.5)" stroke="rgba(55,65,81,0.8)" stroke-width="0.5"/>
+                <text x="381" y="68" text-anchor="middle" font-size="6" fill="rgba(240,236,224,0.3)" font-family="DM Sans,sans-serif">AC</text>
+                <circle cx="340" cy="100" r="4" fill="var(--iot-off)"/>
+                <text x="340" y="112" text-anchor="middle" font-size="6" fill="rgba(245,240,232,0.25)" font-family="DM Sans,sans-serif">no motion</text>
+                <!-- Kitchen -->
+                <rect x="16" y="124" width="90" height="88" rx="3" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.07)" stroke-width="1" cursor="pointer" onclick="iotSelectRoom('kitchen')"/>
+                <text x="61" y="148" text-anchor="middle" font-size="8" fill="rgba(245,240,232,0.4)" font-family="DM Sans,sans-serif">KITCHEN</text>
+                <text x="61" y="159" text-anchor="middle" font-size="7" fill="rgba(245,240,232,0.25)" font-family="DM Sans,sans-serif">Gas: Safe</text>
+                <circle cx="61" cy="178" r="4" fill="rgba(74,222,128,0.8)"/>
+                <!-- Bedroom 2 -->
+                <rect x="114" y="124" width="100" height="88" rx="3" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.07)" stroke-width="1" cursor="pointer" onclick="iotSelectRoom('bed2')"/>
+                <text x="164" y="148" text-anchor="middle" font-size="8" fill="rgba(245,240,232,0.4)" font-family="DM Sans,sans-serif">BEDROOM 2</text>
+                <text x="164" y="159" text-anchor="middle" font-size="7" fill="rgba(245,240,232,0.25)" font-family="DM Sans,sans-serif">26°C · AC Off</text>
+                <rect x="128" y="170" width="22" height="11" rx="2" fill="rgba(55,65,81,0.5)" stroke="rgba(55,65,81,0.8)" stroke-width="0.5"/>
+                <text x="139" y="178" text-anchor="middle" font-size="6" fill="rgba(240,236,224,0.3)" font-family="DM Sans,sans-serif">AC</text>
+                <!-- Bathroom -->
+                <rect x="222" y="144" width="80" height="68" rx="3" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.07)" stroke-width="1" cursor="pointer" onclick="iotSelectRoom('bath')"/>
+                <text x="262" y="166" text-anchor="middle" font-size="8" fill="rgba(245,240,232,0.4)" font-family="DM Sans,sans-serif">BATHROOM</text>
+                <text x="262" y="177" text-anchor="middle" font-size="7" fill="rgba(251,191,36,0.7)" font-family="DM Sans,sans-serif">Humid: 72% ⚠</text>
+                <circle cx="262" cy="194" r="4" fill="var(--iot-amber)"/>
+                <!-- Balcony -->
+                <rect x="310" y="144" width="94" height="68" rx="3" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.07)" stroke-width="1" cursor="pointer" onclick="iotSelectRoom('balcony')"/>
+                <text x="357" y="178" text-anchor="middle" font-size="8" fill="rgba(245,240,232,0.4)" font-family="DM Sans,sans-serif">BALCONY</text>
+                <circle cx="357" cy="194" r="4" fill="var(--gold)"/>
+                <!-- Doors -->
+                <line x1="164" y1="16" x2="172" y2="16" stroke="var(--gold)" stroke-width="1.5"/>
+                <line x1="16" y1="116" x2="16" y2="124" stroke="var(--gold)" stroke-width="1.5"/>
+                <!-- Legend -->
+                <circle cx="16" cy="215" r="3" fill="rgba(74,222,128,0.8)"/><text x="23" y="218" font-size="7" fill="rgba(245,240,232,0.35)" font-family="DM Sans,sans-serif">Active</text>
+                <circle cx="60" cy="215" r="3" fill="var(--iot-off)"/><text x="67" y="218" font-size="7" fill="rgba(245,240,232,0.35)" font-family="DM Sans,sans-serif">Inactive</text>
+                <circle cx="104" cy="215" r="3" fill="var(--iot-amber)"/><text x="111" y="218" font-size="7" fill="rgba(245,240,232,0.35)" font-family="DM Sans,sans-serif">Alert</text>
+              </svg>
+            </div>
+
+            <!-- SCENES -->
+            <div>
+              <div style="font-size:12px;font-weight:500;color:var(--cream);margin-bottom:10px;">Scenes</div>
+              <div class="iot-scene" onclick="iotScene(this)"><div class="iot-scene-icon">🌅</div><div><div class="iot-scene-name">Morning Boost</div><div class="iot-scene-desc">ACs 23°C · Full lights</div></div></div>
+              <div class="iot-scene iot-scene-active" onclick="iotScene(this)"><div class="iot-scene-icon">🏃</div><div><div class="iot-scene-name">Away Mode</div><div class="iot-scene-desc">ACs off · Locks armed</div></div><div class="iot-scene-chk">✓</div></div>
+              <div class="iot-scene" onclick="iotScene(this)"><div class="iot-scene-icon">🌆</div><div><div class="iot-scene-name">Evening Relax</div><div class="iot-scene-desc">ACs 25°C · Warm lights</div></div></div>
+              <div class="iot-scene" onclick="iotScene(this)"><div class="iot-scene-icon">🌙</div><div><div class="iot-scene-name">Sleep Mode</div><div class="iot-scene-desc">ACs 27°C · Lights off</div></div></div>
+              <div class="iot-scene" onclick="iotScene(this)"><div class="iot-scene-icon">🤝</div><div><div class="iot-scene-name">Guest Mode</div><div class="iot-scene-desc">All ACs · Guest WiFi</div></div></div>
+              <div class="iot-scene" onclick="iotScene(this)"><div class="iot-scene-icon">🌿</div><div><div class="iot-scene-name">Eco Max</div><div class="iot-scene-desc">Solar only · 28°C auto</div></div></div>
+            </div>
+          </div>
+
+          <!-- ROOM CONTROLS -->
+          <div style="font-size:12px;font-weight:500;color:var(--cream);margin-bottom:12px;">Room Controls</div>
+          <div class="iot-rooms">
+
+            <!-- Master -->
+            <div class="iot-room">
+              <div class="iot-room-hd">
+                <div><div class="iot-room-icon">🛏️</div><div class="iot-room-name">Master Bedroom</div></div>
+                <div><div class="iot-room-temp">24°</div><div class="iot-room-status on">● AC running</div></div>
+              </div>
+              <div class="iot-devrow"><div class="iot-devname">Daikin AC</div><div class="iot-devstatus">Cool</div><label class="iot-toggle"><input type="checkbox" checked><span class="iot-track"></span></label></div>
+              <div class="iot-slider-row"><div class="iot-slider-lbl"><span>Temperature</span><span id="mt">24°C</span></div><input class="iot-range" type="range" min="16" max="30" value="24" oninput="iotSlider(this,'mt','°C')"></div>
+              <div class="iot-devrow"><div class="iot-devname">Ceiling Light</div><div class="iot-devstatus">Off</div><label class="iot-toggle"><input type="checkbox"><span class="iot-track"></span></label></div>
+              <div class="iot-devrow"><div class="iot-devname">Smart Lock</div><div class="iot-devstatus" style="color:var(--iot-on);">Locked</div><label class="iot-toggle"><input type="checkbox" checked><span class="iot-track"></span></label></div>
+              <div class="iot-devrow"><div class="iot-devname">Curtains</div><div class="iot-devstatus">Closed</div><label class="iot-toggle"><input type="checkbox"><span class="iot-track"></span></label></div>
+            </div>
+
+            <!-- Living -->
+            <div class="iot-room">
+              <div class="iot-room-hd">
+                <div><div class="iot-room-icon">🛋️</div><div class="iot-room-name">Living Room</div></div>
+                <div><div class="iot-room-temp">22°</div><div class="iot-room-status">● AC off</div></div>
+              </div>
+              <div class="iot-devrow"><div class="iot-devname">Daikin AC · Main</div><div class="iot-devstatus">Off</div><label class="iot-toggle"><input type="checkbox"><span class="iot-track"></span></label></div>
+              <div class="iot-devrow"><div class="iot-devname">Daikin AC · Dining</div><div class="iot-devstatus">Off</div><label class="iot-toggle"><input type="checkbox"><span class="iot-track"></span></label></div>
+              <div class="iot-devrow"><div class="iot-devname">Smart TV</div><div class="iot-devstatus">Standby</div><label class="iot-toggle"><input type="checkbox"><span class="iot-track"></span></label></div>
+              <div class="iot-slider-row"><div class="iot-slider-lbl"><span>Lights Dimmer</span><span id="ld">0%</span></div><input class="iot-range" type="range" min="0" max="100" value="0" oninput="iotSlider(this,'ld','%')"></div>
+              <div class="iot-devrow"><div class="iot-devname">Main Door Lock</div><div class="iot-devstatus" style="color:var(--iot-on);">Locked</div><label class="iot-toggle"><input type="checkbox" checked><span class="iot-track"></span></label></div>
+            </div>
+
+            <!-- Kitchen -->
+            <div class="iot-room">
+              <div class="iot-room-hd">
+                <div><div class="iot-room-icon">🍳</div><div class="iot-room-name">Kitchen</div></div>
+                <div><div class="iot-room-temp" style="color:var(--iot-on);font-size:16px;">●</div><div class="iot-room-status on">Gas safe</div></div>
+              </div>
+              <div class="iot-devrow"><div class="iot-devname">Piped Gas Valve</div><div class="iot-devstatus" style="color:var(--iot-on);">Open</div><label class="iot-toggle"><input type="checkbox" checked><span class="iot-track"></span></label></div>
+              <div class="iot-devrow"><div class="iot-devname">Gas Leak Sensor</div><div class="iot-devstatus" style="color:var(--iot-on);">Clear</div><label class="iot-toggle"><input type="checkbox" checked disabled><span class="iot-track"></span></label></div>
+              <div class="iot-devrow"><div class="iot-devname">Exhaust Fan</div><div class="iot-devstatus">Off</div><label class="iot-toggle"><input type="checkbox"><span class="iot-track"></span></label></div>
+              <div class="iot-devrow"><div class="iot-devname">RO Pump</div><div class="iot-devstatus" style="color:var(--iot-on);">Running</div><label class="iot-toggle"><input type="checkbox" checked><span class="iot-track"></span></label></div>
+            </div>
+
+            <!-- Bathroom -->
+            <div class="iot-room">
+              <div class="iot-room-hd">
+                <div><div class="iot-room-icon">🚿</div><div class="iot-room-name">Bathroom</div></div>
+                <div><div class="iot-room-temp" style="color:var(--iot-amber);font-size:18px;">72%</div><div class="iot-room-status warn">⚠ High humidity</div></div>
+              </div>
+              <div class="iot-devrow"><div class="iot-devname">Kondaas Heater</div><div class="iot-devstatus">Off</div><label class="iot-toggle"><input type="checkbox"><span class="iot-track"></span></label></div>
+              <div class="iot-slider-row"><div class="iot-slider-lbl"><span>Heater temp</span><span id="ht">40°C</span></div><input class="iot-range" type="range" min="30" max="70" value="40" oninput="iotSlider(this,'ht','°C')"></div>
+              <div class="iot-devrow"><div class="iot-devname">Exhaust Fan</div><div class="iot-devstatus" style="color:var(--iot-on);">On (auto)</div><label class="iot-toggle"><input type="checkbox" checked><span class="iot-track"></span></label></div>
+              <div class="iot-devrow"><div class="iot-devname">Water Sensor</div><div class="iot-devstatus" style="color:var(--iot-on);">No leak</div><label class="iot-toggle"><input type="checkbox" checked disabled><span class="iot-track"></span></label></div>
+            </div>
+
+            <!-- Bedroom 2 -->
+            <div class="iot-room">
+              <div class="iot-room-hd">
+                <div><div class="iot-room-icon">🛏</div><div class="iot-room-name">Bedroom 2</div></div>
+                <div><div class="iot-room-temp">26°</div><div class="iot-room-status">● AC off</div></div>
+              </div>
+              <div class="iot-devrow"><div class="iot-devname">Daikin AC</div><div class="iot-devstatus">Off</div><label class="iot-toggle"><input type="checkbox"><span class="iot-track"></span></label></div>
+              <div class="iot-slider-row"><div class="iot-slider-lbl"><span>Temperature</span><span id="b2t">24°C</span></div><input class="iot-range" type="range" min="16" max="30" value="24" oninput="iotSlider(this,'b2t','°C')"></div>
+              <div class="iot-devrow"><div class="iot-devname">Ceiling Light</div><div class="iot-devstatus">Off</div><label class="iot-toggle"><input type="checkbox"><span class="iot-track"></span></label></div>
+              <div class="iot-devrow"><div class="iot-devname">Smart Lock</div><div class="iot-devstatus" style="color:var(--iot-on);">Locked</div><label class="iot-toggle"><input type="checkbox" checked><span class="iot-track"></span></label></div>
+            </div>
+
+            <!-- Building Common -->
+            <div class="iot-room">
+              <div class="iot-room-hd">
+                <div><div class="iot-room-icon">🏢</div><div class="iot-room-name">Building Common</div></div>
+                <div><div class="iot-room-temp" style="color:var(--iot-on);font-size:16px;">●</div><div class="iot-room-status on">All ok</div></div>
+              </div>
+              <div class="iot-devrow"><div class="iot-devname">Cummins DG Set</div><div class="iot-devstatus">Standby</div><label class="iot-toggle"><input type="checkbox"><span class="iot-track"></span></label></div>
+              <div class="iot-devrow"><div class="iot-devname">Lift Motor</div><div class="iot-devstatus" style="color:var(--iot-on);">Running</div><label class="iot-toggle"><input type="checkbox" checked disabled><span class="iot-track"></span></label></div>
+              <div class="iot-devrow"><div class="iot-devname">Water Pump</div><div class="iot-devstatus" style="color:var(--iot-on);">Running</div><label class="iot-toggle"><input type="checkbox" checked><span class="iot-track"></span></label></div>
+              <div class="iot-devrow"><div class="iot-devname">Roof Garden Drip</div><div class="iot-devstatus">Sched. 6AM</div><label class="iot-toggle"><input type="checkbox"><span class="iot-track"></span></label></div>
+              <div class="iot-devrow"><div class="iot-devname">Gym Lights</div><div class="iot-devstatus">Off</div><label class="iot-toggle"><input type="checkbox"><span class="iot-track"></span></label></div>
+            </div>
+          </div>
+
+          <!-- ALERTS -->
+          <div class="iot-alerts">
+            <div class="iot-alert-title">⚡ Live Alerts <span style="font-size:10px;color:var(--muted);font-weight:400;">3 active</span></div>
+            <div class="iot-alert"><div class="iot-adot warn"></div><div class="iot-atext">Bathroom humidity at 72% — exhaust fan auto-enabled. Check shower seal.</div><div class="iot-atime">2 min ago</div><div class="iot-aaction">Dismiss</div></div>
+            <div class="iot-alert"><div class="iot-adot info"></div><div class="iot-atext">Solar generation at 68% capacity — cloud cover. Grid supplementing 0.8 kW.</div><div class="iot-atime">8 min ago</div><div class="iot-aaction">Details</div></div>
+            <div class="iot-alert"><div class="iot-adot warn"></div><div class="iot-atext">Lift motor temp: 58°C — normal range. Predictive model: no failure risk 30 days.</div><div class="iot-atime">1 hr ago</div><div class="iot-aaction">Monitor</div></div>
+            <div class="iot-alert"><div class="iot-adot ok"></div><div class="iot-atext">GreenScore recalculated: 91/100 — GreenElite™ maintained. No action needed.</div><div class="iot-atime">Yesterday</div><div class="iot-aaction">Report</div></div>
+          </div>
+
+          <!-- CAMERAS -->
+          <div style="font-size:12px;font-weight:500;color:var(--cream);margin-bottom:10px;">Security Cameras</div>
+          <div class="iot-cams">
+            <div class="iot-cam"><div class="iot-cam-inner"><div class="iot-cam-icon">📷</div><div class="iot-cam-lbl">Main Entrance</div></div><div class="iot-cam-live">● LIVE</div><div class="iot-cam-name">Main Entrance · HD</div></div>
+            <div class="iot-cam"><div class="iot-cam-inner"><div class="iot-cam-icon">📷</div><div class="iot-cam-lbl">Parking</div></div><div class="iot-cam-live">● LIVE</div><div class="iot-cam-name">Covered Parking · HD</div></div>
+            <div class="iot-cam"><div class="iot-cam-inner"><div class="iot-cam-icon">📷</div><div class="iot-cam-lbl">Roof Garden</div></div><div class="iot-cam-live">● LIVE</div><div class="iot-cam-name">Roof Garden · HD</div></div>
+          </div>
+
+        </div><!-- /iot-content -->
+      </main>
+    </div><!-- /iot-app -->
+  </div><!-- /smarthome-wrap -->
+</section>
+
+<!-- ═══════════════════════════════════ -->
+<!-- DOMAIN 7: NRI REMOTE VIEW          -->
+<!-- ═══════════════════════════════════ -->
+<section class="domain-section nri-wrap" id="nriview">
+  <div class="section-head">
+    <div>
+      <div class="section-eyebrow" style="color:#f472b6;">NRI Remote Access View</div>
+      <div class="section-title">What an overseas owner<br><em>sees from Singapore</em></div>
+      <div class="section-desc">A real-time mobile dashboard for NRI property owners — rent status, maintenance alerts, document health, live IoT readings, and one-tap actions from anywhere in the world. No agent call required.</div>
+    </div>
+    <span class="section-badge" style="background:rgba(244,114,182,0.1);color:#f9a8d4;border:0.5px solid rgba(244,114,182,0.25);">Live Mockup · Karthik · Singapore</span>
+  </div>
+
+  <div class="nri-tz"><span class="nri-tz-dot"></span>Viewing from Singapore · SGT UTC+8 · 10:42 PM · Property time: 8:12 PM IST</div>
+
+  <div class="nri-layout">
+
+    <!-- ── PHONE MOCKUP ── -->
+    <div class="nri-phone-wrap">
+      <div class="nri-phone">
+        <div class="nri-phone-notch"><div class="nri-phone-notch-pill"></div></div>
+        <div class="nri-phone-screen">
+
+          <!-- SCREEN: DASHBOARD -->
+          <div class="nri-screen" id="nri-sc-dashboard">
+            <div class="nri-app-hd">
+              <div class="nri-app-hd-row">
+                <div class="nri-app-logo">GreenSpaceZ</div>
+                <div class="nri-app-flag">🇸🇬</div>
+              </div>
+              <div class="nri-app-time">Good evening, Karthik · 3 properties · All monitored</div>
+            </div>
+
+            <div class="nri-summary">
+              <div class="nri-sum-tile">
+                <div class="nri-sum-label">Rent Collected</div>
+                <div class="nri-sum-val ok">₹42,000</div>
+                <div class="nri-sum-sub">Apr 2026 · 3/3 paid</div>
+              </div>
+              <div class="nri-sum-tile">
+                <div class="nri-sum-label">Avg GreenScore</div>
+                <div class="nri-sum-val">86</div>
+                <div class="nri-sum-sub">GreenElite™ band</div>
+              </div>
+              <div class="nri-sum-tile alert-tile">
+                <div class="nri-sum-label">Alerts</div>
+                <div class="nri-sum-val warn">2</div>
+                <div class="nri-sum-sub">1 urgent · 1 info</div>
+              </div>
+              <div class="nri-sum-tile">
+                <div class="nri-sum-label">TNEB / GCC</div>
+                <div class="nri-sum-val ok">Clear</div>
+                <div class="nri-sum-sub">No dues pending</div>
+              </div>
+            </div>
+
+            <div class="nri-prop-list">
+              <div class="nri-prop-hd">My Properties</div>
+
+              <div class="nri-prop-card nri-active-prop" onclick="nriSelectProp(this,'coimbatore')">
+                <div class="nri-prop-card-hd">
+                  <div>
+                    <div class="nri-prop-name">Alba Foundation One</div>
+                    <div class="nri-prop-addr">R.S. Puram, Coimbatore</div>
+                  </div>
+                  <span class="nri-prop-score-badge" style="background:rgba(64,145,108,0.2);color:#7ecba1;border:0.5px solid rgba(64,145,108,0.3);">GreenElite™ 91</span>
+                </div>
+                <div class="nri-prop-stats">
+                  <div class="nri-pstat"><span class="nri-pstat-label">Rent </span><span class="nri-pstat-val">₹22,000</span></div>
+                  <div class="nri-pstat"><span class="nri-pstat-label">Status </span><span class="nri-pstat-val" style="color:#4ade80;"><span class="nri-status-dot" style="background:#4ade80;"></span>Occupied</span></div>
+                  <div class="nri-pstat"><span class="nri-pstat-label">Next due </span><span class="nri-pstat-val">May 1</span></div>
+                </div>
+              </div>
+
+              <div class="nri-prop-card" onclick="nriSelectProp(this,'velachery')">
+                <div class="nri-prop-card-hd">
+                  <div>
+                    <div class="nri-prop-name">Velachery 100 Ft Road</div>
+                    <div class="nri-prop-addr">Velachery, Chennai</div>
+                  </div>
+                  <span class="nri-prop-score-badge" style="background:rgba(201,168,76,0.15);color:var(--gold-light);border:0.5px solid rgba(201,168,76,0.3);">GreenVerified™ 78</span>
+                </div>
+                <div class="nri-prop-stats">
+                  <div class="nri-pstat"><span class="nri-pstat-label">Rent </span><span class="nri-pstat-val">₹14,000</span></div>
+                  <div class="nri-pstat"><span class="nri-pstat-label">Status </span><span class="nri-pstat-val" style="color:#4ade80;"><span class="nri-status-dot" style="background:#4ade80;"></span>Occupied</span></div>
+                  <div class="nri-pstat"><span class="nri-pstat-label">Next due </span><span class="nri-pstat-val">May 5</span></div>
+                </div>
+              </div>
+
+              <div class="nri-prop-card" onclick="nriSelectProp(this,'ecr')">
+                <div class="nri-prop-card-hd">
+                  <div>
+                    <div class="nri-prop-name">ECR Belt Plot — 2400 sqft</div>
+                    <div class="nri-prop-addr">Kovalam, ECR, Chennai</div>
+                  </div>
+                  <span class="nri-prop-score-badge" style="background:rgba(96,165,250,0.12);color:#93c5fd;border:0.5px solid rgba(96,165,250,0.3);">Monitoring</span>
+                </div>
+                <div class="nri-prop-stats">
+                  <div class="nri-pstat"><span class="nri-pstat-label">Type </span><span class="nri-pstat-val">Vacant plot</span></div>
+                  <div class="nri-pstat"><span class="nri-pstat-label">Boundary </span><span class="nri-pstat-val" style="color:#4ade80;"><span class="nri-status-dot" style="background:#4ade80;"></span>Intact</span></div>
+                  <div class="nri-pstat"><span class="nri-pstat-label">Last scan </span><span class="nri-pstat-val">2 days ago</span></div>
+                </div>
+              </div>
+
+              <div class="nri-prop-hd" style="margin-top:10px;">Live Alerts</div>
+              <div class="nri-alert-list">
+                <div class="nri-palert">
+                  <div class="nri-palert-dot" style="background:#fbbf24;"></div>
+                  <div class="nri-palert-body">
+                    <div class="nri-palert-title">Bathroom humidity high — 72%</div>
+                    <div class="nri-palert-sub">Alba Foundation One · Exhaust auto-enabled</div>
+                  </div>
+                  <div class="nri-palert-time">2m ago</div>
+                </div>
+                <div class="nri-palert">
+                  <div class="nri-palert-dot" style="background:#60a5fa;"></div>
+                  <div class="nri-palert-body">
+                    <div class="nri-palert-title">Solar at 68% — cloud cover</div>
+                    <div class="nri-palert-sub">Grid drawing 0.8 kW supplement</div>
+                  </div>
+                  <div class="nri-palert-time">8m ago</div>
+                </div>
+                <div class="nri-palert">
+                  <div class="nri-palert-dot" style="background:#4ade80;"></div>
+                  <div class="nri-palert-body">
+                    <div class="nri-palert-title">April rent collected — ₹22,000</div>
+                    <div class="nri-palert-sub">UPI · Transferred to your account</div>
+                  </div>
+                  <div class="nri-palert-time">2d ago</div>
+                </div>
+                <div class="nri-palert">
+                  <div class="nri-palert-dot" style="background:#4ade80;"></div>
+                  <div class="nri-palert-body">
+                    <div class="nri-palert-title">ECR plot boundary scan clear</div>
+                    <div class="nri-palert-sub">No encroachment detected · Satellite</div>
+                  </div>
+                  <div class="nri-palert-time">2d ago</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="nri-bottom-nav">
+              <div class="nri-bnav nri-bnav-active" onclick="nriTab(this,'dashboard')"><div class="nri-bnav-icon">⌂</div>Home</div>
+              <div class="nri-bnav" onclick="nriTab(this,'controls')"><div class="nri-bnav-icon">🎛</div>Control</div>
+              <div class="nri-bnav" onclick="nriTab(this,'finance')"><div class="nri-bnav-icon">💸</div>Finance</div>
+              <div class="nri-bnav" onclick="nriTab(this,'docs')"><div class="nri-bnav-icon">📋</div>Docs</div>
+              <div class="nri-bnav" onclick="nriTab(this,'manager')"><div class="nri-bnav-icon">👤</div>Manager</div>
+            </div>
+          </div>
+
+          <!-- SCREEN: CONTROLS -->
+          <div class="nri-screen hidden" id="nri-sc-controls">
+            <div class="nri-app-hd">
+              <div class="nri-app-hd-row">
+                <div style="font-size:11px;color:var(--muted);cursor:pointer;" onclick="nriTab(document.querySelector('.nri-bnav'),'dashboard')">← Back</div>
+                <div class="nri-app-logo" style="font-size:12px;">Remote Control</div>
+                <div style="font-size:11px;color:var(--gold);">Live</div>
+              </div>
+            </div>
+            <div style="padding:12px 14px;">
+              <div style="font-size:10px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Alba Foundation One · Quick Control</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+                <div style="background:rgba(74,222,128,0.08);border:0.5px solid rgba(74,222,128,0.2);border-radius:9px;padding:11px 12px;">
+                  <div style="font-size:9px;color:var(--muted);margin-bottom:4px;">MASTER AC</div>
+                  <div style="font-family:'DM Serif Display',serif;font-size:20px;color:#4ade80;">24°C</div>
+                  <div style="font-size:9px;color:rgba(74,222,128,0.6);margin-top:2px;">● Running · Cool</div>
+                </div>
+                <div style="background:rgba(55,65,81,0.3);border:0.5px solid rgba(255,255,255,0.06);border-radius:9px;padding:11px 12px;">
+                  <div style="font-size:9px;color:var(--muted);margin-bottom:4px;">LIVING AC</div>
+                  <div style="font-family:'DM Serif Display',serif;font-size:20px;color:var(--muted);">Off</div>
+                  <div style="font-size:9px;color:var(--muted);margin-top:2px;">● Standby</div>
+                </div>
+                <div style="background:rgba(201,168,76,0.08);border:0.5px solid rgba(201,168,76,0.2);border-radius:9px;padding:11px 12px;">
+                  <div style="font-size:9px;color:var(--muted);margin-bottom:4px;">SOLAR</div>
+                  <div style="font-family:'DM Serif Display',serif;font-size:20px;color:var(--gold);">3.2 kW</div>
+                  <div style="font-size:9px;color:rgba(201,168,76,0.6);margin-top:2px;">68% capacity</div>
+                </div>
+                <div style="background:rgba(74,222,128,0.08);border:0.5px solid rgba(74,222,128,0.2);border-radius:9px;padding:11px 12px;">
+                  <div style="font-size:9px;color:var(--muted);margin-bottom:4px;">MAIN LOCK</div>
+                  <div style="font-family:'DM Serif Display',serif;font-size:20px;color:#4ade80;">Locked</div>
+                  <div style="font-size:9px;color:rgba(74,222,128,0.6);margin-top:2px;">🔒 Secured</div>
+                </div>
+              </div>
+              <div style="font-size:10px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Scenes</div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div style="display:flex;align-items:center;gap:10px;background:rgba(201,168,76,0.08);border:0.5px solid rgba(201,168,76,0.3);border-radius:8px;padding:9px 11px;cursor:pointer;">
+                  <span style="font-size:14px;">🏃</span><div><div style="font-size:11px;font-weight:500;color:var(--cream);">Away Mode</div><div style="font-size:9.5px;color:var(--muted);">Currently active</div></div><span style="margin-left:auto;color:var(--gold);font-size:11px;">✓</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.03);border:0.5px solid rgba(255,255,255,0.06);border-radius:8px;padding:9px 11px;cursor:pointer;">
+                  <span style="font-size:14px;">🌿</span><div><div style="font-size:11px;font-weight:500;color:var(--cream);">Eco Max</div><div style="font-size:9.5px;color:var(--muted);">Solar only · 28°C auto</div></div>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.03);border:0.5px solid rgba(255,255,255,0.06);border-radius:8px;padding:9px 11px;cursor:pointer;">
+                  <span style="font-size:14px;">🤝</span><div><div style="font-size:11px;font-weight:500;color:var(--cream);">Guest Mode</div><div style="font-size:9.5px;color:var(--muted);">Activate for visitor access</div></div>
+                </div>
+              </div>
+              <div style="margin-top:14px;background:rgba(96,165,250,0.06);border:0.5px solid rgba(96,165,250,0.2);border-radius:8px;padding:10px 12px;">
+                <div style="font-size:10px;font-weight:600;color:#93c5fd;margin-bottom:4px;">📷 3 Cameras Live</div>
+                <div style="font-size:10px;color:var(--muted);">Main Entrance · Parking · Roof Garden</div>
+                <div style="font-size:10px;color:#60a5fa;margin-top:5px;cursor:pointer;">View feeds →</div>
+              </div>
+            </div>
+            <div class="nri-bottom-nav">
+              <div class="nri-bnav" onclick="nriTab(this,'dashboard')"><div class="nri-bnav-icon">⌂</div>Home</div>
+              <div class="nri-bnav nri-bnav-active" onclick="nriTab(this,'controls')"><div class="nri-bnav-icon">🎛</div>Control</div>
+              <div class="nri-bnav" onclick="nriTab(this,'finance')"><div class="nri-bnav-icon">💸</div>Finance</div>
+              <div class="nri-bnav" onclick="nriTab(this,'docs')"><div class="nri-bnav-icon">📋</div>Docs</div>
+              <div class="nri-bnav" onclick="nriTab(this,'manager')"><div class="nri-bnav-icon">👤</div>Manager</div>
+            </div>
+          </div>
+
+          <!-- SCREEN: FINANCE -->
+          <div class="nri-screen hidden" id="nri-sc-finance">
+            <div class="nri-app-hd">
+              <div class="nri-app-hd-row">
+                <div style="font-size:12px;color:var(--muted);">← Back</div>
+                <div class="nri-app-logo" style="font-size:12px;">Financials</div>
+                <div style="font-size:10px;color:var(--gold);">Apr 2026</div>
+              </div>
+            </div>
+            <div style="padding:12px 14px;">
+              <div style="background:rgba(74,222,128,0.06);border:0.5px solid rgba(74,222,128,0.2);border-radius:10px;padding:14px 15px;margin-bottom:12px;">
+                <div style="font-size:9px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:rgba(74,222,128,0.6);margin-bottom:4px;">Total Collected · April</div>
+                <div style="font-family:'DM Serif Display',serif;font-size:28px;color:#4ade80;">₹42,000</div>
+                <div style="font-size:10px;color:var(--muted);margin-top:3px;">After 30% TDS deduction: ₹29,400 remitted</div>
+              </div>
+              <div style="font-size:10px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">6-Month Rent History</div>
+              <div class="nri-rent-bars">
+                <div class="nri-bar-wrap"><div class="nri-bar" style="height:55px;background:rgba(201,168,76,0.3);"></div><div class="nri-bar-label">Nov</div></div>
+                <div class="nri-bar-wrap"><div class="nri-bar" style="height:60px;background:rgba(201,168,76,0.35);"></div><div class="nri-bar-label">Dec</div></div>
+                <div class="nri-bar-wrap"><div class="nri-bar" style="height:60px;background:rgba(201,168,76,0.35);"></div><div class="nri-bar-label">Jan</div></div>
+                <div class="nri-bar-wrap"><div class="nri-bar" style="height:55px;background:rgba(201,168,76,0.3);"></div><div class="nri-bar-label">Feb</div></div>
+                <div class="nri-bar-wrap"><div class="nri-bar" style="height:60px;background:rgba(201,168,76,0.35);"></div><div class="nri-bar-label">Mar</div></div>
+                <div class="nri-bar-wrap"><div class="nri-bar" style="height:68px;background:var(--gold);"></div><div class="nri-bar-label">Apr</div></div>
+              </div>
+              <div style="font-size:10px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin:10px 0 8px;">Bills & Dues</div>
+              <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:rgba(74,222,128,0.05);border:0.5px solid rgba(74,222,128,0.15);border-radius:7px;">
+                  <div style="font-size:11px;color:var(--cream);">TNEB Electricity</div>
+                  <div style="font-size:11px;font-weight:500;color:#4ade80;">✓ Paid</div>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:rgba(74,222,128,0.05);border:0.5px solid rgba(74,222,128,0.15);border-radius:7px;">
+                  <div style="font-size:11px;color:var(--cream);">GCC Property Tax</div>
+                  <div style="font-size:11px;font-weight:500;color:#4ade80;">✓ Paid</div>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:rgba(74,222,128,0.05);border:0.5px solid rgba(74,222,128,0.15);border-radius:7px;">
+                  <div style="font-size:11px;color:var(--cream);">Water Board</div>
+                  <div style="font-size:11px;font-weight:500;color:#4ade80;">✓ Paid</div>
+                </div>
+              </div>
+              <div style="background:rgba(201,168,76,0.06);border:0.5px solid rgba(201,168,76,0.2);border-radius:8px;padding:10px 12px;">
+                <div style="font-size:10px;font-weight:600;color:var(--gold-light);margin-bottom:4px;">TDS / FEMA · April</div>
+                <div style="font-size:10px;color:var(--muted);">₹12,600 TDS deducted · Form 26AS updated</div>
+                <div style="font-size:10px;color:var(--muted);margin-top:2px;">₹29,400 remitted to SG account via FEMA</div>
+                <div style="font-size:10px;color:var(--gold);margin-top:5px;cursor:pointer;">Download Form 15CA/15CB →</div>
+              </div>
+            </div>
+            <div class="nri-bottom-nav">
+              <div class="nri-bnav" onclick="nriTab(this,'dashboard')"><div class="nri-bnav-icon">⌂</div>Home</div>
+              <div class="nri-bnav" onclick="nriTab(this,'controls')"><div class="nri-bnav-icon">🎛</div>Control</div>
+              <div class="nri-bnav nri-bnav-active" onclick="nriTab(this,'finance')"><div class="nri-bnav-icon">💸</div>Finance</div>
+              <div class="nri-bnav" onclick="nriTab(this,'docs')"><div class="nri-bnav-icon">📋</div>Docs</div>
+              <div class="nri-bnav" onclick="nriTab(this,'manager')"><div class="nri-bnav-icon">👤</div>Manager</div>
+            </div>
+          </div>
+
+          <!-- SCREEN: DOCS -->
+          <div class="nri-screen hidden" id="nri-sc-docs">
+            <div class="nri-app-hd">
+              <div class="nri-app-hd-row">
+                <div style="font-size:12px;color:var(--muted);">← Back</div>
+                <div class="nri-app-logo" style="font-size:12px;">Documents</div>
+                <div style="font-size:10px;color:var(--gold);">Verified</div>
+              </div>
+            </div>
+            <div style="padding:12px 14px;">
+              <div style="font-size:10px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Alba Foundation One · Legal Health</div>
+              <div class="nri-doc-row"><div class="nri-doc-icon">📜</div><div class="nri-doc-name">Sale Deed</div><div class="nri-doc-status" style="color:#4ade80;">✓ Verified</div><div class="nri-doc-exp">2019</div></div>
+              <div class="nri-doc-row"><div class="nri-doc-icon">🔍</div><div class="nri-doc-name">Encumbrance Certificate</div><div class="nri-doc-status" style="color:#4ade80;">✓ Clear</div><div class="nri-doc-exp">Valid</div></div>
+              <div class="nri-doc-row"><div class="nri-doc-icon">🏛</div><div class="nri-doc-name">TNRERA Registration</div><div class="nri-doc-status" style="color:#4ade80;">✓ Active</div><div class="nri-doc-exp">Dec 2027</div></div>
+              <div class="nri-doc-row"><div class="nri-doc-icon">📋</div><div class="nri-doc-name">Patta / Chitta</div><div class="nri-doc-status" style="color:#4ade80;">✓ Current</div><div class="nri-doc-exp">—</div></div>
+              <div class="nri-doc-row"><div class="nri-doc-icon">✍️</div><div class="nri-doc-name">Rental Agreement</div><div class="nri-doc-status" style="color:#4ade80;">✓ DigiLocker</div><div class="nri-doc-exp">Mar 2027</div></div>
+              <div class="nri-doc-row"><div class="nri-doc-icon">🏢</div><div class="nri-doc-name">Occupancy Certificate</div><div class="nri-doc-status" style="color:#4ade80;">✓ Valid</div><div class="nri-doc-exp">—</div></div>
+              <div style="margin-top:14px;font-size:10px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">GreenScore™ · 91 / 100</div>
+              <div style="display:flex;flex-direction:column;gap:5px;">
+                <div style="display:flex;align-items:center;gap:8px;"><div style="font-size:10px;color:var(--cream-dim);flex:1;">Legal & Documentation</div><div style="width:80px;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;"><div style="width:95%;height:100%;background:var(--gold);border-radius:2px;"></div></div><div style="font-size:9.5px;color:var(--gold);margin-left:4px;">95%</div></div>
+                <div style="display:flex;align-items:center;gap:8px;"><div style="font-size:10px;color:var(--cream-dim);flex:1;">Structural Integrity</div><div style="width:80px;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;"><div style="width:90%;height:100%;background:#4ade80;border-radius:2px;"></div></div><div style="font-size:9.5px;color:#4ade80;margin-left:4px;">90%</div></div>
+                <div style="display:flex;align-items:center;gap:8px;"><div style="font-size:10px;color:var(--cream-dim);flex:1;">Amenities & Liveability</div><div style="width:80px;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;"><div style="width:88%;height:100%;background:#4ade80;border-radius:2px;"></div></div><div style="font-size:9.5px;color:#4ade80;margin-left:4px;">88%</div></div>
+                <div style="display:flex;align-items:center;gap:8px;"><div style="font-size:10px;color:var(--cream-dim);flex:1;">Electrical & Plumbing</div><div style="width:80px;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;"><div style="width:92%;height:100%;background:#4ade80;border-radius:2px;"></div></div><div style="font-size:9.5px;color:#4ade80;margin-left:4px;">92%</div></div>
+                <div style="display:flex;align-items:center;gap:8px;"><div style="font-size:10px;color:var(--cream-dim);flex:1;">Market & Rental Value</div><div style="width:80px;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;"><div style="width:85%;height:100%;background:var(--gold);border-radius:2px;"></div></div><div style="font-size:9.5px;color:var(--gold);margin-left:4px;">85%</div></div>
+                <div style="display:flex;align-items:center;gap:8px;"><div style="font-size:10px;color:var(--cream-dim);flex:1;">Digital Readiness</div><div style="width:80px;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;"><div style="width:91%;height:100%;background:#4ade80;border-radius:2px;"></div></div><div style="font-size:9.5px;color:#4ade80;margin-left:4px;">91%</div></div>
+              </div>
+            </div>
+            <div class="nri-bottom-nav">
+              <div class="nri-bnav" onclick="nriTab(this,'dashboard')"><div class="nri-bnav-icon">⌂</div>Home</div>
+              <div class="nri-bnav" onclick="nriTab(this,'controls')"><div class="nri-bnav-icon">🎛</div>Control</div>
+              <div class="nri-bnav" onclick="nriTab(this,'finance')"><div class="nri-bnav-icon">💸</div>Finance</div>
+              <div class="nri-bnav nri-bnav-active" onclick="nriTab(this,'docs')"><div class="nri-bnav-icon">📋</div>Docs</div>
+              <div class="nri-bnav" onclick="nriTab(this,'manager')"><div class="nri-bnav-icon">👤</div>Manager</div>
+            </div>
+          </div>
+
+          <!-- SCREEN: MANAGER -->
+          <div class="nri-screen hidden" id="nri-sc-manager">
+            <div class="nri-app-hd">
+              <div class="nri-app-hd-row">
+                <div style="font-size:12px;color:var(--muted);">← Back</div>
+                <div class="nri-app-logo" style="font-size:12px;">My Manager</div>
+                <div style="font-size:10px;color:var(--gold);">Platinum</div>
+              </div>
+            </div>
+            <div style="padding:12px 14px;">
+              <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.04);border:0.5px solid rgba(201,168,76,0.2);border-radius:10px;padding:13px 14px;margin-bottom:12px;">
+                <div style="width:42px;height:42px;border-radius:50%;background:rgba(64,145,108,0.2);border:1.5px solid rgba(64,145,108,0.4);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">👤</div>
+                <div>
+                  <div style="font-size:13px;font-weight:500;color:var(--cream);">Ramesh Kumar</div>
+                  <div style="font-size:10px;color:var(--muted);">Dedicated Property Manager · EPMS</div>
+                  <div style="font-size:10px;color:#4ade80;margin-top:2px;">● Available · 4-hr SLA</div>
+                </div>
+                <div style="margin-left:auto;display:flex;flex-direction:column;gap:5px;">
+                  <div style="font-size:11px;color:var(--gold);border:0.5px solid var(--border);border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;">📞 Call</div>
+                  <div style="font-size:11px;color:var(--gold);border:0.5px solid var(--border);border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;">💬 Chat</div>
+                </div>
+              </div>
+              <div style="font-size:10px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Maintenance Activity</div>
+              <div class="nri-maint-item">
+                <div class="nri-maint-num" style="background:rgba(74,222,128,0.15);color:#4ade80;">✓</div>
+                <div class="nri-maint-body"><div class="nri-maint-title">Quarterly inspection completed</div><div class="nri-maint-sub">10 geotagged photos · All parameters clear</div></div>
+                <div class="nri-maint-date">28 Mar</div>
+              </div>
+              <div class="nri-maint-item">
+                <div class="nri-maint-num" style="background:rgba(74,222,128,0.15);color:#4ade80;">✓</div>
+                <div class="nri-maint-body"><div class="nri-maint-title">AC filter cleaned — Master bedroom</div><div class="nri-maint-sub">Daikin service partner · ₹800 charged</div></div>
+                <div class="nri-maint-date">15 Mar</div>
+              </div>
+              <div class="nri-maint-item">
+                <div class="nri-maint-num" style="background:rgba(251,191,36,0.15);color:#fbbf24;">!</div>
+                <div class="nri-maint-body"><div class="nri-maint-title">Bathroom exhaust — monitoring</div><div class="nri-maint-sub">Humidity at 72% · Exhaust auto-enabled · Watching</div></div>
+                <div class="nri-maint-date">Today</div>
+              </div>
+              <div class="nri-maint-item">
+                <div class="nri-maint-num" style="background:rgba(96,165,250,0.12);color:#60a5fa;">→</div>
+                <div class="nri-maint-body"><div class="nri-maint-title">Annual valuation report due</div><div class="nri-maint-sub">Scheduled for May 2026</div></div>
+                <div class="nri-maint-date">May 26</div>
+              </div>
+              <div style="margin-top:12px;font-size:10px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">60+ Vetted Vendors</div>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <span style="font-size:10px;background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.08);border-radius:5px;padding:3px 8px;color:var(--cream-dim);">Plumbing</span>
+                <span style="font-size:10px;background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.08);border-radius:5px;padding:3px 8px;color:var(--cream-dim);">Electrical</span>
+                <span style="font-size:10px;background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.08);border-radius:5px;padding:3px 8px;color:var(--cream-dim);">AC Service</span>
+                <span style="font-size:10px;background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.08);border-radius:5px;padding:3px 8px;color:var(--cream-dim);">Painting</span>
+                <span style="font-size:10px;background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.08);border-radius:5px;padding:3px 8px;color:var(--cream-dim);">Carpentry</span>
+                <span style="font-size:10px;background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.08);border-radius:5px;padding:3px 8px;color:var(--cream-dim);">Security</span>
+              </div>
+            </div>
+            <div class="nri-bottom-nav">
+              <div class="nri-bnav" onclick="nriTab(this,'dashboard')"><div class="nri-bnav-icon">⌂</div>Home</div>
+              <div class="nri-bnav" onclick="nriTab(this,'controls')"><div class="nri-bnav-icon">🎛</div>Control</div>
+              <div class="nri-bnav" onclick="nriTab(this,'finance')"><div class="nri-bnav-icon">💸</div>Finance</div>
+              <div class="nri-bnav" onclick="nriTab(this,'docs')"><div class="nri-bnav-icon">📋</div>Docs</div>
+              <div class="nri-bnav nri-bnav-active" onclick="nriTab(this,'manager')"><div class="nri-bnav-icon">👤</div>Manager</div>
+            </div>
+          </div>
+
+        </div><!-- /phone-screen -->
+      </div><!-- /phone -->
+      <div style="text-align:center;margin-top:12px;font-size:10px;color:var(--muted);">Tap the bottom nav to explore screens</div>
+    </div><!-- /phone-wrap -->
+
+    <!-- ── RIGHT DETAIL PANEL ── -->
+    <div class="nri-detail">
+
+      <!-- Alert banners -->
+      <div class="nri-alert-banner">
+        <div class="nri-alert-banner-icon">⚠️</div>
+        <div class="nri-alert-banner-body">
+          <div class="nri-alert-banner-title">Bathroom humidity alert — Alba Foundation One</div>
+          <div class="nri-alert-banner-sub">72% humidity detected. Exhaust fan auto-enabled. EPMS monitoring — no action needed from you.</div>
+        </div>
+        <div class="nri-alert-banner-btn">Dismiss</div>
+      </div>
+      <div class="nri-alert-banner info">
+        <div class="nri-alert-banner-icon">☀️</div>
+        <div class="nri-alert-banner-body">
+          <div class="nri-alert-banner-title">Solar generation at 68% — partial cloud cover</div>
+          <div class="nri-alert-banner-sub">Kondaas solar producing 3.2 kW. TNEB grid supplementing. Savings still ₹2,840 this month.</div>
+        </div>
+        <div class="nri-alert-banner-btn">Details</div>
+      </div>
+      <div class="nri-alert-banner ok">
+        <div class="nri-alert-banner-icon">💰</div>
+        <div class="nri-alert-banner-body">
+          <div class="nri-alert-banner-title">April rent collected across all 3 properties</div>
+          <div class="nri-alert-banner-sub">₹42,000 total. TDS deducted. ₹29,400 remitted to your Singapore account.</div>
+        </div>
+        <div class="nri-alert-banner-btn">View</div>
+      </div>
+
+      <!-- Property health overview -->
+      <div class="nri-detail-card">
+        <div class="nri-detail-title"><span class="nri-detail-title-icon">🏠</span>3 Properties · Health Overview</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+          <div style="background:rgba(64,145,108,0.08);border:0.5px solid rgba(64,145,108,0.2);border-radius:9px;padding:12px 14px;">
+            <div style="font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;color:rgba(74,222,128,0.6);margin-bottom:6px;">Alba Foundation One</div>
+            <div style="font-family:'DM Serif Display',serif;font-size:24px;color:var(--gold);">91</div>
+            <div style="font-size:9.5px;color:var(--muted);margin-top:3px;">GreenElite™</div>
+            <div style="margin-top:8px;font-size:10px;"><span style="color:#4ade80;">●</span> Occupied · AC running</div>
+            <div style="font-size:10px;color:var(--muted);margin-top:2px;">Rent: ₹22,000 · Paid</div>
+          </div>
+          <div style="background:rgba(201,168,76,0.06);border:0.5px solid rgba(201,168,76,0.15);border-radius:9px;padding:12px 14px;">
+            <div style="font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;color:rgba(201,168,76,0.6);margin-bottom:6px;">Velachery 100 Ft</div>
+            <div style="font-family:'DM Serif Display',serif;font-size:24px;color:var(--gold);">78</div>
+            <div style="font-size:9.5px;color:var(--muted);margin-top:3px;">GreenVerified™</div>
+            <div style="margin-top:8px;font-size:10px;"><span style="color:#4ade80;">●</span> Occupied · All ok</div>
+            <div style="font-size:10px;color:var(--muted);margin-top:2px;">Rent: ₹14,000 · Paid</div>
+          </div>
+          <div style="background:rgba(96,165,250,0.06);border:0.5px solid rgba(96,165,250,0.15);border-radius:9px;padding:12px 14px;">
+            <div style="font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;color:rgba(96,165,250,0.6);margin-bottom:6px;">ECR Belt Plot</div>
+            <div style="font-family:'DM Serif Display',serif;font-size:24px;color:#60a5fa;">—</div>
+            <div style="font-size:9.5px;color:var(--muted);margin-top:3px;">Vacant · Monitored</div>
+            <div style="margin-top:8px;font-size:10px;"><span style="color:#4ade80;">●</span> Boundary intact</div>
+            <div style="font-size:10px;color:var(--muted);margin-top:2px;">Satellite · 2 days ago</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick actions -->
+      <div class="nri-detail-card">
+        <div class="nri-detail-title"><span class="nri-detail-title-icon">⚡</span>One-Tap NRI Actions</div>
+        <div class="nri-actions-grid">
+          <div class="nri-action-btn"><div class="nri-action-icon">🔒</div><div class="nri-action-label">Lock / Unlock Front Door</div></div>
+          <div class="nri-action-btn"><div class="nri-action-icon">🌡</div><div class="nri-action-label">Set AC Temperature Remotely</div></div>
+          <div class="nri-action-btn"><div class="nri-action-icon">🤝</div><div class="nri-action-label">Activate Guest Mode</div></div>
+          <div class="nri-action-btn"><div class="nri-action-icon">📞</div><div class="nri-action-label">Call Named Manager (Ramesh)</div></div>
+          <div class="nri-action-btn"><div class="nri-action-icon">📋</div><div class="nri-action-label">Request EPMS Inspection</div></div>
+          <div class="nri-action-btn"><div class="nri-action-icon">💸</div><div class="nri-action-label">Download TDS / Form 15CA</div></div>
+          <div class="nri-action-btn"><div class="nri-action-icon">📷</div><div class="nri-action-label">View Live Camera Feeds</div></div>
+          <div class="nri-action-btn"><div class="nri-action-icon">📜</div><div class="nri-action-label">Share DigiLocker Agreement</div></div>
+          <div class="nri-action-btn"><div class="nri-action-icon">🛰</div><div class="nri-action-label">View ECR Plot Satellite Scan</div></div>
+        </div>
+      </div>
+
+      <!-- Maintenance log -->
+      <div class="nri-detail-card">
+        <div class="nri-detail-title"><span class="nri-detail-title-icon">🔧</span>EPMS Maintenance Log</div>
+        <div class="nri-maint-item">
+          <div class="nri-maint-num" style="background:rgba(74,222,128,0.15);color:#4ade80;">✓</div>
+          <div class="nri-maint-body"><div class="nri-maint-title">Quarterly inspection — Alba Foundation One</div><div class="nri-maint-sub">10 geotagged photos · GreenScore maintained at 91 · No issues found</div></div>
+          <div class="nri-maint-date">28 Mar 26</div>
+        </div>
+        <div class="nri-maint-item">
+          <div class="nri-maint-num" style="background:rgba(74,222,128,0.15);color:#4ade80;">✓</div>
+          <div class="nri-maint-body"><div class="nri-maint-title">Daikin AC service — Master bedroom filter</div><div class="nri-maint-sub">Vetted vendor · ₹800 · Receipt attached · Performance restored</div></div>
+          <div class="nri-maint-date">15 Mar 26</div>
+        </div>
+        <div class="nri-maint-item">
+          <div class="nri-maint-num" style="background:rgba(251,191,36,0.15);color:#fbbf24;">!</div>
+          <div class="nri-maint-body"><div class="nri-maint-title">Bathroom humidity monitoring — active alert</div><div class="nri-maint-sub">Exhaust auto-enabled. EPMS checking shower seal condition this week.</div></div>
+          <div class="nri-maint-date">Today</div>
+        </div>
+        <div class="nri-maint-item">
+          <div class="nri-maint-num" style="background:rgba(74,222,128,0.15);color:#4ade80;">✓</div>
+          <div class="nri-maint-body"><div class="nri-maint-title">ECR Plot satellite boundary scan</div><div class="nri-maint-sub">No encroachment detected. Boundary markers intact. GeoJSON report saved.</div></div>
+          <div class="nri-maint-date">1 Apr 26</div>
+        </div>
+        <div class="nri-maint-item">
+          <div class="nri-maint-num" style="background:rgba(96,165,250,0.12);color:#60a5fa;">→</div>
+          <div class="nri-maint-body"><div class="nri-maint-title">Annual property valuation report</div><div class="nri-maint-sub">Scheduled May 2026. Market + TNRERA data. Sent to you + insurer.</div></div>
+          <div class="nri-maint-date">May 26</div>
+        </div>
+      </div>
+
+      <!-- NRI differentiators -->
+      <div class="nri-detail-card">
+        <div class="nri-detail-title"><span class="nri-detail-title-icon">🌍</span>Why NRI Owners Choose GreenSpaceZ</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div style="background:rgba(255,255,255,0.03);border-radius:8px;padding:12px 13px;border:0.5px solid var(--border-dim);">
+            <div style="font-size:12px;font-weight:500;color:var(--cream);margin-bottom:4px;">vs NoBroker</div>
+            <div style="font-size:11px;color:var(--cream-dim);line-height:1.6;">No IoT control · No TNRERA validation · No FEMA module · No named manager · No plot monitoring</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.03);border-radius:8px;padding:12px 13px;border:0.5px solid var(--border-dim);">
+            <div style="font-size:12px;font-weight:500;color:var(--cream);margin-bottom:4px;">vs Local Caretaker</div>
+            <div style="font-size:11px;color:var(--cream-dim);line-height:1.6;">No app · No accountability · No SLA · No bill monitoring · No legal docs · No audit trail</div>
+          </div>
+          <div style="background:rgba(64,145,108,0.06);border-radius:8px;padding:12px 13px;border:0.5px solid rgba(64,145,108,0.2);grid-column:span 2;">
+            <div style="font-size:12px;font-weight:500;color:#7ecba1;margin-bottom:6px;">GreenSpaceZ Platinum — what you get</div>
+            <div style="display:flex;flex-wrap:wrap;gap:5px;">
+              <span style="font-size:10px;background:rgba(64,145,108,0.1);border:0.5px solid rgba(64,145,108,0.25);border-radius:4px;padding:2px 8px;color:#7ecba1;">Dedicated named manager</span>
+              <span style="font-size:10px;background:rgba(64,145,108,0.1);border:0.5px solid rgba(64,145,108,0.25);border-radius:4px;padding:2px 8px;color:#7ecba1;">4-hr SLA</span>
+              <span style="font-size:10px;background:rgba(64,145,108,0.1);border:0.5px solid rgba(64,145,108,0.25);border-radius:4px;padding:2px 8px;color:#7ecba1;">IoT remote control</span>
+              <span style="font-size:10px;background:rgba(64,145,108,0.1);border:0.5px solid rgba(64,145,108,0.25);border-radius:4px;padding:2px 8px;color:#7ecba1;">Plot satellite monitoring</span>
+              <span style="font-size:10px;background:rgba(64,145,108,0.1);border:0.5px solid rgba(64,145,108,0.25);border-radius:4px;padding:2px 8px;color:#7ecba1;">TDS / FEMA automation</span>
+              <span style="font-size:10px;background:rgba(64,145,108,0.1);border:0.5px solid rgba(64,145,108,0.25);border-radius:4px;padding:2px 8px;color:#7ecba1;">Annual valuation report</span>
+              <span style="font-size:10px;background:rgba(64,145,108,0.1);border:0.5px solid rgba(64,145,108,0.25);border-radius:4px;padding:2px 8px;color:#7ecba1;">DigiLocker agreements</span>
+              <span style="font-size:10px;background:rgba(64,145,108,0.1);border:0.5px solid rgba(64,145,108,0.25);border-radius:4px;padding:2px 8px;color:#7ecba1;">TNRERA verified</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /nri-detail -->
+  </div><!-- /nri-layout -->
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-logo">GreenSpaceZ</div>
+    <div class="footer-tagline">Managed. Monitored. Verified.</div>
+  </div>
+  <div class="footer-contact">
+    +91 96000 71313 &nbsp;·&nbsp;
+    <a href="/cdn-cgi/l/email-protection#c5aea4b7b1adacae85a2b7a0a0abb6b5a4a6a0bfebacab"><span class="__cf_email__" data-cfemail="a5cec4d7d1cdcccee5c2d7c0c0cbd6d5c4c6c0df8bcccb">[email&#160;protected]</span></a><br>
+    <a href="https://greenspacez.in">greenspacez.in</a> &nbsp;·&nbsp; Pudupakkam, OMR, Chennai 603103
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ── PRODUCT DATA ──
+const PRODUCTS = {
+  greenscore: [
+    {
+      icon:"🎯", name:"GreenScore™ Engine",
+      desc:"Auto-compute the weighted 0–100 GreenScore from 6 parameters across physical EPMS audit and digital gov-portal data — the gateway every property must pass.",
+      tags:["core","gs","win"],
+      problem:"Manual scoring is inconsistent, slow, and auditor-dependent. No standardised benchmark exists across TN properties.",
+      solution:"Weighted ML model ingests EPMS field data + digital portal outputs → produces reproducible, explainable GreenScore per property in minutes.",
+      tech:["Weighted scoring engine","EPMS API","TNRERA/IGRS integration","Explainability layer","React dashboard"],
+      metrics:[{v:"0–100",l:"Score range"},{v:"6",l:"Audit parameters"},{v:"50+",l:"Min to onboard"}],
+      timeline:["Weights defined","EPMS API","Digital audit","Dashboard","Scale"],
+      revenue:"GreenScore is the onboarding gate — every managed property subscription (₹9K–₹42K/yr) depends on it. Directly drives Silver→Platinum conversion.",
+      effort:"Medium · 3–4 months"
+    },
+    {
+      icon:"📱", name:"EPMS Audit Assistant",
+      desc:"Mobile AI app for EPMS field agents — guided inspection checklist, geotagged photo capture, voice notes, auto-populates GreenScore parameters on-site.",
+      tags:["gs","new","win"],
+      problem:"Field agents use paper checklists today. Data re-entry is slow, error-prone, and loses geolocation context. Audit quality varies by agent.",
+      solution:"React Native app with offline support — structured inspection flow per parameter category, GPS-tagged photos, AI auto-flag anomalies (cracks, water damage), syncs to backend on connectivity.",
+      tech:["React Native (offline)","GPS geotagging","On-device photo ML","FastAPI sync","Auto-report gen"],
+      metrics:[{v:"4-hr",l:"Chennai SLA"},{v:"6-hr",l:"CBE SLA"},{v:"6",l:"Param categories"}],
+      timeline:["App wireframes","Inspection flows","Photo ML","Offline sync","Agent rollout"],
+      revenue:"Enables faster EPMS throughput — more properties audited per agent per day. Directly increases management plan revenue capacity.",
+      effort:"Low-Medium · 2–3 months"
+    },
+    {
+      icon:"📊", name:"Market Valuation AI",
+      desc:"Auto-compute the Market & Rental Value parameter (13% of GreenScore) using comparable sales, locality signals, TNRERA data, and rental demand — updated quarterly.",
+      tags:["gs","core"],
+      problem:"Market value scoring in the GreenScore audit is currently manual and subjective. No data-driven benchmark for micro-markets across Chennai and Coimbatore.",
+      solution:"Regression model trained on TNRERA registrations, guideline values, portal listing prices, and rental data — produces per-property valuation with confidence interval.",
+      tech:["Regression / XGBoost","TNRERA transaction data","Web scraping (99acres, MagicBricks)","Guideline value API","Quarterly refresh"],
+      metrics:[{v:"13%",l:"GreenScore weight"},{v:"±8%",l:"Target accuracy"},{v:"Quarterly",l:"Model refresh"}],
+      timeline:["Data collection","Model training","Validation","GreenScore integration","Quarterly pipeline"],
+      revenue:"Improves GreenScore accuracy → fewer disputes → higher owner trust → lower churn on management plans. Also underpins the ₹299 buyer due diligence report.",
+      effort:"Medium · 3–4 months"
+    },
+    {
+      icon:"⬆️", name:"GreenElite™ Upgrade Recommender",
+      desc:"For Conditional (50–69) properties: AI identifies the minimum-cost set of improvements to cross the GreenVerified (70+) threshold, ranked by ROI and effort.",
+      tags:["gs","new"],
+      problem:"Owners of Conditional-scored properties have no clear path to improvement. Without guidance they churn. This is a lost upsell opportunity at every onboarding.",
+      solution:"Gap analysis engine compares current scores vs 70-point threshold per parameter, cross-references EPMS vendor costs, and outputs a ranked action plan with estimated score uplift per action.",
+      tech:["Gap analysis engine","EPMS vendor cost DB","Score simulation model","WhatsApp delivery","PDF action plan"],
+      metrics:[{v:"50–69",l:"Conditional band"},{v:"20+",l:"Uplift needed"},{v:"₹/point",l:"Cost per score point"}],
+      timeline:["Gap model","Vendor cost DB","Simulation","Delivery flow","Conversion tracking"],
+      revenue:"Converts Conditional owners to managed clients. Each conversion is ₹12K–₹42K/yr ARR. Even 20% conversion rate on Conditional pool is significant.",
+      effort:"Low · 2 months"
+    }
+  ],
+  documents: [
+    {
+      icon:"📄", name:"Smart Document Processing",
+      desc:"Upload any TN property document — sale deed, EC, Patta, Khata, TNRERA — and get structured field extraction, cross-document validation, and listing autofill in 60 seconds.",
+      tags:["core","win"],
+      problem:"Agents spend 4–8 hours manually verifying 10–18 documents per deal. Scanned Tamil/English bilingual PDFs are unstructured and error-prone.",
+      solution:"OCR pipeline (PaddleOCR for Tamil+English) → Claude API for field extraction with structured JSON prompts → rule-based validation engine → verified data card + listing autofill.",
+      tech:["PaddleOCR / Google Vision","Claude API (extraction)","LayoutLM classification","PostgreSQL","WhatsApp webhook"],
+      metrics:[{v:"60s",l:"Processing time"},{v:"12+",l:"Doc types"},{v:"90%+",l:"Extraction accuracy"}],
+      timeline:["OCR pipeline","Doc classifier","Field extraction","Validation rules","WhatsApp intake"],
+      revenue:"₹49/doc pay-per-use · ₹999/mo Starter · ₹3,499/mo Pro · ₹12,000/mo Enterprise. Also ₹299 buyer due diligence report.",
+      effort:"Low · 3 months"
+    },
+    {
+      icon:"🔍", name:"TNRERA / IGRS Live Validator",
+      desc:"Real-time cross-check uploaded documents against TNRERA, IGRS, GCC, Patta portals — flag expired registrations, encumbrances, and unpaid dues before any listing goes live.",
+      tags:["core","gs","new"],
+      problem:"No platform in TN currently validates TNRERA status, IGRS records, and tax dues before a transaction. This is explicitly GreenSpaceZ's 'Zero Verification Standard' problem slide.",
+      solution:"Scraper + API layer on TNRERA, IGRS, GCC/CCMC, and Patta portals — triggered at listing submission. Returns live status per compliance parameter with plain-language flag explanations.",
+      tech:["TNRERA API / scraper","IGRS portal integration","Selenium / Playwright","Redis caching","Alert engine"],
+      metrics:[{v:"5",l:"Gov portals integrated"},{v:"Real-time",l:"Validation speed"},{v:"0",l:"Unapproved listings"}],
+      timeline:["TNRERA integration","IGRS scraper","GCC/Patta","Alert logic","Production hardening"],
+      revenue:"Core to GreenScore Legal parameter (25% weight). Required for Diamond and Platinum plan compliance features. Enables legal commission partnerships (15–20% from 48 lawyers).",
+      effort:"Medium · 3–4 months"
+    },
+    {
+      icon:"✍️", name:"DigiLocker Agreement AI",
+      desc:"Auto-generate legally compliant rental agreements from property and tenant data, e-sign via DigiLocker, store with a geotagged, timestamped audit trail — Diamond & Platinum plans.",
+      tags:["core","nri"],
+      problem:"Tenant placement in TN relies on informal hand-typed agreements. No standard, no digital signature, no audit trail. NRI owners cannot verify agreement authenticity remotely.",
+      solution:"LLM-generated agreement from structured data (tenant Aadhaar, property details, rent terms) → legal review layer (48-lawyer network) → DigiLocker e-sign flow → stored with EPMS audit trail.",
+      tech:["Claude API (doc gen)","DigiLocker API","Aadhaar e-KYC","PDF generation","Audit trail DB"],
+      metrics:[{v:"Diamond+",l:"Plan tier"},{v:"48",l:"Verified TN lawyers"},{v:"100%",l:"Legally binding"}],
+      timeline:["Agreement templates","DigiLocker API","Legal review loop","Aadhaar KYC","Audit storage"],
+      revenue:"Exclusive to Diamond (₹21K/2yr) and Platinum (₹42K/5yr) plans — acts as a strong upsell lever from Gold. Also enables 20% legal discount feature.",
+      effort:"Medium · 3–4 months"
+    },
+    {
+      icon:"📋", name:"Buyer Due Diligence Report",
+      desc:"One-click PDF for property buyers — verified document chain, GreenScore breakdown, encumbrance status, TNRERA clearance, and outstanding tax dues — delivered in minutes.",
+      tags:["core","win"],
+      problem:"Property buyers in TN have no independent, verified summary of a property's legal and physical health before purchase. They rely on seller-provided documents or expensive lawyers.",
+      solution:"Aggregate outputs from Smart Document Processing + TNRERA Validator + GreenScore Engine into a structured buyer report — branded PDF with GreenSpaceZ verification seal.",
+      tech:["Report template engine","PDF generation (WeasyPrint)","GreenScore API","Payment gateway","WhatsApp delivery"],
+      metrics:[{v:"₹299",l:"Per report"},{v:"Minutes",l:"Delivery time"},{v:"B2C",l:"Direct revenue"}],
+      timeline:["Template design","Data aggregation","PDF engine","Payment flow","WhatsApp delivery"],
+      revenue:"Pure B2C add-on — no additional build beyond integrating existing outputs. At 100 reports/month = ₹29,900/mo. Scales with listing volume.",
+      effort:"Low · 1–2 months (builds on other products)"
+    }
+  ],
+  nri: [
+    {
+      icon:"🌐", name:"NRI Owner Intelligence Dashboard",
+      desc:"Live property health feed for NRI owners — rent ledger, inspection photos, bill status, GreenScore trend, and maintenance alerts — all in one app across all their TN properties.",
+      tags:["nri","new","win"],
+      problem:"32 Lakh+ NRI-owned TN properties are completely unmonitored. No tech-enabled manager exists. Owners only know about problems when it's too late — disconnections, encroachments, tenant disputes.",
+      solution:"React Native app + web dashboard pulling live data from EPMS field reports, IoT sensors, bill monitoring, rent ledger, and GreenScore history — with push notifications and monthly AI-generated property health summary.",
+      tech:["React Native + PWA","Push notifications","EPMS API","IoT data feed","Monthly AI summary (Claude)"],
+      metrics:[{v:"32L+",l:"NRI owner TAM"},{v:"All plans",l:"Silver to Platinum"},{v:"24/7",l:"Live monitoring"}],
+      timeline:["Core dashboard","EPMS integration","Bill monitoring feed","Rent ledger","Notification engine"],
+      revenue:"The primary reason NRI owners choose GreenSpaceZ over a local caretaker. Anchors all management plan subscriptions. Directly supports ₹26.7L Yr1 management revenue target.",
+      effort:"Medium · 3–5 months"
+    },
+    {
+      icon:"🔐", name:"AI Tenant Screening",
+      desc:"Aadhaar + police verification workflow, rental history scoring, employment verification, and risk profiling — replaces informal references for NRI landlords placing tenants remotely.",
+      tags:["nri","core"],
+      problem:"Unvetted tenants are one of the core 6 problems in GreenSpaceZ's pitch deck. NRI owners cannot physically screen tenants and currently rely on informal references with zero accountability.",
+      solution:"Aadhaar e-KYC verification → police verification API → employment/income check (bank statement OCR) → AI risk score → recommendation to owner via WhatsApp with full audit trail.",
+      tech:["Aadhaar e-KYC API","Police verification API","Bank statement OCR","Risk scoring model","WhatsApp report"],
+      metrics:[{v:"Diamond+",l:"Plan tier"},{v:"Aadhaar",l:"ID verification"},{v:"0",l:"Unvetted placements"}],
+      timeline:["Aadhaar KYC","Police API","Bank OCR","Risk model","Owner report"],
+      revenue:"Key feature driving Gold→Diamond upgrade (₹12K→₹21K/2yr). NRI owners will pay a premium to eliminate tenant risk they cannot manage remotely.",
+      effort:"Medium · 3–4 months"
+    },
+    {
+      icon:"⚡", name:"Bill & Tax Monitor AI",
+      desc:"Continuously monitor TNEB electricity, GCC/CCMC property tax, and water dues — alert owners before accumulation becomes disconnections and penalties. Available from Silver plan.",
+      tags:["nri","new","win"],
+      problem:"Bill & Tax Accumulation is one of GreenSpaceZ's 6 core problem areas. TNEB, GCC property tax, and water dues accumulate undetected until disconnections and legal penalties hit NRI owners.",
+      solution:"Scheduled scraper on TNEB, GCC, CCMC, and water board portals → detect new dues → alert owner via WhatsApp + app push → auto-pay workflow (Gold+) → update rent ledger.",
+      tech:["TNEB portal scraper","GCC/CCMC API","WhatsApp alert","Auto-pay gateway","Redis scheduler"],
+      metrics:[{v:"Silver+",l:"All plans"},{v:"3",l:"Utility portals"},{v:"Before",l:"Alert timing"}],
+      timeline:["TNEB scraper","GCC/CCMC","WhatsApp alerts","Auto-pay (Gold+)","Multi-property dashboard"],
+      revenue:"Core feature for Silver (₹9K/yr) plan — key selling point over local caretakers who don't monitor bills. Prevents owner churn by catching problems early.",
+      effort:"Low · 2 months"
+    },
+    {
+      icon:"💸", name:"TDS / FEMA Compliance AI",
+      desc:"Auto-calculate TDS on NRI rental income, generate Form 15CA/15CB, flag FEMA compliance requirements for rental remittances abroad — the Platinum plan's flagship differentiator.",
+      tags:["nri","new"],
+      problem:"NRI rental income in India is subject to 30% TDS, Form 15CA/15CB filings, and FEMA remittance rules. Most NRI owners are non-compliant — creating legal and financial risk.",
+      solution:"Rental income data from ledger → TDS calculation engine → auto-generate Form 15CA/15CB → CA review workflow (integration with legal network) → FEMA remittance flag and advisory.",
+      tech:["TDS calculation engine","Form 15CA/15CB generator","CA workflow integration","FEMA rule engine","Secure remittance advisory"],
+      metrics:[{v:"Platinum",l:"Plan tier (₹42K/5yr)"},{v:"30%",l:"NRI TDS rate"},{v:"₹0",l:"Penalty target"}],
+      timeline:["TDS engine","Form generation","CA integration","FEMA module","Remittance advisory"],
+      revenue:"Exclusive to Platinum plan (₹42K/5yr). No competitor offers this — NoBroker, 99acres have zero NRI POA + FEMA capability. Strong moat for high-value NRI segment.",
+      effort:"High · 5–6 months (regulatory complexity)"
+    },
+    {
+      icon:"💳", name:"UPI Rent Collection & Ledger AI",
+      desc:"Automated rent reminders, UPI collection, ledger reconciliation, late payment escalation, and monthly owner report generation — Gold plan and above.",
+      tags:["nri","core"],
+      problem:"Rent collection for NRI owners is manual and unreliable — tenants pay irregularly, receipts are informal, and owners have no visibility into rent ledger history from abroad.",
+      solution:"WhatsApp rent reminder → UPI payment link → auto-reconcile to tenant ledger → escalation workflow for late payments → monthly AI-generated rent summary report to owner.",
+      tech:["Razorpay / PayU UPI","WhatsApp Business API","Ledger engine","Late payment rules","Monthly AI report (Claude)"],
+      metrics:[{v:"Gold+",l:"Plan tier"},{v:"UPI",l:"Payment method"},{v:"Monthly",l:"Auto-report"}],
+      timeline:["UPI integration","Reminder engine","Ledger system","Late payment flow","Monthly report"],
+      revenue:"Core Gold plan (₹12K/yr) feature. Drives Gold→Diamond upgrade path. Reduces NRI owner operational burden significantly — strong retention driver.",
+      effort:"Medium · 3 months"
+    }
+  ],
+  iot: [
+    {
+      icon:"🛰️", name:"Plot Encroachment Detector",
+      desc:"Satellite + drone imagery AI to detect boundary violations on vacant plots along ECR, OMR, and CBE belts — monthly geo-tagged alerts sent to NRI owners. Platinum plan.",
+      tags:["iot","new","nri"],
+      problem:"Plot Encroachment Risk is one of GreenSpaceZ's 6 core problems. Vacant plots on ECR/OMR/CBE belts go completely unmonitored — encroachment is detected only after it becomes a legal dispute.",
+      solution:"Monthly high-resolution satellite imagery (Planet / ISRO Bhuvan) → boundary polygon comparison → change detection AI → encroachment flag with geotagged evidence → WhatsApp alert to owner with coordinates.",
+      tech:["Planet / Bhuvan satellite API","Boundary polygon DB","Change detection CV model","GeoJSON storage","WhatsApp geo-alert"],
+      metrics:[{v:"Monthly",l:"Monitoring cycle"},{v:"Platinum",l:"Plan tier"},{v:"ECR/OMR/CBE",l:"Initial coverage"}],
+      timeline:["Satellite API","Boundary DB","Change detection model","Alert pipeline","Drone integration (Yr2)"],
+      revenue:"Unique feature with zero competitor coverage. Enables Platinum plan at ₹42K/5yr for plot-owning NRI customers. Expandable to farmland and wetland plots.",
+      effort:"High · 5–7 months"
+    },
+    {
+      icon:"🔧", name:"Predictive Maintenance AI",
+      desc:"Predict lift, DG set, pump, AC, and solar system failures 7–30 days in advance using IoT sensor data — alerts EPMS and building manager before breakdown disrupts tenants.",
+      tags:["iot","core"],
+      problem:"Managed premium apartments (like Alba Foundation One) have Daikin ACs, Cummins DG sets, and solar systems. Reactive maintenance causes tenant dissatisfaction and unplanned costs.",
+      solution:"IoT sensors (vibration, temp, current, pressure) → MQTT pipeline → LSTM anomaly detection → failure probability score → WhatsApp alert to EPMS → auto-generate work order to vetted vendor.",
+      tech:["MEMS / current sensors","MQTT / AWS IoT","LSTM model","TimescaleDB","EPMS work order API"],
+      metrics:[{v:"7–30d",l:"Advance warning"},{v:"5",l:"Equipment types"},{v:"₹9K/mo",l:"Building subscription"}],
+      timeline:["Sensor deployment","MQTT pipeline","Anomaly model","Alert engine","Work order automation"],
+      revenue:"₹3,500–₹18,000/mo per building SaaS. GreenSpaceZ-managed buildings get embedded at cost. External buildings are a standalone revenue stream.",
+      effort:"High · 6–9 months (hardware deployment)"
+    },
+    {
+      icon:"📸", name:"AI Security & Surveillance",
+      desc:"Computer vision for gated community perimeter alerts, visitor identification, and anomaly detection — feeds live into the NRI owner dashboard for remote monitoring.",
+      tags:["iot","nri","new"],
+      problem:"NRI owners of managed apartments cannot verify whether the 24-hour security they're paying for is actually effective. No remote visibility into physical access.",
+      solution:"CCTV integration with on-edge CV model → detect perimeter breaches, unknown vehicles, abnormal activity → clip + push notification to owner app → feeds live view into NRI dashboard.",
+      tech:["Edge CV (YOLO / MobileNet)","RTSP CCTV integration","On-premise edge compute","Push notification","Clip storage (S3)"],
+      metrics:[{v:"24/7",l:"Monitoring"},{v:"Edge",l:"Processing (privacy)"},{v:"<5s",l:"Alert latency"}],
+      timeline:["CCTV integration","Edge model","Clip storage","Owner app feed","Multi-building scale"],
+      revenue:"Bundled into Diamond and Platinum management plans as a premium feature. Differentiates from NoBroker which has no physical security monitoring.",
+      effort:"High · 5–6 months"
+    },
+    {
+      icon:"☀️", name:"Eco Energy Manager",
+      desc:"Optimise solar output, AC schedules, and common area lighting using occupancy and weather data — reduces electricity bills and contributes to the Environmental parameter in GreenScore™.",
+      tags:["iot","esg","gs"],
+      problem:"Eco-property listings claim green features but cannot quantify energy savings. Solar inverters, ACs, and common area lighting run without optimisation — wasting energy and weakening the ESG narrative.",
+      solution:"Smart meter + IoT data → occupancy-aware AC scheduling → solar output optimisation → common area lighting control → monthly energy savings report → feeds Digital Readiness (12%) and ESG score.",
+      tech:["Smart energy meters","Solar inverter API","Occupancy sensors","Rules engine","Monthly savings report"],
+      metrics:[{v:"12%",l:"GreenScore weight"},{v:"20–30%",l:"Energy savings target"},{v:"IGBC",l:"Certification aligned"}],
+      timeline:["Smart meter integration","Solar API","Occupancy sensing","Optimisation engine","GreenScore feed"],
+      revenue:"Strengthens GreenScore Environmental parameter → higher scores → premium listing pricing. Energy savings report is a key NRI owner retention tool.",
+      effort:"Medium-High · 4–5 months"
+    }
+  ],
+  marketplace: [
+    {
+      icon:"✍️", name:"Listing Content Generator",
+      desc:"Auto-generate property descriptions from GreenScore data, highlight eco features (solar, EV, rainwater, green roof), and translate to Tamil and English — integrates with the poster workflow.",
+      tags:["core","win","gs"],
+      problem:"GreenSpaceZ agents spend hours writing listing descriptions manually. Eco features are inconsistently highlighted. Tamil-speaking buyers are underserved by English-only content.",
+      solution:"GreenScore data + property fields → Claude API generates structured listing description → eco feature highlights → Tamil translation → direct export to poster workflow and portal sync.",
+      tech:["Claude API (generation)","Tamil translation model","Portal sync API","Poster template engine","4-portal integration"],
+      metrics:[{v:"4",l:"Portal integrations"},{v:"2",l:"Languages (EN/TN)"},{v:"Minutes",l:"Generation time"}],
+      timeline:["Claude prompt templates","Tamil translation","Portal sync","Poster integration","Quality QA loop"],
+      revenue:"Embedded in Portal Sync plan (₹999/mo × 4 portals = ₹4.8L Yr1). Reduces agent time per listing by 2–3 hours → enables more listings → more commission revenue.",
+      effort:"Low · 1–2 months — fastest to deploy"
+    },
+    {
+      icon:"🎯", name:"Eco Buyer–Property Matcher",
+      desc:"Match NRI and eco-conscious buyers to GreenVerified™ and GreenElite™ listings using preferences, budget, ESG priorities, GreenScore range, and commute signals.",
+      tags:["core","nri","esg"],
+      problem:"Buyers on TN portals have no way to filter by eco-credentials, GreenScore, or TNRERA-verified status. Eco-conscious and NRI buyers are underserved by generic search.",
+      solution:"Buyer preference onboarding → collaborative filtering + GreenScore weighting → ranked listing recommendations → WhatsApp nudge for new matched listings → lead qualification before agent contact.",
+      tech:["Collaborative filtering","GreenScore API","WhatsApp notification","Lead scoring model","CRM integration"],
+      metrics:[{v:"GreenVerified+",l:"Eligible listings"},{v:"NRI",l:"Primary segment"},{v:"Qualified",l:"Lead delivery"}],
+      timeline:["Preference onboarding","Matching engine","WhatsApp nudge","Lead scoring","CRM integration"],
+      revenue:"Featured Listings (₹2,999/30 days) and SaaS Pro plan (₹2,399/mo) directly benefit. Higher buyer-listing match quality increases transaction close rate.",
+      effort:"Medium · 3–4 months"
+    },
+    {
+      icon:"🌿", name:"ESG Score Engine",
+      desc:"Extend GreenScore™ into a full investor-grade ESG report — IGBC/LEED certification tracking, Scope 1/2 carbon footprint per property, and sustainability benchmarking across the portfolio.",
+      tags:["esg","new","gs"],
+      problem:"Institutional investors and NRI buyers increasingly require ESG data. GreenSpaceZ's brand promise of 'eco-property' needs quantified evidence beyond the GreenScore.",
+      solution:"GreenScore Environmental + IoT energy data + green certification status → Scope 1/2 emissions calculation → IGBC/LEED readiness gap analysis → investor-grade ESG report PDF.",
+      tech:["Emissions calculation engine","IGBC/LEED criteria DB","IoT energy data","PDF report generator","Portfolio dashboard"],
+      metrics:[{v:"21.2%",l:"Eco-property CAGR"},{v:"IGBC",l:"Certification aligned"},{v:"Scope 1/2",l:"Emissions coverage"}],
+      timeline:["Emissions engine","IGBC criteria mapping","IoT data feed","ESG report template","Portfolio view"],
+      revenue:"Differentiates GreenSpaceZ for institutional and NRI investors. Enables premium ESG listing badge. Foundation for future carbon credit trading on managed green properties.",
+      effort:"Medium · 3–4 months"
+    },
+    {
+      icon:"🔧", name:"Vendor Intelligence",
+      desc:"Score and rank GreenSpaceZ's 60+ vetted vendors on quality, SLA adherence, response time, and cost — auto-assign best vendor per maintenance request type and location.",
+      tags:["core","gs"],
+      problem:"60+ vendors in the EPMS network today. As this scales to 100+, manual assignment becomes a bottleneck. No quality scoring means no accountability — undermining the SLA promise.",
+      solution:"Vendor performance data from EPMS work orders → quality scoring model (response time, tenant rating, cost vs estimate) → auto-assignment engine for new maintenance requests → vendor scorecard dashboard.",
+      tech:["Vendor performance DB","Scoring model","Auto-assignment engine","EPMS work order integration","Vendor scorecard"],
+      metrics:[{v:"60+",l:"Current vendors"},{v:"100+",l:"Yr2 target"},{v:"4-hr",l:"Chennai SLA"}],
+      timeline:["Performance data collection","Scoring model","Auto-assignment","Vendor dashboard","Tenant rating loop"],
+      revenue:"Improves SLA adherence → reduces churn → supports Platinum plan premium. Enables vendor network expansion beyond 100 without quality degradation.",
+      effort:"Low-Medium · 2–3 months"
+    },
+    {
+      icon:"💬", name:"GreenSpaceZ AI Concierge",
+      desc:"24/7 WhatsApp + web chatbot for buyers, sellers, and NRI owners — answers GreenScore queries, schedules EPMS inspections, qualifies leads, and escalates to named managers.",
+      tags:["core","nri","win"],
+      problem:"GreenSpaceZ handles buyer queries, inspection requests, and NRI owner questions across WhatsApp, email, and web. As user base grows, manual response is not scalable.",
+      solution:"Claude-powered conversational agent on WhatsApp Business API + web widget → intent detection → GreenScore FAQ, inspection scheduling, lead qualification → escalation to named manager (Platinum) or EPMS (Diamond).",
+      tech:["Claude API","WhatsApp Business API","Intent classifier","EPMS scheduling API","CRM escalation"],
+      metrics:[{v:"24/7",l:"Availability"},{v:"WhatsApp",l:"Primary channel"},{v:"Platinum",l:"Named manager escalation"}],
+      timeline:["Claude prompt design","WhatsApp API","Intent flows","EPMS scheduling","Named manager escalation"],
+      revenue:"Reduces agent response burden by ~40%. Enables scaling to 300+ beta users (Apr 2025 target) without proportional headcount growth. Converts inbound leads to managed property clients.",
+      effort:"Low-Medium · 2–3 months"
+    }
+  ]
+};
+
+// ── RENDER CARDS ──
+function tagHTML(tags){
+  const map={core:'tag-core',nri:'tag-nri',iot:'tag-iot',esg:'tag-esg',gs:'tag-gs',new:'tag-new',win:'tag-win'};
+  const labels={core:'Core',nri:'NRI',iot:'IoT',esg:'ESG',gs:'GreenScore™',new:'New from deck',win:'Quick Win'};
+  return tags.map(t=>`<span class="tag ${map[t]||'tag-core'}">${labels[t]||t}</span>`).join('');
+}
+
+function timelineHTML(steps){
+  return steps.map((s,i)=>`<div class="tl-step${i===0?' done':''}"><div class="tl-step-dot"></div>${s}</div>`).join('');
+}
+
+function renderDomain(domainKey){
+  const grid=document.getElementById('grid-'+domainKey);
+  if(!grid)return;
+  PRODUCTS[domainKey].forEach((p,idx)=>{
+    const id=`card-${domainKey}-${idx}`;
+    const card=document.createElement('div');
+    card.className='product-card';
+    card.id=id;
+    card.innerHTML=`
+      <div class="card-header" onclick="toggleCard('${id}')">
+        <div style="flex:1;">
+          <div class="card-icon" style="background:rgba(255,255,255,0.06);">${p.icon}</div>
+          <div class="card-name">${p.name}</div>
+          <div class="card-desc">${p.desc}</div>
+        </div>
+        <div class="card-toggle">+</div>
+      </div>
+      <div class="card-tags">${tagHTML(p.tags)}</div>
+      <div class="card-expand" id="expand-${id}">
+        <div class="expand-inner">
+          <div class="expand-section">
+            <div class="expand-label">Problem & Solution</div>
+            <div class="expand-grid">
+              <div class="expand-box">
+                <div class="expand-box-title">Problem</div>
+                <div class="expand-box-body">${p.problem}</div>
+              </div>
+              <div class="expand-box">
+                <div class="expand-box-title">Solution</div>
+                <div class="expand-box-body">${p.solution}</div>
+              </div>
+            </div>
+          </div>
+          <div class="expand-section">
+            <div class="expand-label">Key Metrics</div>
+            <div class="expand-metrics">
+              ${p.metrics.map(m=>`<div class="expand-metric"><div class="expand-metric-val">${m.v}</div><div class="expand-metric-label">${m.l}</div></div>`).join('')}
+            </div>
+          </div>
+          <div class="expand-section">
+            <div class="expand-label">Tech Stack</div>
+            <div class="tech-chips">${p.tech.map(t=>`<span class="tech-chip">${t}</span>`).join('')}</div>
+          </div>
+          <div class="expand-section">
+            <div class="expand-label">Build Timeline</div>
+            <div class="expand-timeline">${timelineHTML(p.timeline)}</div>
+          </div>
+          <div class="expand-section">
+            <div class="expand-grid">
+              <div class="expand-box">
+                <div class="expand-box-title">Revenue Link</div>
+                <div class="expand-box-body">${p.revenue}</div>
+              </div>
+              <div class="expand-box">
+                <div class="expand-box-title">Build Effort</div>
+                <div class="expand-box-body" style="font-size:13px;font-weight:500;color:var(--gold-light);">${p.effort}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+function toggleCard(id){
+  const card=document.getElementById(id);
+  const expand=document.getElementById('expand-'+id);
+  const isOpen=card.classList.contains('open');
+  card.classList.toggle('open',!isOpen);
+  expand.classList.toggle('open',!isOpen);
+}
+
+// ── DOMAIN TAB HIGHLIGHT ──
+function initDomainNav(){
+  const tabs=document.querySelectorAll('.domain-tab');
+  tabs.forEach(tab=>{
+    tab.addEventListener('click',()=>{
+      const target=document.getElementById(tab.dataset.target);
+      if(target)target.scrollIntoView({behavior:'smooth',block:'start'});
+    });
+  });
+  const sections=document.querySelectorAll('.domain-section');
+  const observer=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        tabs.forEach(t=>t.classList.remove('active'));
+        const active=document.querySelector(`.domain-tab[data-target="${e.target.id}"]`);
+        if(active)active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-30% 0px -60% 0px'});
+  sections.forEach(s=>observer.observe(s));
+}
+
+// ── IOT DASHBOARD ──
+function iotMode(el){
+  document.querySelectorAll('.iot-mode').forEach(m=>m.classList.remove('iot-mode-active'));
+  el.classList.add('iot-mode-active');
+}
+function iotScene(el){
+  document.querySelectorAll('.iot-scene').forEach(s=>{
+    s.classList.remove('iot-scene-active');
+    const chk=s.querySelector('.iot-scene-chk');
+    if(chk)chk.remove();
+  });
+  el.classList.add('iot-scene-active');
+  const chk=document.createElement('div');
+  chk.className='iot-scene-chk';chk.textContent='✓';
+  el.appendChild(chk);
+}
+function iotSlider(el,targetId,unit){
+  const out=document.getElementById(targetId);
+  if(out)out.textContent=el.value+unit;
+  const pct=(el.value-el.min)/(el.max-el.min)*100;
+  el.style.background=`linear-gradient(to right,var(--gold) ${pct}%,var(--iot-off) ${pct}%)`;
+}
+function iotSelectRoom(room){
+  document.querySelectorAll('[id^="isvg-"]').forEach(r=>{
+    r.setAttribute('fill','rgba(255,255,255,0.02)');
+    r.setAttribute('stroke','rgba(255,255,255,0.07)');
+    r.setAttribute('stroke-width','1');
+  });
+  const t=document.getElementById('isvg-'+room);
+  if(t){t.setAttribute('fill','rgba(201,168,76,0.1)');t.setAttribute('stroke','var(--gold)');t.setAttribute('stroke-width','1.5');}
+}
+
+// ── NRI REMOTE VIEW ──
+function nriTab(el, screen){
+  // update bottom nav in all screens
+  document.querySelectorAll('.nri-bnav').forEach(b=>b.classList.remove('nri-bnav-active'));
+  document.querySelectorAll('.nri-bnav').forEach(b=>{
+    if(b.textContent.toLowerCase().includes(screen.toLowerCase().slice(0,4))) b.classList.add('nri-bnav-active');
+  });
+  // show correct screen
+  document.querySelectorAll('.nri-screen').forEach(s=>s.classList.add('hidden'));
+  const target=document.getElementById('nri-sc-'+screen);
+  if(target) target.classList.remove('hidden');
+}
+function nriSelectProp(el, prop){
+  document.querySelectorAll('.nri-prop-card').forEach(c=>c.classList.remove('nri-active-prop'));
+  el.classList.add('nri-active-prop');
+}
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded',()=>{
+  ['greenscore','documents','nri','iot','marketplace'].forEach(renderDomain);
+  initDomainNav();
+  document.querySelectorAll('input.iot-range').forEach(el=>{
+    const pct=(el.value-el.min)/(el.max-el.min)*100;
+    el.style.background=`linear-gradient(to right,var(--gold) ${pct}%,var(--iot-off) ${pct}%)`;
+  });
+});
+</script>
+</body>
+</html>
