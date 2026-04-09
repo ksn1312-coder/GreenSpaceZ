@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GreenSpaceZ Property Partnership Pitch</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --forest-green: #1a4d2e;
+            --leaf-green: #4f8a6c;
+            --gold: #d4a574;
+            --cream: #f8f4e8;
+            --light-cream: #fdfcf7;
+            --dark-text: #2d3436;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            line-height: 1.7;
+            color: var(--dark-text);
+            background: var(--light-cream);
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--forest-green) 0%, var(--leaf-green) 100%);
+            color: var(--cream);
+            padding: 40px 20px;
+            margin: -20px -20px 40px -20px;
+            border-radius: 0 0 30px 30px;
+            box-shadow: 0 10px 40px rgba(26, 77, 46, 0.2);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            margin-bottom: 10px;
+            color: var(--cream);
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 3vw, 1.3rem);
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .meta-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 25px;
+            font-size: 0.95rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .meta-label {
+            font-weight: 600;
+            opacity: 0.8;
+        }
+
+        /* Navigation */
+        .nav {
+            position: sticky;
+            top: 0;
+            background: rgba(248, 244, 232, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            margin: 0 -20px 30px -20px;
+            border-bottom: 2px solid var(--gold);
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .nav a {
+            color: var(--forest-green);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            background: rgba(79, 138, 108, 0.1);
+        }
+
+        .nav a:hover {
+            background: var(--leaf-green);
+            color: var(--cream);
+            transform: translateY(-2px);
+        }
+
+        /* Section Styling */
+        section {
+            margin-bottom: 50px;
+            scroll-margin-top: 80px;
+        }
+
+        h2 {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            color: var(--forest-green);
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--gold);
+        }
+
+        h3 {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(1.2rem, 3vw, 1.6rem);
+            color: var(--leaf-green);
+            margin: 30px 0 15px 0;
+        }
+
+        h4 {
+            font-weight: 600;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            color: var(--forest-green);
+            margin: 20px 0 10px 0;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        /* Property Cards */
+        .property-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 25px rgba(26, 77, 46, 0.1);
+            border-left: 5px solid var(--leaf-green);
+        }
+
+        .property-header {
+            background: linear-gradient(135deg, var(--cream) 0%, #ede5d4 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+
+        .property-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.8rem;
+            color: var(--forest-green);
+            margin-bottom: 5px;
+        }
+
+        .property-location {
+            color: var(--leaf-green);
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        /* Info Grid */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .info-item {
+            background: var(--cream);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 3px solid var(--gold);
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--forest-green);
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            color: var(--dark-text);
+        }
+
+        /* Contact Cards */
+        .contact-card {
+            background: linear-gradient(135deg, var(--forest-green) 0%, var(--leaf-green) 100%);
+            color: var(--cream);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 15px 0;
+        }
+
+        .contact-name {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+        }
+
+        .contact-role {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        .contact-details {
+            display: grid;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .contact-details a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        /* Tables */
+        .responsive-table {
+            width: 100%;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+        }
+
+        th {
+            background: var(--forest-green);
+            color: var(--cream);
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        tr:hover {
+            background: var(--cream);
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 15px 0 15px 25px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        /* Highlight Boxes */
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(79, 138, 108, 0.1) 0%, rgba(212, 165, 116, 0.1) 100%);
+            border-left: 4px solid var(--leaf-green);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .priority-badge {
+            display: inline-block;
+            background: var(--gold);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .priority-1 {
+            background: #2ecc71;
+        }
+
+        .priority-2 {
+            background: #f39c12;
+        }
+
+        .priority-3 {
+            background: #3498db;
+        }
+
+        /* Association Badge */
+        .association-badge {
+            display: inline-block;
+            background: var(--leaf-green);
+            color: white;
+            padding: 3px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-left: 10px;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--forest-green);
+            color: var(--cream);
+            padding: 30px 20px;
+            margin: 50px -20px -20px -20px;
+            border-radius: 30px 30px 0 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Print Styles */
+        @media print {
+            .nav {
+                display: none;
+            }
+            
+            .property-card {
+                page-break-inside: avoid;
+            }
+            
+            body {
+                background: white;
+            }
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header {
+                padding: 30px 15px;
+                margin: -15px -15px 30px -15px;
+            }
+
+            .nav {
+                padding: 10px 15px;
+                margin: 0 -15px 25px -15px;
+            }
+
+            .nav-content {
+                gap: 8px;
+            }
+
+            .nav a {
+                padding: 6px 12px;
+                font-size: 0.85rem;
+            }
+
+            .property-card {
+                padding: 20px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            table {
+                font-size: 0.85rem;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+        }
+
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Code blocks */
+        code {
+            background: var(--cream);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background: var(--cream);
+            padding: 15px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <h1>🌿 GreenSpaceZ Property Partnership Pitch</h1>
+                <div class="subtitle">Strategic Targeting Document</div>
+                <div class="meta-info">
+                    <div class="meta-item">
+                        <span class="meta-label">Date:</span>
+                        <span>April 9, 2026</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Contact:</span>
+                        <span>Karthik</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Email:</span>
+                        <span>ksn1312@gmail.com</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Phone:</span>
+                        <span>+91 96000 71313</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <nav class="nav">
+            <div class="nav-content">
+                <a href="#executive-summary">Summary</a>
+                <a href="#asv-suntech">ASV Suntech</a>
+                <a href="#vgn-coasta">VGN Coasta</a>
+                <a href="#casagrand">Casagrand</a>
+                <a href="#association-strategy">Associations</a>
+                <a href="#contacts">Contacts</a>
+                <a href="#next-steps">Next Steps</a>
+            </div>
+        </nav>
+
+        <section id="executive-summary">
+            <h2>Executive Summary</h2>
+            <div class="highlight-box">
+                <p><strong>Purpose:</strong> Strategic partnership opportunities for GreenSpaceZ with three premium Chennai properties representing different market segments and developer profiles.</p>
+                <p><strong>Key Finding:</strong> VGN Coasta has a <strong>formally registered Apartment Owners Association</strong> with identified leadership, making it the highest-priority target for association-driven partnerships.</p>
+            </div>
+        </section>
+
+        <section id="asv-suntech">
+            <div class="property-card">
+                <div class="property-header">
+                    <div class="property-title">ASV Suntech Park</div>
+                    <div class="property-location">📍 Sholinganallur, OMR Corridor</div>
+                    <span class="priority-badge priority-3">Priority 3</span>
+                    <span class="association-badge">Commercial Management</span>
+                </div>
+
+                <h3>Property Overview</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Type</div>
+                        <div class="info-value">Commercial IT Park</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Size</div>
+                        <div class="info-value">4,50,000 sq.ft</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Floors</div>
+                        <div class="info-value">Basement + Ground + 8</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Year Built</div>
+                        <div class="info-value">2006</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Status</div>
+                        <div class="info-value">Leased Out</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Tenants</div>
+                        <div class="info-value">Cognizant, UST Global, Cisco</div>
+                    </div>
+                </div>
+
+                <h3>Developer: ASV Constructions Pvt Ltd</h3>
+                <p><strong>Established:</strong> 2000 | <strong>Portfolio:</strong> 3M sq.ft completed, 6M sq.ft pipeline</p>
+
+                <div class="contact-card">
+                    <div class="contact-name">Mr. Vaibhav Kamdar</div>
+                    <div class="contact-role">Director & CEO, ASV Group</div>
+                    <div class="contact-details">
+                        <div>📧 <a href="mailto:crm@asvgroup.in">crm@asvgroup.in</a></div>
+                        <div>📞 <a href="tel:+919884685000">+91 98846 85000</a></div>
+                        <div>🏢 59, Ormes Road, Kilpauk, Chennai - 600 010</div>
+                    </div>
+                </div>
+
+                <h3>Management Structure</h3>
+                <div class="highlight-box">
+                    <p><strong>Type:</strong> Commercial Building Management (Not Residential Association)</p>
+                    <p><strong>Building Manager:</strong> Mr. CB Kumar - ASV Management Pvt Ltd</p>
+                    <p><strong>Platform:</strong> ADDA.io presence for tenant coordination</p>
+                    <p><strong>Contact Method:</strong> Via ASV Constructions corporate office</p>
+                </div>
+
+                <h3>GreenSpaceZ Value Proposition</h3>
+                <h4>"Elevate Your Commercial Portfolio's Environmental Leadership"</h4>
+                <ul>
+                    <li><strong>Tenant Attraction Premium:</strong> Modern IT companies demand green-certified workspaces</li>
+                    <li><strong>Portfolio Differentiation:</strong> 6M sq.ft pipeline - early green positioning creates brand advantage</li>
+                    <li><strong>Corporate ESG Support:</strong> Cognizant, UST, Cisco all have sustainability commitments</li>
+                    <li><strong>Future-Proofing:</strong> Government green building mandates increasing</li>
+                </ul>
+
+                <h3>Recommended Approach</h3>
+                <ol>
+                    <li>Initial contact: Email to crm@asvgroup.in addressing Mr. Vaibhav Kamdar</li>
+                    <li>Positioning: Partnership for premium commercial listings platform</li>
+                    <li>Meeting request: Present GreenSpaceZ + ZoWorks.ai analytics value</li>
+                    <li>Emphasize: Zero upfront cost, performance-based model</li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="vgn-coasta">
+            <div class="property-card">
+                <div class="property-header">
+                    <div class="property-title">VGN Coasta</div>
+                    <div class="property-location">📍 East Coast Road (ECR), Near Mayajaal</div>
+                    <span class="priority-badge priority-1">Priority 1 - TOP TARGET</span>
+                    <span class="association-badge">✓ Registered Association</span>
+                </div>
+
+                <h3>Property Overview</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Type</div>
+                        <div class="info-value">Luxury Sea-Facing Apartments</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Size</div>
+                        <div class="info-value">2.17 acres | 119 units</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Configuration</div>
+                        <div class="info-value">3 BHK & 4 BHK</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Structure</div>
+                        <div class="info-value">Stilt + 15 Floors</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Special Feature</div>
+                        <div class="info-value">Bay of Bengal Views</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Status</div>
+                        <div class="info-value">Ready to Occupy</div>
+                    </div>
+                </div>
+
+                <h3>Developer: VGN Property Developers Pvt Ltd</h3>
+                <p><strong>Established:</strong> 1947 (76+ years) | <strong>Portfolio:</strong> 250+ buildings, 20M sq.ft</p>
+
+                <div class="contact-card">
+                    <div class="contact-name">Mr. Pratish Vedhappudi</div>
+                    <div class="contact-role">Managing Director, VGN Projects Estates</div>
+                    <div class="contact-details">
+                        <div>📧 <a href="mailto:info@vgn.in">info@vgn.in</a></div>
+                        <div>📞 <a href="tel:+919962944444">+91 99629 44444</a></div>
+                        <div>🏢 VGN Kimberly Towers, Anna Nagar, Chennai - 600040</div>
+                    </div>
+                </div>
+
+                <h3>🎯 Registered Apartment Owners Association</h3>
+                <div class="highlight-box" style="border-left-color: #2ecc71;">
+                    <p><strong>Association Name:</strong> VGN COASTA APARTMENT OWNERS ASSOCIATION</p>
+                    <p><strong>GST Number:</strong> 33AAHAV4034H1ZL</p>
+                    <p><strong>Registration Date:</strong> January 27, 2023</p>
+                    <p><strong>Legal Status:</strong> Society/Trust/AOP (Active)</p>
+                    <p><strong>Address:</strong> Survey No.46/211 & 46/212, VGN Coasta, ECR, Muttukadu - 603112</p>
+                </div>
+
+                <h4>Association Leadership (Identified)</h4>
+                <div class="contact-card">
+                    <div class="contact-name">Mr. Prateep Varghese Philip</div>
+                    <div class="contact-role">President, VGN Coasta Apartment Owners Association</div>
+                    <div class="contact-details">
+                        <div>📍 Contact via VGN corporate office or property notice boards</div>
+                    </div>
+                </div>
+
+                <div class="contact-card">
+                    <div class="contact-name">Mr. Puttijacob Franklin</div>
+                    <div class="contact-role">Secretary, VGN Coasta Apartment Owners Association</div>
+                    <div class="contact-details">
+                        <div>📍 Contact via VGN corporate office or property notice boards</div>
+                    </div>
+                </div>
+
+                <h3>GreenSpaceZ Value Proposition</h3>
+                <h4>"Amplify VGN Coasta's Beachfront Lifestyle with Eco-Conscious Positioning"</h4>
+                <ul>
+                    <li><strong>Natural Synergy:</strong> Beach + Green Living = perfect alignment</li>
+                    <li><strong>Premium Differentiation:</strong> Eco-certification differentiates from competing ECR projects</li>
+                    <li><strong>Legacy Enhancement:</strong> 76-year brand entering modern sustainability era</li>
+                    <li><strong>Resale Value Protection:</strong> Green certification adds premium layer to sea-facing properties</li>
+                    <li><strong>Portfolio Scaling:</strong> Success creates template for 250+ VGN properties</li>
+                </ul>
+
+                <h3>Dual-Track Strategy</h3>
+                <h4>Track 1 - Developer (VGN):</h4>
+                <ol>
+                    <li>Contact Mr. Pratish Vedhappudi (Managing Director)</li>
+                    <li>Position as premium eco-marketplace for luxury segment</li>
+                    <li>Request developer introduction to association leadership</li>
+                </ol>
+
+                <h4>Track 2 - Association (119 Unit Owners):</h4>
+                <ol>
+                    <li>Present to association Executive Committee</li>
+                    <li>Positioning: "Eco-certification for resale value enhancement"</li>
+                    <li>Association endorsement provides credibility with all 119 owners</li>
+                </ol>
+
+                <h3>Why This is Priority #1</h3>
+                <div class="highlight-box" style="border-left-color: #2ecc71;">
+                    <ul>
+                        <li>✅ <strong>Formally registered association</strong> with identified leadership</li>
+                        <li>✅ <strong>Recent formation (2023)</strong> = openness to innovative partnerships</li>
+                        <li>✅ <strong>119 units</strong> = strong multiplier effect from single endorsement</li>
+                        <li>✅ <strong>ECR location</strong> = eco-conscious buyer demographic natural fit</li>
+                        <li>✅ <strong>Fastest path to closure:</strong> 2-3 weeks developer approval + 2-3 weeks association presentation</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="casagrand">
+            <div class="property-card">
+                <div class="property-header">
+                    <div class="property-title">Casagrand Pallagio</div>
+                    <div class="property-location">📍 Thoraipakkam, OMR (Opposite Fortune Hotel)</div>
+                    <span class="priority-badge priority-2">Priority 2</span>
+                    <span class="association-badge">Active Community + PropCare</span>
+                </div>
+
+                <h3>Property Overview</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Type</div>
+                        <div class="info-value">Mediterranean Luxury Villas + Apartments</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Size</div>
+                        <div class="info-value">6 acres | 122 units</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Configuration</div>
+                        <div class="info-value">4 BHK Villas (2,421-2,729 sq.ft)</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Price Range</div>
+                        <div class="info-value">₹2.8 Cr+</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Status</div>
+                        <div class="info-value">Sold Out (Resale Market)</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Green Features</div>
+                        <div class="info-value">Solar Panels, Rainwater Harvesting</div>
+                    </div>
+                </div>
+
+                <h3>Developer: Casagrand Builder Private Limited</h3>
+                <p><strong>Established:</strong> 2003 | <strong>Portfolio:</strong> 36M sq.ft, 140+ properties, 27,000+ families</p>
+
+                <div class="contact-card">
+                    <div class="contact-name">Mr. Arun MN</div>
+                    <div class="contact-role">Founder & Managing Director</div>
+                    <div class="contact-details">
+                        <div>📧 <a href="mailto:info@casagrand.co.in">info@casagrand.co.in</a></div>
+                        <div>📞 <a href="tel:+919962944444">+91 99629 44444</a></div>
+                        <div>🏢 NPL Devi, Thiruvanmiyur, Chennai - 600041</div>
+                    </div>
+                </div>
+
+                <h3>Association & Community Management</h3>
+                <div class="highlight-box">
+                    <p><strong>Status:</strong> Active Apartment Owners Association</p>
+                    <p><strong>Platforms:</strong> ADDA.io community presence (multiple groups, 3 blocks)</p>
+                    <p><strong>Structure:</strong> Standard AOA (President, Secretary, Treasurer, Committee)</p>
+                    <p><strong>Access:</strong> Via Casagrand corporate office or property management</p>
+                </div>
+
+                <h4>Casagrand PropCare Integration Opportunity</h4>
+                <p><strong>Casa Grande PropCare Private Limited</strong> - Casagrand's facilities management subsidiary</p>
+                <ul>
+                    <li>Manages multiple Casagrand properties</li>
+                    <li>Integration: PropCare + GreenSpaceZ + EPMS = complete eco-ecosystem</li>
+                    <li>Potential for portfolio-wide expansion (140+ properties)</li>
+                </ul>
+
+                <h3>GreenSpaceZ Value Proposition</h3>
+                <h4>"Transform Completed Excellence into Living Sustainability Showcase"</h4>
+                <ul>
+                    <li><strong>Existing Green Features:</strong> Solar + rainwater harvesting already installed - GreenSpaceZ provides marketing platform</li>
+                    <li><strong>Resale Market Leadership:</strong> 122 sold units = strong resale opportunity</li>
+                    <li><strong>PropCare Synergy:</strong> Integrated solution across listings + facilities management</li>
+                    <li><strong>Portfolio Multiplication:</strong> Success at Pallagio = template for 140+ Casagrand properties</li>
+                </ul>
+
+                <h3>Triple-Track Strategy</h3>
+                <h4>Track 1 - Developer Partnership:</h4>
+                <p>Contact Mr. Arun MN for strategic resale marketplace partnership</p>
+
+                <h4>Track 2 - PropCare Integration:</h4>
+                <p>Partner PropCare with EPMS Property Services for green facilities management</p>
+
+                <h4>Track 3 - Association Adoption:</h4>
+                <p>Developer-facilitated introduction to AOA leadership → Committee presentation → Resale pilot program</p>
+
+                <h3>Closed-Loop Ecosystem Value Chain</h3>
+                <div class="highlight-box">
+                    <p style="text-align: center; font-weight: 600; font-size: 1.1rem;">
+                        Casagrand Pallagio Listing → GreenSpaceZ Platform → Eco-Buyer Match → 
+                        EPMS Execution (via PropCare) → Sale Closure → Ongoing PropCare Management with Green Certification
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="association-strategy">
+            <h2>Association-Driven Partnership Strategy</h2>
+            
+            <div class="highlight-box">
+                <h3>Why Apartment Owners Associations Matter</h3>
+                <ul>
+                    <li><strong>Multiplier Effect:</strong> One association endorsement = access to 100+ potential listing clients</li>
+                    <li><strong>Credibility Signal:</strong> Association approval = social proof to individual owners</li>
+                    <li><strong>Efficient Onboarding:</strong> Committee decision enables bulk owner activation</li>
+                    <li><strong>Community Network:</strong> Word-of-mouth accelerates adoption</li>
+                    <li><strong>Sustained Pipeline:</strong> Ongoing resale listings over time</li>
+                </ul>
+            </div>
+
+            <h3>Best Practice Workflow</h3>
+            <ol>
+                <li><strong>Always</strong> contact developer first (establishes credibility)</li>
+                <li>Request developer-facilitated introduction to association (warm intro > cold contact)</li>
+                <li>Attend association committee meeting (not individual owner pitches)</li>
+                <li>Secure association endorsement before broad community rollout</li>
+                <li>Use association communication channels (newsletters, WhatsApp, notice boards)</li>
+            </ol>
+        </section>
+
+        <section id="contacts">
+            <h2>Contact Summary</h2>
+            
+            <div class="responsive-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Property</th>
+                            <th>Developer Contact</th>
+                            <th>Association Status</th>
+                            <th>Association Contact</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>ASV Suntech Park</strong></td>
+                            <td>
+                                Mr. Vaibhav Kamdar (CEO)<br>
+                                📞 +91 98846 85000<br>
+                                📧 crm@asvgroup.in
+                            </td>
+                            <td>Commercial Building<br>(No Residential Association)</td>
+                            <td>
+                                CB Kumar - Manager<br>
+                                ASV Management Pvt Ltd<br>
+                                (via corporate office)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>VGN Coasta</strong></td>
+                            <td>
+                                Mr. Pratish Vedhappudi (MD)<br>
+                                📞 +91 99629 44444<br>
+                                📧 info@vgn.in
+                            </td>
+                            <td>✓ Registered Association<br>(GST: 33AAHAV4034H1ZL)<br>Registered: Jan 27, 2023</td>
+                            <td>
+                                <strong>President:</strong> Prateep Varghese Philip<br>
+                                <strong>Secretary:</strong> Puttijacob Franklin<br>
+                                (Contact via VGN corporate)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Casagrand Pallagio</strong></td>
+                            <td>
+                                Mr. Arun MN (Founder & MD)<br>
+                                📞 +91 99629 44444<br>
+                                📧 info@casagrand.co.in
+                            </td>
+                            <td>Active Association<br>(ADDA platforms)<br>+ PropCare Integration</td>
+                            <td>
+                                Contact via Casagrand corporate<br>
+                                or PropCare division
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="next-steps">
+            <h2>Next Steps & Timeline</h2>
+            
+            <h3>Week 1-2: Priority Launch</h3>
+            <div class="highlight-box">
+                <h4>VGN Coasta (Top Priority)</h4>
+                <ol>
+                    <li>Call +91 99629 44444, request meeting with Mr. Pratish Vedhappudi</li>
+                    <li>Email customized pitch to info@vgn.in</li>
+                    <li>Present developer partnership + request association introduction</li>
+                </ol>
+            </div>
+
+            <h3>Week 3-4: Association Engagement</h3>
+            <div class="highlight-box">
+                <h4>VGN Coasta Association</h4>
+                <ol>
+                    <li>Meet with President (Prateep Varghese Philip) and Secretary (Puttijacob Franklin)</li>
+                    <li>Present at Executive Committee meeting</li>
+                    <li>Offer exclusive pilot program for 10-15 resale units</li>
+                </ol>
+            </div>
+
+            <h3>Week 5-6: Parallel Track - Casagrand</h3>
+            <div class="highlight-box">
+                <h4>Casagrand + PropCare Ecosystem</h4>
+                <ol>
+                    <li>Contact Mr. Arun MN for integrated PropCare + GreenSpaceZ + EPMS partnership</li>
+                    <li>Present portfolio-wide opportunity (140+ properties)</li>
+                    <li>Position Pallagio as pilot for ecosystem model</li>
+                </ol>
+            </div>
+
+            <h3>Success Metrics</h3>
+            <ul>
+                <li><strong>Initial Response Rate:</strong> Target 50%+ within 2 weeks</li>
+                <li><strong>Meeting Conversion:</strong> Target 30%+ of responses</li>
+                <li><strong>Partnership Closure:</strong> 1-2 properties within 60 days</li>
+            </ul>
+        </section>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <p><strong>GreenSpaceZ</strong> - Eco-Conscious Property Marketplace</p>
+                <p>greenspacez.in | ksn1312@gmail.com | +91 96000 71313</p>
+                <p style="margin-top: 15px; font-size: 0.9rem; opacity: 0.8;">
+                    Document Version 1.0 | Confidential - Internal Use Only | Last Updated: April 9, 2026
+                </p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
