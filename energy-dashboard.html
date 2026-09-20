@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Smart Energy Meter — Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0F1E17;
+    --bg-2: #132821;
+    --surface: #16281F;
+    --surface-2: #1C332A;
+    --line: #24392F;
+    --ink: #F0EDE4;
+    --ink-dim: #A9BBAE;
+    --ink-faint: #6E8377;
+    --sage: #6FA287;
+    --sage-bright: #8FC4A6;
+    --gold: #D4A857;
+    --terracotta: #E2725B;
+    --ok: #7FB88F;
+    font-family: 'Space Grotesk', sans-serif;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  *{box-sizing:inherit;}
+  html{scroll-padding-top: env(safe-area-inset-top, 0px);}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--ink);
+    background-image:
+      radial-gradient(1100px 700px at 85% -10%, rgba(111,162,135,0.10), transparent 60%),
+      radial-gradient(900px 600px at -10% 110%, rgba(212,168,87,0.06), transparent 55%);
+  }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+
+  /* ---------- shell ---------- */
+  .shell{
+    display:grid;
+    grid-template-columns: 232px 1fr;
+    min-height:100%;
+  }
+  @media (max-width: 860px){
+    .shell{ grid-template-columns: 1fr; }
+    .side{ position: static; height:auto; flex-direction:row; overflow-x:auto; padding: 14px 16px; }
+    .side .brand{ display:none; }
+    .side nav{ flex-direction:row; gap:6px; }
+    .side .foot{ display:none; }
+  }
+
+  .side{
+    background: linear-gradient(180deg, var(--bg-2), var(--bg));
+    border-right: 1px solid var(--line);
+    display:flex;
+    flex-direction:column;
+    gap: 28px;
+    padding: 26px 20px;
+    position: sticky;
+    top:0;
+    height: 100vh;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .brand .mark{
+    width:34px; height:34px; border-radius:9px;
+    background: conic-gradient(from 210deg, var(--sage), var(--gold), var(--sage));
+    display:flex; align-items:center; justify-content:center;
+    font-weight:700; color:#0F1E17; font-size:14px;
+  }
+  .brand .name{ font-weight:600; font-size:15px; line-height:1.2; }
+  .brand .sub{ font-size:11px; color:var(--ink-faint); }
+
+  nav{ display:flex; flex-direction:column; gap:4px; }
+  .navbtn{
+    all:unset;
+    cursor:pointer;
+    display:flex; align-items:center; gap:10px;
+    padding:10px 12px; border-radius:10px;
+    color: var(--ink-dim);
+    font-size:14px;
+    white-space:nowrap;
+    transition: background .15s, color .15s;
+  }
+  .navbtn:hover{ background: var(--surface); color: var(--ink); }
+  .navbtn.active{ background: var(--surface-2); color: var(--ink); box-shadow: inset 2px 0 0 var(--sage-bright); }
+  .navbtn .dot{ width:6px; height:6px; border-radius:50%; background: var(--ink-faint); flex:none; }
+  .navbtn.active .dot{ background: var(--sage-bright); }
+
+  .side .foot{
+    margin-top:auto;
+    font-size:11px;
+    color: var(--ink-faint);
+    line-height:1.5;
+    border-top:1px solid var(--line);
+    padding-top:14px;
+  }
+
+  main{ padding: 30px 34px 60px; max-width: 1180px; }
+  @media (max-width: 640px){ main{ padding: 20px 16px 48px; } }
+
+  .pagehead{ margin-bottom: 26px; }
+  .pagehead h1{ font-size: 26px; margin:0 0 4px; font-weight:700; letter-spacing:-0.01em; }
+  .pagehead p{ margin:0; color: var(--ink-dim); font-size: 14px; max-width: 62ch; }
+
+  .view{ display:none; }
+  .view.active{ display:block; animation: fade .35s ease; }
+  @keyframes fade{ from{ opacity:0; transform: translateY(4px);} to{opacity:1; transform:none;} }
+
+  /* ---------- cards ---------- */
+  .card{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 22px;
+  }
+  .grid{ display:grid; gap: 18px; }
+  .grid-3{ grid-template-columns: repeat(3, 1fr); }
+  .grid-2{ grid-template-columns: 1.3fr 1fr; }
+  @media (max-width: 900px){ .grid-3, .grid-2{ grid-template-columns: 1fr; } }
+
+  .stat-label{ font-size:12px; color:var(--ink-faint); margin-bottom:10px; }
+  .stat-value{ font-size: 34px; font-weight:600; font-family:'IBM Plex Mono',monospace; letter-spacing:-0.02em; }
+  .stat-unit{ font-size:14px; color:var(--ink-dim); margin-left:6px; font-family:'Space Grotesk',sans-serif; }
+  .stat-sub{ margin-top:10px; font-size:12px; color: var(--ink-dim); }
+
+  .pulse{ display:inline-flex; align-items:center; gap:6px; font-size:11px; color: var(--sage-bright); }
+  .pulse i{ width:7px; height:7px; border-radius:50%; background: var(--sage-bright); box-shadow:0 0 0 0 rgba(143,196,166,.6); animation:ring 1.8s infinite; }
+  @keyframes ring{ 0%{box-shadow:0 0 0 0 rgba(143,196,166,.55);} 70%{box-shadow:0 0 0 8px rgba(143,196,166,0);} 100%{box-shadow:0 0 0 0 rgba(143,196,166,0);} }
+
+  .row-between{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+
+  h3.card-title{ margin:0 0 16px; font-size:14px; color:var(--ink-dim); font-weight:600; letter-spacing:.01em; }
+
+  /* bar chart */
+  .barchart{ display:flex; align-items:flex-end; gap:10px; height:150px; padding-top:6px; }
+  .barcol{ flex:1; display:flex; flex-direction:column; align-items:center; gap:8px; }
+  .bar{ width:100%; max-width:34px; border-radius:6px 6px 3px 3px; background: linear-gradient(180deg, var(--sage-bright), var(--sage)); position:relative; transition: height .5s ease; }
+  .bar.over{ background: linear-gradient(180deg, #F0947F, var(--terracotta)); }
+  .barlabel{ font-size:11px; color:var(--ink-faint); }
+
+  .threshold-input{
+    display:flex; align-items:center; gap:10px; margin-top:6px;
+  }
+  .threshold-input input[type=range]{
+    flex:1; accent-color: var(--sage-bright);
+  }
+  .threshold-input .val{ font-family:'IBM Plex Mono',monospace; font-size:15px; min-width:70px; text-align:right; }
+
+  .status-pill{
+    display:inline-flex; align-items:center; gap:8px;
+    padding: 10px 14px; border-radius:10px; font-size:13px;
+    background: rgba(127,184,143,.12); color: var(--ok); border:1px solid rgba(127,184,143,.25);
+    margin-top:16px;
+  }
+  .status-pill.warn{ background: rgba(226,114,91,.12); color: var(--terracotta); border-color: rgba(226,114,91,.3); }
+  .status-pill .sq{ width:8px; height:8px; border-radius:2px; background: currentColor; }
+
+  /* calendar */
+  .cal-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+  .cal-head button{ all:unset; cursor:pointer; color:var(--ink-dim); padding:4px 8px; border-radius:6px; }
+  .cal-head button:hover{ background: var(--surface-2); }
+  .cal-grid{ display:grid; grid-template-columns: repeat(7,1fr); gap:6px; font-size:12px; }
+  .cal-grid .dow{ color:var(--ink-faint); text-align:center; padding-bottom:4px; font-size:11px; }
+  .cal-day{ aspect-ratio:1; display:flex; align-items:center; justify-content:center; border-radius:8px; color:var(--ink-dim); background: var(--surface-2); font-family:'IBM Plex Mono',monospace; }
+  .cal-day.blank{ background:transparent; }
+  .cal-day.under{ background: rgba(127,184,143,.22); color: var(--ok); font-weight:600; }
+  .cal-day.over{ background: rgba(226,114,91,.22); color: var(--terracotta); font-weight:600; }
+
+  .legend{ display:flex; gap:16px; margin-top:14px; font-size:12px; color:var(--ink-dim); }
+  .legend span{ display:inline-flex; align-items:center; gap:6px; }
+  .legend i{ width:8px; height:8px; border-radius:2px; display:inline-block; }
+
+  /* trend line */
+  svg.trend{ width:100%; height:150px; overflow:visible; }
+  .trend-fill{ fill: url(#trendGrad); }
+  .trend-line{ fill:none; stroke: var(--gold); stroke-width:2.5; }
+  .trend-dot{ fill: var(--gold); }
+
+  table.cost{ width:100%; border-collapse:collapse; font-size:13px; }
+  table.cost td{ padding: 9px 4px; border-bottom:1px solid var(--line); }
+  table.cost td:first-child{ color: var(--ink-dim); width:70px; }
+  table.cost td:last-child{ text-align:right; font-family:'IBM Plex Mono',monospace; }
+  table.cost tr:last-child td{ border-bottom:none; }
+  .cost-bar-track{ background: var(--surface-2); border-radius: 4px; height:6px; overflow:hidden; }
+  .cost-bar-fill{ height:100%; background: linear-gradient(90deg, var(--gold), var(--sage-bright)); border-radius:4px; }
+  .cost-row{ display:grid; grid-template-columns: 46px 1fr 64px; align-items:center; gap:10px; }
+
+  .kicker{ font-size:12px; color: var(--ink-faint); margin-bottom:8px; }
+
+  .settings-grid{ display:grid; grid-template-columns: repeat(2,1fr); gap:16px; }
+  @media (max-width:700px){ .settings-grid{ grid-template-columns:1fr; } }
+  .field{ display:flex; flex-direction:column; gap:6px; }
+  .field label{ font-size:12px; color:var(--ink-dim); }
+  .field input, .field select{
+    background: var(--surface-2); border:1px solid var(--line); color:var(--ink);
+    padding:10px 12px; border-radius:8px; font-family:'IBM Plex Mono',monospace; font-size:14px;
+  }
+  .field input:focus, .field select:focus{ outline:2px solid var(--sage-bright); outline-offset:1px; }
+  .save-btn{
+    all:unset; cursor:pointer; margin-top:18px; display:inline-block;
+    background: var(--sage-bright); color:#0F1E17; font-weight:600; font-size:13px;
+    padding: 11px 20px; border-radius:9px;
+  }
+  .save-btn:hover{ background: var(--sage); }
+  .save-note{ margin-top:10px; font-size:12px; color: var(--ink-faint); }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <aside class="side">
+    <div class="brand">
+      <div class="mark">SE</div>
+      <div>
+        <div class="name">Smart Energy Meter</div>
+        <div class="sub">IoT power &amp; cost dashboard</div>
+      </div>
+    </div>
+    <nav id="nav">
+      <button class="navbtn active" data-view="overview"><span class="dot"></span>Live overview</button>
+      <button class="navbtn" data-view="week"><span class="dot"></span>7-day consumption</button>
+      <button class="navbtn" data-view="month"><span class="dot"></span>30-day insights</button>
+      <button class="navbtn" data-view="cost"><span class="dot"></span>Daily cost</button>
+      <button class="navbtn" data-view="settings"><span class="dot"></span>Threshold settings</button>
+    </nav>
+    <div class="foot">Non-intrusive CT sensor · ESP32 · synced every few seconds. Web view mirrors the mobile app, laid out for a wider screen.</div>
+  </aside>
+
+  <main>
+
+    <!-- OVERVIEW -->
+    <section class="view active" id="view-overview">
+      <div class="pagehead">
+        <h1>Live overview</h1>
+        <p>Real-time load, supply voltage, and the running cost of today's usage — translated straight into rupees.</p>
+      </div>
+
+      <div class="grid grid-3" style="margin-bottom:18px;">
+        <div class="card">
+          <div class="row-between">
+            <div class="stat-label">Live power draw</div>
+            <span class="pulse"><i></i>live</span>
+          </div>
+          <div class="stat-value" id="livePower">0.08<span class="stat-unit">kW</span></div>
+          <div class="stat-sub">Peak today: <span id="peakToday" class="mono">0.09 kW</span></div>
+        </div>
+        <div class="card">
+          <div class="stat-label">Supply voltage</div>
+          <div class="stat-value" id="liveVoltage">230.0<span class="stat-unit">V</span></div>
+          <div class="stat-sub">Within normal range (220–240V)</div>
+        </div>
+        <div class="card">
+          <div class="stat-label">Live cost estimate</div>
+          <div class="stat-value" id="liveCost">₹0.23</div>
+          <div class="stat-sub">Since midnight · tariff ₹8.20/unit</div>
+        </div>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <h3 class="card-title">Today · power by hour</h3>
+          <svg class="trend" viewBox="0 0 600 150" preserveAspectRatio="none" id="hourSvg">
+            <defs>
+              <linearGradient id="trendGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#D4A857" stop-opacity="0.35"/>
+                <stop offset="100%" stop-color="#D4A857" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="card">
+          <h3 class="card-title">Status</h3>
+          <div class="kicker">Monthly budget</div>
+          <div class="stat-value" style="font-size:22px;">₹1,240 <span class="stat-unit">of ₹2,000</span></div>
+          <div class="cost-bar-track" style="margin-top:12px;"><div class="cost-bar-fill" style="width:62%"></div></div>
+          <div class="status-pill"><span class="sq"></span>Under control — on pace for ₹1,610 this month</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7 DAY -->
+    <section class="view" id="view-week">
+      <div class="pagehead">
+        <h1>7-day consumption</h1>
+        <p>Daily power draw for the past week, with the budget threshold you've set for the house.</p>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <div class="grid grid-3" style="margin-bottom:20px; gap:14px;">
+            <div><div class="stat-label">Peak</div><div class="mono" style="font-size:20px;">1500 W</div></div>
+            <div><div class="stat-label">Days over</div><div class="mono" style="font-size:20px;">0</div></div>
+            <div><div class="stat-label">Daily avg</div><div class="mono" style="font-size:20px;">547 W</div></div>
+          </div>
+          <h3 class="card-title">Power by day</h3>
+          <div class="barchart" id="weekBars"></div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">Energy threshold</h3>
+          <div class="kicker">Set limit (watts)</div>
+          <div class="threshold-input">
+            <input type="range" min="200" max="6000" step="50" value="5000" id="weekThreshold">
+            <div class="val mono" id="weekThresholdVal">5000 W</div>
+          </div>
+          <div class="status-pill" id="weekStatus"><span class="sq"></span>Under control</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 30 DAY -->
+    <section class="view" id="view-month">
+      <div class="pagehead">
+        <h1>30-day insights</h1>
+        <p>Monthly calendar of days under and over budget, plus the week-by-week consumption trend.</p>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <div class="cal-head">
+            <button>&larr;</button>
+            <h3 class="card-title" style="margin:0;">April 2026</h3>
+            <button>&rarr;</button>
+          </div>
+          <div class="cal-grid" id="calGrid"></div>
+          <div class="legend">
+            <span><i style="background:rgba(127,184,143,.5)"></i>Under budget</span>
+            <span><i style="background:rgba(226,114,91,.5)"></i>Over budget</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="grid grid-3" style="margin-bottom:18px; gap:14px;">
+            <div><div class="stat-label">Days under</div><div class="mono" style="font-size:20px;">2</div></div>
+            <div><div class="stat-label">Days over</div><div class="mono" style="font-size:20px;">1</div></div>
+            <div><div class="stat-label">Month total</div><div class="mono" style="font-size:18px;">26,312 W</div></div>
+          </div>
+          <h3 class="card-title">Weekly consumption</h3>
+          <svg class="trend" viewBox="0 0 600 150" preserveAspectRatio="none" id="weekTrendSvg"></svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- COST -->
+    <section class="view" id="view-cost">
+      <div class="pagehead">
+        <h1>Daily cost breakdown</h1>
+        <p>This week's spend, day by day, converted from raw usage at the current tariff.</p>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <h3 class="card-title">This week</h3>
+          <table class="cost" id="costTable"></table>
+        </div>
+        <div class="card">
+          <h3 class="card-title">Threshold</h3>
+          <div class="kicker">Set limit (watts)</div>
+          <div class="threshold-input">
+            <input type="range" min="50" max="1000" step="10" value="150" id="costThreshold">
+            <div class="val mono" id="costThresholdVal">150 W</div>
+          </div>
+          <div class="status-pill"><span class="sq"></span>Under control</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="view" id="view-settings">
+      <div class="pagehead">
+        <h1>Threshold &amp; account settings</h1>
+        <p>Tune alerts and tariff so the live cost estimate matches your actual electricity board rate.</p>
+      </div>
+
+      <div class="card">
+        <div class="settings-grid">
+          <div class="field">
+            <label for="tariff">Tariff (₹ per unit)</label>
+            <input type="text" id="tariff" value="8.20">
+          </div>
+          <div class="field">
+            <label for="monthlyBudget">Monthly budget (₹)</label>
+            <input type="text" id="monthlyBudget" value="2000">
+          </div>
+          <div class="field">
+            <label for="alertChannel">Alert channel</label>
+            <select id="alertChannel">
+              <option>Push notification</option>
+              <option>SMS</option>
+              <option>Email</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="deviceName">Device name</label>
+            <input type="text" id="deviceName" value="Main panel — Pudupakkam">
+          </div>
+        </div>
+        <button class="save-btn" id="saveBtn">Save changes</button>
+        <div class="save-note" id="saveNote"></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  // ---------- nav ----------
+  const buttons = document.querySelectorAll('.navbtn');
+  buttons.forEach(b=>{
+    b.addEventListener('click', ()=>{
+      buttons.forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+      document.getElementById('view-'+b.dataset.view).classList.add('active');
+    });
+  });
+
+  // ---------- live overview simulation ----------
+  const livePowerEl = document.getElementById('livePower');
+  const liveVoltageEl = document.getElementById('liveVoltage');
+  const liveCostEl = document.getElementById('liveCost');
+  const peakEl = document.getElementById('peakToday');
+  let cost = 0.23, peak = 0.09;
+  const TARIFF = 8.20;
+  function tickLive(){
+    const kw = +(0.05 + Math.random()*0.07).toFixed(2);
+    const v = +(228 + Math.random()*6).toFixed(1);
+    peak = Math.max(peak, kw);
+    cost += (kw * TARIFF) / 3600 * 4; // small increment per tick
+    livePowerEl.innerHTML = kw.toFixed(2) + '<span class="stat-unit">kW</span>';
+    liveVoltageEl.innerHTML = v.toFixed(1) + '<span class="stat-unit">V</span>';
+    liveCostEl.textContent = '₹' + cost.toFixed(2);
+    peakEl.textContent = peak.toFixed(2) + ' kW';
+  }
+  tickLive();
+  setInterval(tickLive, 4000);
+
+  // hourly trend (mock)
+  (function(){
+    const svg = document.getElementById('hourSvg');
+    const pts = Array.from({length:24}, (_,i)=> 20 + Math.random()*100 + (i>7&&i<22?60:0));
+    const max = Math.max(...pts), min = Math.min(...pts);
+    const norm = pts.map((p,i)=>{
+      const x = (i/(pts.length-1))*600;
+      const y = 140 - ((p-min)/(max-min))*120;
+      return [x,y];
+    });
+    const line = norm.map((p,i)=> (i===0?'M':'L')+p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ');
+    const area = line + ` L600,150 L0,150 Z`;
+    svg.innerHTML = `
+      <defs><linearGradient id="trendGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#D4A857" stop-opacity="0.35"/>
+        <stop offset="100%" stop-color="#D4A857" stop-opacity="0"/>
+      </linearGradient></defs>
+      <path class="trend-fill" d="${area}"></path>
+      <path class="trend-line" d="${line}"></path>`;
+  })();
+
+  // ---------- 7-day bars ----------
+  const weekData = [
+    {d:'Mon', w:80}, {d:'Tue', w:0}, {d:'Wed', w:1125},
+    {d:'Thu', w:0}, {d:'Fri', w:1125}, {d:'Sat', w:0}, {d:'Sun', w:0}
+  ];
+  const weekLimit = 5000;
+  const barWrap = document.getElementById('weekBars');
+  function renderWeekBars(limit){
+    barWrap.innerHTML = weekData.map(day=>{
+      const pct = Math.max(4, (day.w/1500)*100);
+      const over = day.w > limit;
+      return `<div class="barcol">
+        <div class="bar ${over?'over':''}" style="height:${pct}%"></div>
+        <div class="barlabel">${day.d}</div>
+      </div>`;
+    }).join('');
+  }
+  renderWeekBars(weekLimit);
+
+  const weekThreshold = document.getElementById('weekThreshold');
+  const weekThresholdVal = document.getElementById('weekThresholdVal');
+  const weekStatus = document.getElementById('weekStatus');
+  function updateWeekThreshold(){
+    const val = +weekThreshold.value;
+    weekThresholdVal.textContent = val + ' W';
+    renderWeekBars(val);
+    const anyOver = weekData.some(d=>d.w>val);
+    weekStatus.classList.toggle('warn', anyOver);
+    weekStatus.innerHTML = `<span class="sq"></span>${anyOver ? 'Limit exceeded — one or more days over threshold' : 'Under control'}`;
+  }
+  weekThreshold.addEventListener('input', updateWeekThreshold);
+  updateWeekThreshold();
+
+  // ---------- 30-day calendar ----------
+  const calGrid = document.getElementById('calGrid');
+  const dows = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const overDays = new Set([3]);
+  const underDays = new Set([1,4,6,10,11,12,13]);
+  let html = dows.map(d=>`<div class="dow">${d}</div>`).join('');
+  const startOffset = 3; // April 2026 starts on Wednesday
+  for(let i=0;i<startOffset;i++) html += `<div class="cal-day blank"></div>`;
+  for(let day=1; day<=30; day++){
+    let cls = '';
+    if(overDays.has(day)) cls = 'over';
+    else if(underDays.has(day)) cls = 'under';
+    html += `<div class="cal-day ${cls}">${day}</div>`;
+  }
+  calGrid.innerHTML = html;
+
+  // weekly trend for 30-day view
+  (function(){
+    const svg = document.getElementById('weekTrendSvg');
+    const pts = [26312, 3200, 900, 400];
+    const max = Math.max(...pts);
+    const norm = pts.map((p,i)=>{
+      const x = (i/(pts.length-1))*600;
+      const y = 140 - (p/max)*120;
+      return [x,y];
+    });
+    const line = norm.map((p,i)=> (i===0?'M':'L')+p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ');
+    const area = line + ` L600,150 L0,150 Z`;
+    const dots = norm.map(p=>`<circle class="trend-dot" cx="${p[0]}" cy="${p[1]}" r="4"></circle>`).join('');
+    svg.innerHTML = `<path class="trend-fill" d="${area}"></path><path class="trend-line" d="${line}"></path>${dots}`;
+  })();
+
+  // ---------- daily cost table ----------
+  const costData = [
+    {d:'Mon', c:0.10}, {d:'Tue', c:0.00}, {d:'Wed', c:0.00}, {d:'Thu', c:0.00},
+    {d:'Fri', c:0.00}, {d:'Sat', c:0.00}, {d:'Sun', c:0.00}
+  ];
+  const maxCost = Math.max(...costData.map(x=>x.c), 0.01);
+  document.getElementById('costTable').innerHTML = costData.map(row=>`
+    <tr><td colspan="3">
+      <div class="cost-row">
+        <span>${row.d}</span>
+        <div class="cost-bar-track"><div class="cost-bar-fill" style="width:${(row.c/maxCost)*100}%"></div></div>
+        <span class="mono">₹${row.c.toFixed(2)}</span>
+      </div>
+    </td></tr>`).join('');
+
+  const costThreshold = document.getElementById('costThreshold');
+  const costThresholdVal = document.getElementById('costThresholdVal');
+  costThreshold.addEventListener('input', ()=>{
+    costThresholdVal.textContent = costThreshold.value + ' W';
+  });
+
+  // ---------- settings ----------
+  document.getElementById('saveBtn').addEventListener('click', ()=>{
+    document.getElementById('saveNote').textContent = 'Saved just now.';
+  });
+})();
+</script>
+
+</body>
+</html>
